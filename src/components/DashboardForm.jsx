@@ -26,8 +26,8 @@ const DashboardForm = (props) => {
     const [ support, setSupport ] = useState('')
     const [ deductions, setDeductions ] = useState('')
     const [ feulCardCharge, setFeulCardCharge ] = useState('')
-    const [ deductionType, setDeductionType ] = useState('HiVis')
-    const [ supportType, setSupportType ] = useState('Late Wave Payment')
+    const [ deductionType, setDeductionType ] = useState('none')
+    const [ supportType, setSupportType ] = useState('none')
     
     // list for routes
     const onSelectTwo = (e) => {
@@ -191,11 +191,14 @@ const DashboardForm = (props) => {
         }
 
         let myDeductionsObj = () => {
-            let myObj = {
-                date_id: `https://pythonicbackend.herokuapp.com/schedule/${localID}/`,
-                name: deductionType,
-                amount: deductions
-            }
+            let myObj = {}
+            if (deductionType !== 'none') {
+                myObj = {
+                    date_id: `https://pythonicbackend.herokuapp.com/schedule/${localID}/`,
+                    name: deductionType,
+                    amount: deductions
+                }
+            } 
             console.log(myObj)
 
             return (
@@ -204,10 +207,13 @@ const DashboardForm = (props) => {
         }
 
         let mySupportsObj = () => {
-            let myObj = {
-                date_id: `https://pythonicbackend.herokuapp.com/schedule/${localID}/`,
-                name: supportType,
-                amount: support
+            let myObj = {}
+            if (supportType !== 'none') {
+                myObj = {
+                    date_id: `https://pythonicbackend.herokuapp.com/schedule/${localID}/`,
+                    name: supportType,
+                    amount: support
+                }
             }
             console.log(myObj)
 
@@ -215,9 +221,12 @@ const DashboardForm = (props) => {
                 myObj
             )
         }
-        if (localID > 0) {
+        console.log(localID)
+        if (localID.length > 0) {
             postDataPost(`https://pythonicbackend.herokuapp.com/deductions/`, myDeductionsObj()) .then( response => {
+                console.log(response)
                 postDataPost(`https://pythonicbackend.herokuapp.com/support/`, mySupportsObj()) .then( response => {
+                    console.log(response)
                     postData(`https://pythonicbackend.herokuapp.com/schedule/${localID}/`, myObjectToPut())
                     .then( response => {
                         console.log(response)
@@ -283,6 +292,11 @@ const DashboardForm = (props) => {
             console.log(props.otherSelection)
             let deductionsValue = props.otherSelection.deductionSum.replace(/GB£/, '')
             let supportValue = props.otherSelection.supportSum.replace(/GB£/, '')
+            if (props.otherSelection.route !== "0") {
+                setSelectedRouteType(props.otherSelection.route)
+            } else {
+                setSelectedRouteType('Full Standard Van Route')
+            }
             setOtherSelection(props.otherSelection)
             setNameState(props.otherSelection.driver_id)
             setWaveTime(props.otherSelection.LateWavePayment)
@@ -319,6 +333,7 @@ const DashboardForm = (props) => {
     }
 
     let myDeductionList = [
+        'none',
         'HiVis',
         'Key Chain',
         'Fuel Card Charge',
@@ -332,6 +347,7 @@ const DashboardForm = (props) => {
     ]
 
     let mySuperSupportList = [
+        'none',
         'Late Wave Payment',
         'Additional Support',
         'Seasonal Incentive',

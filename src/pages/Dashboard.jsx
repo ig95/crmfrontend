@@ -227,7 +227,7 @@ const Dashboard = (props) => {
                                 <h4 className='remove_h3_padding'>{ele.date.start_mileage}</h4>
                             </div>
                             <div className='list_spacer_content'>
-                                <h4 className='remove_h3_padding'>{ele.date.su ? ele.date.finish_mileage : '--'}</h4>
+                                <h4 className='remove_h3_padding'>{ele.date.finish_mileage ? ele.date.finish_mileage : '--'}</h4>
                             </div>
                             <div className='list_spacer_content'>
                                 <h4 className='remove_h3_padding'>{ele.date.supportSum ? ele.date.supportSum : '--'}</h4>
