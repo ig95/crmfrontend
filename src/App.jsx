@@ -153,7 +153,7 @@ const App = () => {
         <Route exact path = '/rentalvantracker' render={ () => <RentalVanTracker user_name={userName} user_email={userEmail} superUser={true}/> } />
         <Route exact path = '/compliance' render={ () => <Compliance user_name={userName} user_email={userEmail} superUser={true}/> } />
         <Route exact path = '/drivercompliancecheck' render={ () => <DriverComplianceCheck user_name={userName} user_email={userEmail} superUser={true}/> } />
-        <Route exact path = '/invoicework' render={ () => <InvoiceWork user_name={userName} user_email={userEmail}superUser={true} /> } />
+        <Route exact path = '/invoicework' render={ () => <InvoiceWork user_name={userName} user_email={userEmail} superUser={true} /> } />
         <Route exact path = '/singleday/:id/:location' render={ () => <SingleDay user_name={userName} user_email={userEmail} superUser={true}/> } />
       </Router>
     )
