@@ -118,6 +118,7 @@ const App = () => {
         setUserFound('Login not found. Please contact site administrator')
       }
     })
+    console.log(responseGoog.profileObj.email, ' ', process.env.REACT_APP_EMAIL_VERIFICATION, ' ', process.env.REACT_APP_SUPER_USER)
     if (responseGoog.profileObj.email === (process.env.REACT_APP_EMAIL_VERIFICATION || process.env.REACT_APP_SUPER_USER)) {
       console.log('hello')
       setUserName(responseGoog.profileObj.givenName)
