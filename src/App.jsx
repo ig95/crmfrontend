@@ -105,6 +105,19 @@ const App = () => {
 
     getDataNext('https://pythonicbackend.herokuapp.com/managers/').then( response => {
       let localVar = 0
+      console.log(responseGoog.profileObj.email, '  ', process.env.REACT_APP_SUPER_USER)
+      if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
+        console.log('hello')
+        setUserName(responseGoog.profileObj.givenName)
+        setUserId(responseGoog.profileObj.googleId)
+        setUserEmail(responseGoog.profileObj.email)
+      }
+      if (responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
+        console.log('hello')
+        setUserName(responseGoog.profileObj.givenName)
+        setUserId(responseGoog.profileObj.googleId)
+        setUserEmail(responseGoog.profileObj.email)
+      }
       response.results.forEach( ele => {
         if (responseGoog.profileObj.email === ele.email) {
           setUserName(responseGoog.profileObj.givenName)
@@ -118,23 +131,10 @@ const App = () => {
         setUserFound('Login not found. Please contact site administrator')
       }
     })
-    console.log(responseGoog.profileObj.email, '  ', process.env.REACT_APP_SUPER_USER)
-    if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
-      console.log('hello')
-      setUserName(responseGoog.profileObj.givenName)
-      setUserId(responseGoog.profileObj.googleId)
-      setUserEmail(responseGoog.profileObj.email)
-    }
-    if (responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
-      console.log('hello')
-      setUserName(responseGoog.profileObj.givenName)
-      setUserId(responseGoog.profileObj.googleId)
-      setUserEmail(responseGoog.profileObj.email)
-    }
   }
 
   var content
-  if (userEmail === (process.env.REACT_APP_EMAIL_VERIFICATION || process.env.REACT_APP_SUPER_USER)) {
+  if (userEmail === process.env.REACT_APP_EMAIL_VERIFICATION || userEmail === process.env.REACT_APP_SUPER_USER) {
     content = (
       <Router>
         <Route exact path = '/' render={ () => <Home user_name={userName} user_email={userEmail} user_id={userId} superUser={true}/> } />
