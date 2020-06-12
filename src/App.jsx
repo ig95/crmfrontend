@@ -16,7 +16,7 @@ import CreateManager from './pages/CreateManager'
 import Compliance from './pages/Compliance'
 import RentalVanTracker from './pages/RentalVanTracker'
 import CompanyVans from './pages/CompanyVans'
-import logo from './images/logoMinified.png'
+import logo from './images/coloration.png'
 import './App.scss';
 import Home from './pages/home'
 import {
@@ -106,7 +106,7 @@ const App = () => {
     getDataNext('https://pythonicbackend.herokuapp.com/managers/').then( response => {
       let localVar = 0
       response.results.forEach( ele => {
-        if (responseGoog.profileObj.email === ele.email || responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION || responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
+        if (responseGoog.profileObj.email === ele.email) {
           setUserName(responseGoog.profileObj.givenName)
           setUserId(responseGoog.profileObj.googleId)
           setUserEmail(responseGoog.profileObj.email)
@@ -114,6 +114,12 @@ const App = () => {
           localVar = 1
         }
       })
+      if (responseGoog.profileObj.email === (process.env.REACT_APP_EMAIL_VERIFICATION || process.env.REACT_APP_SUPER_USER)) {
+        setUserName(responseGoog.profileObj.givenName)
+        setUserId(responseGoog.profileObj.googleId)
+        setUserEmail(responseGoog.profileObj.email)
+        // setStation(ele.station)
+      }
       if (localVar === 0) {
         setUserFound('Login not found. Please contact site administrator')
       }
