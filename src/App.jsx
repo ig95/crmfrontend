@@ -33,6 +33,7 @@ const App = () => {
   const [ schedule, setSchedule] = useState(null)
   const [ station, setStation ] = useState('')
   const [ userFound, setUserFound ] = useState('')
+  const [ superUser, setSuperUser ] = useState(false)
   // const [ user, setUser] = useState(null);
 
   // dev mode
@@ -107,16 +108,16 @@ const App = () => {
       let localVar = 0
       console.log(responseGoog.profileObj.email, '  ', process.env.REACT_APP_SUPER_USER)
       if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
-        console.log('hello')
         setUserName(responseGoog.profileObj.givenName)
         setUserId(responseGoog.profileObj.googleId)
         setUserEmail(responseGoog.profileObj.email)
+        setSuperUser(true)
       }
       if (responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
-        console.log('hello')
         setUserName(responseGoog.profileObj.givenName)
         setUserId(responseGoog.profileObj.googleId)
         setUserEmail(responseGoog.profileObj.email)
+        setSuperUser(true)
       }
       response.results.forEach( ele => {
         if (responseGoog.profileObj.email === ele.email) {
@@ -134,7 +135,7 @@ const App = () => {
   }
 
   var content
-  if (userEmail === process.env.REACT_APP_EMAIL_VERIFICATION || userEmail === process.env.REACT_APP_SUPER_USER) {
+  if (superUser) {
     content = (
       <Router>
         <Route exact path = '/' render={ () => <Home user_name={userName} user_email={userEmail} user_id={userId} superUser={true}/> } />
