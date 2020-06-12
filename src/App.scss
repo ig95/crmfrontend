@@ -3964,7 +3964,8 @@
   }
 
   .list_spacer_content {
-    width: 4vw;
+    @extend %centerThings;
+    width: 5vw;
     margin-left: 1.5vw;
     margin-right: 1.5vw;
     padding: 0;
@@ -3980,6 +3981,7 @@
 
   .list_spacer_content_name {
     width: 4vw;
+    font-size: 14px;
     margin-left: 1.5vw;
     margin-right: .5vw;
     padding: 0;
@@ -4051,7 +4053,7 @@
   .dashboard_form {
     display: flex;
     flex-wrap: wrap;
-    padding: 1rem 0 0 8rem;
+    // padding: 1rem 0rem 0 8rem;
   }
 
   .dashboard_form_divs {
@@ -4093,6 +4095,8 @@
 
   .list_overall_flex_dashboard {
     display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .modify_button {
@@ -4123,7 +4127,7 @@
   }
 
   .dashboard_top_rectangles {
-    width: 4vw;
+    width: 5vw;
     border-radius: .5rem;
     padding: 5px;
     margin-left: 1.5vw;

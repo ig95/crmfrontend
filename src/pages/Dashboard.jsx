@@ -198,56 +198,54 @@ const Dashboard = (props) => {
             )
         } else (
             localArrayTwo.forEach( ele => {
+                console.log(ele)
                 localArrayThree.push(
                     <div className='list_overall_flex_dashboard'>
-                    <div className='elements_in_list_dashboard_names'>
-                        <div className='list_spacer_content_location'>
-                            <h4 className='remove_h3_padding'>{ele.driver.location}</h4>
+                        <div className='elements_in_list_dashboard_names'>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.driver.location}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.driver.name}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.routeNumber === '0' ? '--' : ele.date.routeNumber}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.route === '0' ? '--' : ele.date.route }</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.logIn_time}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.logOut_time}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.timeDifference[0] === '0:00:00' ? '--' : ele.date.timeDifference[0]}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.start_mileage}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.su ? ele.date.finish_mileage : '--'}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.supportSum ? ele.date.supportSum : '--'}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.deductionSum ? ele.date.deductionSum : '--'}</h4>
+                            </div>
+                            <div className='list_spacer_content'>
+                                <h4 className='remove_h3_padding'>{ele.date.total ? `GB£${ele.date.total}` : '--'}</h4>
+                            </div>
                         </div>
-                        <div className='list_spacer_content_name'>
-                            <h4 className='remove_h3_padding'>{ele.driver.name}</h4>
-                        </div>
-                        <div className='list_spacer_content_routeNumber'>
-                            <h4 className='remove_h3_padding'>{ele.date.routeNumber === '0' ? '--' : ele.date.routeNumber}</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.route === '0' ? '--' : ele.date.route }</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.logIn_time}</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.logOut_time}</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.timeDifference[0] === '0:00:00' ? '--' : ele.date.timeDifference[0]}</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.start_mileage}</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.finish_mileage ? ele.date.finish_mileage : '--'}</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.deductions === 'GB£0.00' ? '--' : ele.date.deductions}</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.support === 'GB£0.00' ? '--' : ele.date.support}</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.deductions === 'GB£0.00' ? '--' : ele.date.deductions}</h4>
-                        </div>
-                        <div className='list_spacer_content'>
-                            <h4 className='remove_h3_padding'>{ele.date.deductions === 'GB£0.00' ? '--' : ele.date.deductions}</h4>
-                        </div>
+                        <button className='modify_button' onClick={(e, elements) => onClick(e, ele.date)}>
+                            <h4>Modify</h4>
+                        </button>
+                        <button className='modify_button_delete'>
+                            <h4>x</h4>
+                        </button>
                     </div>
-                    <button className='modify_button' onClick={(e, elements) => onClick(e, ele.date)}>
-                        <h4>Modify</h4>
-                    </button>
-                    <button className='modify_button_delete'>
-                        <h4>x</h4>
-                    </button>
-                </div>
                 )
             })
         )
@@ -265,8 +263,8 @@ const Dashboard = (props) => {
 
     useEffect( () => {
         let localArray = []
-        let labelArray =[`${selectedCity}`, 'Da Name', 'Route No', 'Route Type', 'Log In', 'Log Out', 'TORH', 'Start Mileage', 'Finish Mileage', 'Late Wave Payment', 'Support', 'Deduction', 'Fuel Card Change']
-        for (let i = 0; i < 13; i++) {
+        let labelArray =[`${selectedCity}`, 'Da Name', 'Route No', 'Route Type', 'Log In', 'Log Out', 'TORH', 'Start Mileage', 'Finish Mileage', 'support', 'deductions', 'total']
+        for (let i = 0; i < 12; i++) {
             localArray.push(
                 <div className='dashboard_top_rectangles' onClick={(e, targetValue) => handleSorting(e, labelArray[i])}>
                     <h4 className='remove_h3_padding' >{labelArray[i]}</h4>   
