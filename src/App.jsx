@@ -119,7 +119,7 @@ const App = () => {
       }
     })
     console.log(responseGoog.profileObj.email, ' ', process.env.REACT_APP_EMAIL_VERIFICATION, ' ', process.env.REACT_APP_SUPER_USER)
-    if (responseGoog.profileObj.email === (process.env.REACT_APP_EMAIL_VERIFICATION || process.env.REACT_APP_SUPER_USER)) {
+    if (String(responseGoog.profileObj.email) === (String(process.env.REACT_APP_EMAIL_VERIFICATION) || String(process.env.REACT_APP_SUPER_USER))) {
       console.log('hello')
       setUserName(responseGoog.profileObj.givenName)
       setUserId(responseGoog.profileObj.googleId)
