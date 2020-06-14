@@ -17,6 +17,7 @@ import Compliance from './pages/Compliance'
 import RentalVanTracker from './pages/RentalVanTracker'
 import CompanyVans from './pages/CompanyVans'
 import logo from './images/coloration.png'
+import Summary from './pages/Summary'
 import './App.scss';
 import Home from './pages/home'
 import {
@@ -42,6 +43,7 @@ const App = () => {
   //   setUserEmail('nicholas.m.shankland@gmail.com')
   //   setUserId('1923874-98y')
   //   setStation('DBS2')
+  //   setSuperUser(true)
   // },[])
 
   useEffect( () => {
@@ -106,7 +108,6 @@ const App = () => {
 
     getDataNext('https://pythonicbackend.herokuapp.com/managers/').then( response => {
       let localVar = 0
-      console.log(responseGoog.profileObj.email, '  ', process.env.REACT_APP_SUPER_USER)
       if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
         setUserName(responseGoog.profileObj.givenName)
         setUserId(responseGoog.profileObj.googleId)
@@ -145,6 +146,7 @@ const App = () => {
         <Route exact path = '/weekschedule' render={ () => <WeekSchedule user_name={userName} user_email={userEmail} superUser={true}/> } />
         <Route exact path = '/driver/:id/:date' render={ () => <Driver user_name={userName} user_email={userEmail} driver_data={drivers} schedule_data={schedule} superUser={true}/> } />
         <Route exact path = '/dashboard' render={ () => <Dashboard user_name={userName} user_email={userEmail} superUser={true}/> } />
+        <Route exact path = '/summary' render={ () => <Summary user_name={userName} user_email={userEmail} superUser={true}/> } />
         <Route exact path = '/statistics' render={ () => <Statistics user_name={userName} user_email={userEmail} superUser={true}/> } />
         <Route exact path = '/forms' render={ () => <Forms user_name={userName} user_email={userEmail} superUser={true}/> } />
         <Route exact path = '/driverdocuments' render={ () => <DriverDocuments user_name={userName} user_email={userEmail} superUser={true}/> } />
@@ -169,10 +171,11 @@ const App = () => {
         <Route exact path = '/statistics' render={ () => <Statistics user_name={userName} user_email={userEmail} station={station}/> } />
         <Route exact path = '/forms' render={ () => <Forms user_name={userName} user_email={userEmail} station={station}/> } />
         <Route exact path = '/driverdocuments' render={ () => <DriverDocuments user_name={userName} user_email={userEmail} /> } />
+        <Route exact path = '/summary' render={ () => <Summary user_name={userName} user_email={userEmail} /> } />
         <Route exact path = '/documentsforverification' render={ () => <DocumentsForVerification user_name={userName} user_email={userEmail} /> } />
         <Route exact path = '/companyvans' render={ () => <CompanyVans user_name={userName} user_email={userEmail} /> } />
         <Route exact path = '/compliance' render={ () => <Compliance user_name={userName} user_email={userEmail} /> } />
-        <Route exact path = '/rentalvantracker' render={ () => <RentalVanTracker user_name={userName} user_email={userEmail} superUser={true}/> } />
+        <Route exact path = '/rentalvantracker' render={ () => <RentalVanTracker user_name={userName} user_email={userEmail} /> } />
         <Route exact path = '/drivercompliancecheck' render={ () => <DriverComplianceCheck user_name={userName} user_email={userEmail} /> } />
         <Route exact path = '/invoicework' render={ () => <InvoiceWork user_name={userName} user_email={userEmail} station={station}/> } />
         <Route exact path = '/singleday/:id/:location' render={ () => <SingleDay user_name={userName} user_email={userEmail} station={station}/> } />

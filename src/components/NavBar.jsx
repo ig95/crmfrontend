@@ -158,6 +158,11 @@ const NavigationBar = (props) => {
                         Rental Van Tracker
                     </div>
                 </Link>
+                <Link to="/summary" className='links'>
+                    <div className='link_style'>
+                        Summary
+                    </div>
+                </Link>
             </div>
         </>
     )

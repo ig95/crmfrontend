@@ -116,9 +116,11 @@
 		list-style: none;
 		padding: 0;
     margin: 0;
+    z-index: 1;
 
 		&:first-child {
       width: 15vw;
+      z-index: 1;
 
 			align-items: center;
       box-shadow: 0px 3px 8px $transparent-gray;
@@ -203,6 +205,7 @@
 		}
 
 		a {
+      z-index: 1;
       margin: 0 auto;
       width: 15vw; 
       height: 5vh;
@@ -5479,28 +5482,106 @@
     padding-left: 1rem;
     width: 1200px;
   }
-
+  
   .van_vertical {
     width: 300px;
     padding: 10px;
     border: 1px solid black;
   }
-
+  
   .van_vertical_weekday {
     width: 100px;
     padding: 10px;
     border: 1px solid black;
   }
-
+  
   .van_vertical_weekday_total {
     width: 100px;
     padding: 10px;
     background-color: rgb(238, 116, 116);
     border: 1px solid black;
   }
-
+  
   .van_rental_tracker_overall {
     overflow: scroll;
+  }
+  /****************************************  SUMMARY PAGES ************************************************************/
+
+  .summary_data {
+    padding: 2rem;
+  }
+
+  .top_labels_summary {
+    display: flex;
+  }
+
+  .label_boxes_summary_top {
+    width: 70px;
+    font-size: .8em;
+    border: 1px solid black;
+    @extend %centerThings;
+    background-color: rgb(204, 232, 241);
+  }
+  
+  .label_boxes_summary_name_top {
+    width: 180px;
+    border: 1px solid black;
+    @extend %centerThings;
+    background-color: rgb(194, 214, 177);
+  }
+
+  .label_boxes_summary {
+    width: 70px;
+    font-size: .8em;
+    border: 1px solid black;
+    @extend %centerThings;
+  }
+
+  .label_boxes_summary_name {
+    width: 180px;
+    font-size: .8em;
+    border: 1px solid black;
+    @extend %centerThings;
+  }
+
+  .summary_hover_div {
+    display: none;
+  }
+
+  .label_boxes_summary:hover .summary_hover_div {
+    position: absolute;
+    width: 70px;
+    background-color: lightcoral;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .label_boxes_summary:hover .summary_hover_div_full {
+    position: absolute;
+    width: 70px;
+    background-color: rgb(150, 240, 128);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .label_boxes_summary_top_end {
+    width: 180px;
+    font-size: .8em;
+    border: 1px solid black;
+    @extend %centerThings;
+  }
+
+  .label_boxes_summary_end {
+    width: 180px;
+    font-size: .8em;
+    border: 1px solid black;
+    @extend %centerThings;
+  }
+
+  .summary_hover_div_full {
+    display: none;
   }
   
   @keyframes searchBarDrop {
