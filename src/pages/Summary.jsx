@@ -201,7 +201,8 @@ const Summary = () => {
                             {`GB£${
                             parseInt(invoiceData[key]['route']) - 
                             parseInt(invoiceData[key]['deduction'].substr(3, invoiceData[key]['deduction'].length)) + 
-                            parseInt(invoiceData[key]['support'].substr(3, invoiceData[key]['support'].length))
+                            parseInt(invoiceData[key]['support'].substr(3, invoiceData[key]['support'].length)) +
+                            parseInt(invoiceData[key]['mileage'].substr(3, invoiceData[key]['mileage'].length))
                             }`}
                         </div>
                     </div>
