@@ -5509,6 +5509,7 @@
 
   .summary_data {
     padding: 2rem;
+    overflow: scroll;
   }
 
   .top_labels_summary {
@@ -5567,14 +5568,17 @@
   }
 
   .label_boxes_summary_top_end {
-    width: 180px;
+    width: 120px;
     font-size: .8em;
     border: 1px solid black;
-    @extend %centerThings;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .label_boxes_summary_end {
-    width: 180px;
+    width: 120px;
     font-size: .8em;
     border: 1px solid black;
     @extend %centerThings;

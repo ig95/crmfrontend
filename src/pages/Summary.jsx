@@ -81,7 +81,6 @@ const Summary = () => {
             new Date(sunday.setDate(sunday.getDate() + 1)).toLocaleDateString(),
             new Date(sunday.setDate(sunday.getDate() + 1)).toLocaleDateString(),
             new Date(sunday.setDate(sunday.getDate() + 1)).toLocaleDateString(),
-            new Date(sunday.setDate(sunday.getDate() + 1)).toLocaleDateString(),
         ]
         if (invoiceData && allDates) {
             console.log(invoiceData, allDates)
@@ -111,11 +110,11 @@ const Summary = () => {
                     <div className='label_boxes_summary_top'>
                         {dateArray[6]}
                     </div>
-                    <div className='label_boxes_summary_top'>
-                        {dateArray[7]}
-                    </div>
                     <div className='label_boxes_summary_top_end'>
                         Total
+                    </div>
+                    <div className='label_boxes_summary_top_end'>
+                        Mileage (GB£0.17/mile)
                     </div>
                     <div className='label_boxes_summary_top_end'>
                         Deductions
@@ -186,12 +185,11 @@ const Summary = () => {
                             <h3>{countArray[6]}</h3>
                             {myHoverArray[6]}
                         </div>
-                        <div className='label_boxes_summary'>
-                            <h3>{countArray[7]}</h3>
-                            {myHoverArray[7]}
-                        </div>
                         <div className='label_boxes_summary_end'>
                             {`GB£${parseInt(invoiceData[key]['route'])}`}
+                        </div>
+                        <div className='label_boxes_summary_end'>
+                            {`GB£${parseInt(invoiceData[key]['mileage'])}`}
                         </div>
                         <div className='label_boxes_summary_end'>
                             {invoiceData[key]['deduction']}
