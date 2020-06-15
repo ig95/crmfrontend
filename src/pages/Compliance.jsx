@@ -138,11 +138,11 @@ const Compliance = () => {
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Mobile</label>
-                            <input className='inputs' type="text" name='mobile'/>
+                            <input className='inputs' type="tel" name='mobile' placeholder='required format: 425-314-9311' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" />
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Email</label>
-                            <input className='inputs' type="text" name='email'/>
+                            <input className='inputs' type="email" name='email' required/>
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>UTR Number</label>
@@ -161,7 +161,6 @@ const Compliance = () => {
 
     // set the gate for make driver page
     const handleMakeDriverPage = () => {
-        console.log('make the driver page please')
         setLogicalGate(true)
     }
 
@@ -283,10 +282,17 @@ const Compliance = () => {
                         </div>
                     )
                 } else {
+                    let myDriverName = ''
+                    let myVanNum = parseInt(van.driver_id.match(/\d/))
+                    data.drivers.forEach( driver => {
+                        if (parseInt(driver.driver_id) === myVanNum) {
+                            myDriverName = driver.name
+                        }
+                    })
                     localArrayIDeD.push(
                         <div key={van.registration}>
                             <h3 className='h3_for_compliance_Page' onClick={(e, theVan) => handleVanNameClick(e, van)}>
-                                {van.registration} {van.model} {van.make}
+                                {van.registration} {van.model} {van.make} - {myDriverName}
                             </h3>
                             <br />
                         </div>
@@ -332,8 +338,7 @@ const Compliance = () => {
                                 <span className='span_in_complaince_button'>Waiting for Verification</span> 
                             </button>
                         </Link>
-                        <h2 className='h2Label'>NonVerified Drivers</h2>
-                        {nonActiveDrivers}
+                        {/* {nonActiveDrivers} */}
                     </div>
                     <div className='bottom_buttons_compliance_page'>
                         <Link to='/driverdocuments' className='links'>
@@ -341,8 +346,7 @@ const Compliance = () => {
                                 <span className='span_in_complaince_button'>Driver Documents</span> 
                             </button>
                         </Link>
-                        <h2 className='h2Label'>Verified Drivers</h2>
-                        {nonVerifiedImages}
+                        {/* {nonVerifiedImages} */}
                     </div>
                     <div className='bottom_buttons_compliance_page'>
                         <Link to='drivercompliancecheck' className='links'>

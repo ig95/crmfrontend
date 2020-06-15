@@ -53,8 +53,8 @@ const MakeEmployee = (props) => {
                     'Authorization': `Token ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(data)
-                });
-
+            });
+            
             return response ? response.json() : console.log('no reponse')
 
         };
@@ -62,15 +62,9 @@ const MakeEmployee = (props) => {
         postData('https://pythonicbackend.herokuapp.com/drivers/', {
             name: e.target.name.value ? e.target.name.value : 'null',
             location: e.target.location.value ? e.target.location.value : 'null',
-            status: e.target.status.value ? e.target.status.value : 'null',
-            onboarding: e.target.Onboarding.value ? e.target.Onboarding.value : 0,
             phone: e.target.mobile.value ? e.target.mobile.value : 'null',
             email: e.target.email.value ? e.target.email.value : 'null',
-            BadgeNumber: e.target.BadgeNumber.value ? e.target.BadgeNumber.value : 'null',
-            DriverUniqueId: e.target.DriverID.value ? e.target.DriverID.value : 'null',
-            NINNumber: e.target.NINNumber.value ? e.target.NINNumber.value : 'null',
             UTRNumber: e.target.UTRNumber.value ? e.target.UTRNumber.valuee : 'null',
-            VatNumber: e.target.VATNumber.value ? e.target.VATNumber.value : 'null',
         }).then( (response) => {
             console.log(response)
             reloadGate ? setReloadGate(false) : setReloadGate(true)
@@ -91,65 +85,33 @@ const MakeEmployee = (props) => {
                 <form onSubmit={handleSubmit} className='new_employee_form'>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Name</label>
-                            <input className='inputs' type="text" name='name'/>
+                            <input className='inputs' type="text" name='name' required/>
                     </div>
                     <div className='dashboard_form_divs_name'>
-                        <label className='labels'>Station</label>
-                            <input className='inputs' type="text" name='location' defaultValue={station}/>
-                    </div>
-                    <div className='dashboard_form_divs_name'>
-                        <label className='labels'>Status</label>
-                            <input className='inputs' type="text" name='status' defaultValue='OnBoarding'/>
+                        <label className='labels'>Depot</label>
+                            <input className='inputs' type="text" name='location' required/>
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Address</label>
-                            <input className='inputs' type="text" name='address'/>
+                            <input className='inputs' type="text" name='address' required/>
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Mobile</label>
-                            <input className='inputs' type="text" name='mobile'/>
+                            <input className='inputs' type="tel" name='mobile' placeholder='required format: 425-314-9311' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" />
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Email</label>
-                            <input className='inputs' type="text" name='email'/>
-                    </div>
-                    <div className='dashboard_form_divs_name'>
-                        <label className='labels'>Badge Number</label>
-                            <input className='inputs' type="text" name='BadgeNumber'/>
-                    </div>
-                    <div className='dashboard_form_divs_name'>
-                        <label className='labels'>Driver ID</label>
-                            <input className='inputs' type="text" name='DriverID'/>
-                    </div>
-                    <div className='dashboard_form_divs_name'>
-                        <label className='labels'>NIN Number</label>
-                            <input className='inputs' type="text" name='NINNumber'/>
+                            <input className='inputs' type="email" name='email' required/>
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>UTR Number</label>
                             <input className='inputs' type="text" name='UTRNumber'/>
                     </div>
-                    <div className='dashboard_form_divs_name'>
-                        <label className='labels'>VAT Number</label>
-                            <input className='inputs' type="text" name='VATNumber'/>
-                    </div>
-                    <div className='dashboard_form_divs_name'>
-                        <label className='labels'>Onboarding</label>
-                            <input className='inputs' type="text" name='Onboarding' defaultValue='0'/>
-                    </div>
                     <div className='buttons_new_driverPage'>
-                        <div className="button-container-2" >
-                        <span className="mas2">{submitPressed}</span>
-                            <button className='buttonFront2' id='work2' type="button" name="Hover">
-                                <input type="submit" value={`${submitPressed}`} className='make_submit_invisible'/>
-                            </button>
-                        </div>
-                        <div className="button-container-2" onClick={backToNormal}>
-                            <span className="mas2">Return</span>
-                            <button className='buttonFront2' id='work2' type="button" name="Hover">
-                            Return
-                            </button>
-                        </div>  
+                        <input type="submit" value={submitPressed} className='compliance_add_driver_button_submit' />
+                        <button className='compliance_add_driver_button_submit' onClick={backToNormal}>
+                            <span className='span_in_complaince_button'>Return</span> 
+                        </button>
                     </div>
                 </form>
             </div>
@@ -269,9 +231,18 @@ const MakeEmployee = (props) => {
 
     // make the single driver page
     const handleSingleDriver = (e, driver) => {
-        console.log('clicked')
-        console.log(driver)
         setSelectedDriver(driver)
+    }
+
+    // handle offboarding text
+    const offBoardedText = (status) => {
+        if (status === 'OffboardedForever') {
+            return 'Offboarded'
+        } else if (status === null) {
+            return 'NonVerified'
+        } else {
+            return status
+        }
     }
 
     var content
@@ -313,13 +284,13 @@ const MakeEmployee = (props) => {
                                     <h3>{ele.email ? ele.email : `${ele.name}@gmail.com` }</h3>
                                 </div>
                                 <div className='inner_new_document_divs_phone'>
-                                    <h3>{ele.phone ? ele.phone : `${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}-${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}`}</h3>
+                                    <h3>{ele.phone ? ele.phone : '--'}</h3>
                                 </div>
                                 <div className='inner_new_document_divs_phone'>
-                                    <h3>{ele.onboarding ? `${ele.onboarding}/13 Completed` : `${getRandomInt(10)}/13 Completed` }</h3>
+                                    <h3>{ele.imgArray ? `${ele.imgArray.length}/13 `: '0/0 '}</h3>
                                 </div>
                                 <div className='inner_new_document_divs_phone_status'>
-                                    <h3>{ele.status ? ele.status : 'Offboarded' }</h3>
+                                    <h3>{offBoardedText(ele.status)}</h3>
                                 </div>
                             </div>
                         )
@@ -335,13 +306,13 @@ const MakeEmployee = (props) => {
                                     <h3 className='get_rid_of_padding'>{ele.email ? ele.email : `${ele.name}@gmail.com` }</h3>
                                 </div>
                                 <div className='inner_new_document_divs_phone'>
-                                    <h3 className='get_rid_of_padding'>{ele.phone ? ele.phone : `${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}-${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}`}</h3>
+                                    <h3 className='get_rid_of_padding'>{ele.phone ? ele.phone : '--'}</h3>
                                 </div>
                                 <div className='inner_new_document_divs_phone'>
-                                    <h3 className='get_rid_of_padding'>{ele.onboarding ? `${ele.onboarding}/13 Completed` : `${getRandomInt(10)}/13 Completed` }</h3>
+                                    <h3 className='get_rid_of_padding'>{ele.imgArray ? `${ele.imgArray.length}/13 `: '0/0 '}</h3>
                                 </div>
                                 <div className='inner_new_document_divs_phone_status'>
-                                    <h3 className='get_rid_of_padding'>{ele.status ? ele.status : 'Offboarded' }</h3>
+                                    <h3 className='get_rid_of_padding'>{offBoardedText(ele.status)}</h3>
                                 </div>
                             </div>
                         )
@@ -356,13 +327,13 @@ const MakeEmployee = (props) => {
                                 <h3 className='get_rid_of_padding'>{ele.email ? ele.email : `${ele.name}@gmail.com` }</h3>
                             </div>
                             <div className='inner_new_document_divs_phone'>
-                                <h3 className='get_rid_of_padding'>{ele.phone ? ele.phone : `${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}-${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}${getRandomInt(10)}`}</h3>
+                                <h3 className='get_rid_of_padding'>{ele.phone ? ele.phone : '--'}</h3>
                             </div>
                             <div className='inner_new_document_divs_phone'>
-                                <h3 className='get_rid_of_padding'>{ele.onboarding ? `${ele.onboarding}/13 Completed` : `${getRandomInt(10)}/13 Completed` }</h3>
+                                <h3 className='get_rid_of_padding'>{ele.imgArray ? `${ele.imgArray.length}/13 `: '0/0 '}</h3>
                             </div>
                             <div className='inner_new_document_divs_phone_status'>
-                                <h3 className='get_rid_of_padding'>{ele.status ? ele.status : 'Offboarded' }</h3>
+                                <h3 className='get_rid_of_padding'>{offBoardedText(ele.status)}</h3>
                             </div>
                         </div>
                     )
@@ -510,18 +481,12 @@ const MakeEmployee = (props) => {
                         </form>
                     </div>
                     {singleDriverScreen}
-                    <div className="button-container-2" >
-                      <span className="mas2">Search</span>
-                      <button className='buttonFront2' id='work2' type="button" name="Hover">
-                        Search
-                      </button>
-                    </div>  
-                    <div className="button-container-2" onClick={handleMakeDriverPage}>
-                      <span className="mas2">Add Driver</span>
-                      <button className='buttonFront2' id='work2' type="button" name="Hover">
-                        Add Driver
-                      </button>
-                    </div>  
+                    <button className='compliance_add_driver_button_submit'>
+                        <span className='span_in_complaince_button'>Search</span> 
+                    </button> 
+                    <button className='compliance_add_driver_button_submit' onClick={handleMakeDriverPage}>
+                        <span className='span_in_complaince_button'>Add Driver</span> 
+                    </button>
                 </div>
                 <div className='content_bottom_new_driver'>
                     {content}

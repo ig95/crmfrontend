@@ -274,7 +274,7 @@ const Summary = () => {
                 <div className='summary_data'>
                     {summaryArray}
                 </div>
-                <CSVLink data={data} className='compliance_add_driver_button' id='summary_button'>
+                <CSVLink data={data} className='compliance_add_driver_button_submit' id='summary_button'>
                     <span className='span_in_complaince_button'>Download me</span> 
                 </CSVLink>;      
             </div>

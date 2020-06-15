@@ -407,15 +407,15 @@ clockAndCalendar = (
                     updateParentFunction={updateParent}
                     managerStation={props.station ? props.station : null}
                 />
-                <div className='dashboard_form_divs_comments'>    
-                    <div>
-                        <label className='dashboard_labels_dashboard'>Comments </label>
-                    </div>
-                        <textarea className='dashboard_text_field' type="text" name='Comment' />
-                </div>
             </div>
         </div>
     )
 }
 
 export default Dashboard
+{/* <div className='dashboard_form_divs_comments'>    
+    <div>
+        <label className='dashboard_labels_dashboard'>Comments </label>
+    </div>
+        <textarea className='dashboard_text_field' type="text" name='Comment' />
+</div> */}

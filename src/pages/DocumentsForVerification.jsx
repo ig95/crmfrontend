@@ -56,13 +56,16 @@ const DocumentsForVerification = (props) => {
         let localArray = []
         if (dataset) {
             dataset.forEach( (ele, id) => {
-                if (ele.location === selectedCity) {
-                    localArray.push(
-                        <h3 className='name_list_documents' onClick={(e, name )=> handleClick(e, ele)}>
-                            {ele.name} 
-                            <img src={folderPic} alt="Folder" className='image_in_documents_folder'/>
-                        </h3>
-                    )
+                console.log(ele)
+                if (ele.status !== 'OffboardedForever') {
+                    if (ele.location === selectedCity) {
+                        localArray.push(
+                            <h3 className='name_list_documents' onClick={(e, name )=> handleClick(e, ele)}>
+                                {ele.name} 
+                                <img src={folderPic} alt="Folder" className='image_in_documents_folder'/>
+                            </h3>
+                        )
+                    }
                 }
             })
         }

@@ -3,6 +3,7 @@ import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 
 const DashboardForm = (props) => {
+    const [ myForm, setMyForm ] = useState(null)
     const [ selectedCity, setSelectedCity ] = useState('Bristol - DBS2')
     const [ selectedCityAbbrev, setSelectedCityAbbrev ] = useState('DBS2')
     const [ dateSelected, setDateSelected ] = useState('')
@@ -28,11 +29,18 @@ const DashboardForm = (props) => {
     const [ feulCardCharge, setFeulCardCharge ] = useState('')
     const [ deductionType, setDeductionType ] = useState('none')
     const [ supportType, setSupportType ] = useState('none')
+    const [ deductionArea, setDeductionArea ] = useState(null)
+    const [ deductionComment, setDeductionComment ] = useState('Required Comment')
+    const [ supportArea, setSupportArea ] = useState(null)
+    const [ supportComment, setSupportComment ] = useState('Required Comment')
     
     // list for routes
     const onSelectTwo = (e) => {
         setSelectedRouteType(e.value)
     }
+
+    var textMaker = 'none'
+    var supportMaker = 'none'
 
     // dropdown menu selection function
     const onSelect = (e) => {
@@ -42,11 +50,15 @@ const DashboardForm = (props) => {
     // dropdown menu selection function
     const onSelectDeduction = (e) => {
         setDeductionType(e.value)
+        textMaker = e.value
+        makeComment()
     }
 
     // dropdown menu selection function
     const onSelectSupport = (e) => {
         setSupportType(e.value)
+        supportMaker = e.value
+        makeSupportComment()
     }
 
     // submit
@@ -196,7 +208,8 @@ const DashboardForm = (props) => {
                 myObj = {
                     date_id: `https://pythonicbackend.herokuapp.com/schedule/${localID}/`,
                     name: deductionType,
-                    amount: deductions
+                    amount: deductions,
+                    comment: deductionComment,
                 }
             } 
             console.log(myObj)
@@ -212,7 +225,8 @@ const DashboardForm = (props) => {
                 myObj = {
                     date_id: `https://pythonicbackend.herokuapp.com/schedule/${localID}/`,
                     name: supportType,
-                    amount: support
+                    amount: support,
+                    comment: supportComment,
                 }
             }
             console.log(myObj)
@@ -355,9 +369,42 @@ const DashboardForm = (props) => {
         'manual'
     ]
 
-    var myForm
-    if (otherSelection) {
-        myForm = (
+    const handleDeductionComment = (e) => {
+        console.log(e.target.value)
+        setDeductionComment(e.target.value)
+    }
+    
+    const makeComment = () => {
+        if (textMaker !== 'none') {
+            setDeductionArea(
+                <textarea onChange={handleDeductionComment} rows="4" cols="50" id='deduction_textarea'>
+                    {deductionComment}
+                </textarea>
+            )
+        } else {
+            setDeductionArea(null)
+        }
+    }
+    
+    const handleSupportComment = (e) => {
+        console.log(e.target.value)
+        setSupportComment(e.target.value)
+    }
+
+    const makeSupportComment = () => {
+        if (supportMaker !== 'none') {
+            setSupportArea(
+                <textarea onChange={handleSupportComment} rows="4" cols="50" id='deduction_textarea'>
+                    {supportComment}
+                </textarea>
+            )
+        } else {
+            setSupportArea(null)
+        }
+    }
+
+    useEffect( () => {
+        setMyForm(
             <form onSubmit={handleSubmitState}  autoComplete='off'>
                 <div className='dashboard_form'>
                     <div className='dashboard_form_divs_name'>
@@ -375,6 +422,7 @@ const DashboardForm = (props) => {
                             value={selectedCityAbbrev} 
                             placeholder="Select an option" 
                             className='drop_down_bar_dashboard'
+                            id='drop_down_style'
                         />
                     </div>
                     <div className='dashboard_form_divs'>    
@@ -393,6 +441,7 @@ const DashboardForm = (props) => {
                             value={selectedRouteType} 
                             placeholder="Select an option" 
                             className='drop_down_bar_dashboard'
+                            id='drop_down_style'
                         />
                     </div>
                     <div className='dashboard_form_divs'>
@@ -407,34 +456,42 @@ const DashboardForm = (props) => {
                         </div>
                             <input className='input_dashboard_page' type="time" name='LogOutTime' value={logOutTime} onChange={handleChangeInputs} required/>
                     </div>
-                    <div className='dashboard_form_divs'>    
-                        <div>
-                            <label className='dashboard_labels'>Support </label>        
-                        </div>
-                        <div>
-                            <Dropdown 
-                                options={mySuperSupportList} 
-                                onChange={onSelectSupport} 
-                                value={supportType} 
-                                placeholder="Select an option" 
-                                className='drop_down_bar_dashboard'
-                            />
-                            <input className='input_dashboard_page' type="text" name='support' value={support} onChange={handleChangeInputs}/>
-                        </div>
+                    <div className='dashboard_form_divs_texty'>  
+                            <div>
+                                <label className='dashboard_labels'>Support </label>        
+                            </div>
+                        <div className='solve_this'>
+                            <div>
+                                <Dropdown 
+                                    options={mySuperSupportList} 
+                                    onChange={onSelectSupport} 
+                                    value={supportType} 
+                                    placeholder="Select an option" 
+                                    className='drop_down_bar_dashboard'
+                                    id='drop_down_style'
+                                />
+                                <input className='input_dashboard_page' type="text" name='support' value={support} onChange={handleChangeInputs}/>
+                                {supportArea}
+                            </div>
+                        </div>  
                     </div>
-                    <div className='dashboard_form_divs'>    
+                    <div className='dashboard_form_divs_texty'>    
                         <div>
                             <label className='dashboard_labels'>Deduction </label>        
                         </div>
-                        <div>
-                            <Dropdown 
-                                options={myDeductionList} 
-                                onChange={onSelectDeduction} 
-                                value={deductionType} 
-                                placeholder="Select an option" 
-                                className='drop_down_bar_dashboard'
-                            />
-                            <input className='input_dashboard_page' type="text" name='deductions' value={deductions} onChange={handleChangeInputs}/>
+                        <div className='solve_this'>
+                            <div>
+                                <Dropdown 
+                                    options={myDeductionList} 
+                                    onChange={onSelectDeduction} 
+                                    value={deductionType} 
+                                    placeholder="Select an option" 
+                                    className='drop_down_bar_dashboard'
+                                    id='drop_down_style'
+                                />
+                                <input className='input_dashboard_page' type="text" name='deductions' value={deductions} onChange={handleChangeInputs}/>
+                                {deductionArea}
+                            </div>
                         </div>
                     </div>
                     <div className='dashboard_form_divs'>
@@ -468,11 +525,7 @@ const DashboardForm = (props) => {
                 </div>  
             </form>
         )
-    } else {
-        myForm = (
-            <div></div>
-        )
-    }
+    }, [otherSelection, deductionArea, supportArea])
     
     return (
        <>

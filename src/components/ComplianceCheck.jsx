@@ -55,22 +55,24 @@ const ComplianceCheck = (props) => {
             
         }).then( response => {
             setBottomRows(null)
-            bottomArraysKeeper[response.driver_id-1][23] = (
-                <div 
-                    key={12*(Math.floor(Math.random()*Math.floor(6000)))} 
-                    className='drivers_for_compliance_check_documents' 
-                >
-                    {props.user_name}
-                </div>
-            )
-            bottomArraysKeeper[response.driver_id-1][24] = (
-                <div 
-                    key={10*(Math.floor(Math.random()*Math.floor(23000)))} 
-                    className='drivers_for_compliance_check_documents' 
-                >
-                    {theDate.toDateString()}
-                </div>
-            )
+            if (response.driver_id) {
+                bottomArraysKeeper[bottomArraysKeeper.length-1][23] = (
+                    <div 
+                        key={12*(Math.floor(Math.random()*Math.floor(6000)))} 
+                        className='drivers_for_compliance_check_documents' 
+                    >
+                        {props.user_name}
+                    </div>
+                )
+                bottomArraysKeeper[bottomArraysKeeper.length-1][24] = (
+                    <div 
+                        key={10*(Math.floor(Math.random()*Math.floor(23000)))} 
+                        className='drivers_for_compliance_check_documents' 
+                    >
+                        {theDate.toDateString()}
+                    </div>
+                )
+            }
             return bottomArraysKeeper
         }).then( response => {
             setBottomRows(response)
@@ -154,223 +156,225 @@ const ComplianceCheck = (props) => {
             if (data) {
                 let localCheckArray = []
                 data.drivers.forEach( (driver, driverID) => {
-                    let localArray = []
-                    
-                    for (let i = 0; i < 22 ; i++) {
-                        localArray.push(
-                            <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_missing'>
-                                Missing
+                    if (driver.status !== 'OffboardedForever' && driver.location === props.selectedCity) {
+                        let localArray = []
+                        
+                        for (let i = 0; i < 22 ; i++) {
+                            localArray.push(
+                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_missing'>
+                                    Missing
+                                </div>
+                            )
+                        }
+                        for (let i = 0; i < 2 ; i++) {
+                            localArray.push(
+                                <div 
+                                    key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} 
+                                    className='drivers_for_compliance_check_documents_missing_verify' 
+                                    onClick={(e, driverProfile) => handleVerifyDriver(e, driver)}
+                                >
+                                    Not Verified
+                                </div>
+                            )
+                        }
+                        localArray.unshift(
+                            <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='labels_for_compliance_check_name'>
+                                {driver.name}
                             </div>
                         )
-                    }
-                    for (let i = 0; i < 2 ; i++) {
-                        localArray.push(
-                            <div 
-                                key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} 
-                                className='drivers_for_compliance_check_documents_missing_verify' 
-                                onClick={(e, driverProfile) => handleVerifyDriver(e, driver)}
-                            >
-                                Not Verified
-                            </div>
-                        )
-                    }
-                    localArray.unshift(
-                        <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='labels_for_compliance_check_name'>
-                            {driver.name}
-                        </div>
-                    )
-                    driver.imgArray.forEach( (image, imageId) => {
-                        if (image.name === 'Passport' || image.name === 'ID') {
-                            console.log('found passport', driver)
-                            localArray[1] = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                    {image.name}
-                                </div>
-                            )
-                            localArray[2] = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                    {image.countryOfIssue ? image.countryOfIssue : 'not entered'}
-                                </div>
-                            )
-                            localArray[3] = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                    {new Date(image.expiryDate).toDateString()}
-                                </div>
-                            )
-                        } 
-                        if (image.name === 'Visa') {
-                            localArray[4]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                    {new Date(image.expiryDate).toDateString()}
-                                </div>
-                            )
-                        }
-                        if (image.name === 'Driving licence Front' || image.name === 'Driving licence Back') {
-                            localArray[5]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                    {image.countryOfIssue ? image.countryOfIssue : 'not entered'}
-                                </div>
-                            )
-                            localArray[6]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                    {new Date(image.expiryDate).toDateString()}
-                                </div>
-                            )
-                        }
-                        if (image.name === 'DVLA Check') {
-                            localArray[7]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                    {new Date(image.expiryDate).toDateString()}
-                                </div>
-                            )
-                        }
-                        if (image.name === 'BGC') {
-                            localArray[8]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
-                                    V
-                                </div>
-                            )
-                        }
-                        if (image.name === 'D&A test') {
-                            localArray[9]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                    {new Date(image.expiryDate).toDateString()}
-                                </div>
-                            )
-                        }
-                        if (image.name === 'Application Package') {
-                            localArray[10]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
-                                    V
-                                </div>
-                            )
-                        }
-                        if (image.name === 'NIN') {
-                            localArray[11]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
-                                    V
-                                </div>
-                            )
-                        }
-                        if (image.name === 'UTR') {
-                            localArray[12]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
-                                    V
-                                </div>
-                            )
-                        }
-                        if (image.name === 'POA') {
-                            localArray[13]  = (
-                                <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
-                                    V
-                                </div>
-                            )
-                        }
-                    })
-                    if (driver.vehicleArray) {
-                        if (driver.vehicleArray.length > 0) {
-                            // 14
-                            if (!driver.vehicleArray[0]) {
-                                localArray[14] = (
+                        driver.imgArray.forEach( (image, imageId) => {
+                            if (image.name === 'Passport' || image.name === 'ID') {
+                                console.log('found passport', driver)
+                                localArray[1] = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                        {image.name}
+                                    </div>
+                                )
+                                localArray[2] = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                        {image.countryOfIssue ? image.countryOfIssue : 'not entered'}
+                                    </div>
+                                )
+                                localArray[3] = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                        {new Date(image.expiryDate).toDateString()}
+                                    </div>
+                                )
+                            } 
+                            if (image.name === 'Visa') {
+                                localArray[4]  = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                        {new Date(image.expiryDate).toDateString()}
+                                    </div>
+                                )
+                            }
+                            if (image.name === 'Driving licence Front' || image.name === 'Driving licence Back') {
+                                localArray[5]  = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                        {image.countryOfIssue ? image.countryOfIssue : 'not entered'}
+                                    </div>
+                                )
+                                localArray[6]  = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                        {new Date(image.expiryDate).toDateString()}
+                                    </div>
+                                )
+                            }
+                            if (image.name === 'DVLA Check') {
+                                localArray[7]  = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                        {new Date(image.expiryDate).toDateString()}
+                                    </div>
+                                )
+                            }
+                            if (image.name === 'BGC') {
+                                localArray[8]  = (
                                     <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
                                         V
                                     </div>
                                 )
-                            } else {
-                                localArray[14] = (
-                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_false'>
-                                        X
-                                    </div>
-                                )
                             }
-                            if (driver.vehicleArray[0]) {
-                                localArray[15] = (
+                            if (image.name === 'D&A test') {
+                                localArray[9]  = (
                                     <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                        {driver.vehicleArray[0].registration}
+                                        {new Date(image.expiryDate).toDateString()}
                                     </div>
                                 )
                             }
-                            if (driver.vehicleArray[0]) {
-                                localArray[16] = (
-                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                        {driver.vehicleArray[0].vtype}
+                            if (image.name === 'Application Package') {
+                                localArray[10]  = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
+                                        V
                                     </div>
                                 )
                             }
-                        }
-                    }
-                    if (driver.vehicleArray) {
-                        if (driver.vehicleArray.length > 0) {
-                            driver.vehicleArray[0].imgArray.forEach( (vehicleImage, vehicleImageID) => {
-                                if (vehicleImage.name === 'MOT') {
-                                    localArray[17] = (
-                                        <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                            {new Date(vehicleImage.expiryDate).toDateString()}
-                                        </div>
-                                    )
-                                }
-                                if (vehicleImage.name === 'Motor Insurance') {
-                                    localArray[18] = (
-                                        <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                            {new Date(vehicleImage.expiryDate).toDateString()}
-                                        </div>
-                                    )
-                                }
-                                if (vehicleImage.name === 'G.I.T. Insurance') {
-                                    localArray[19] = (
-                                        <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                            {new Date(vehicleImage.expiryDate).toDateString()}
-                                        </div>
-                                    )
-                                }
-                                if (vehicleImage.name === 'P.L. Insurance') {
-                                    localArray[20] = (
-                                        <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                            {new Date(vehicleImage.expiryDate).toDateString()}
-                                        </div>
-                                    )
-                                }
-                                if (vehicleImage.name === 'V5') {
-                                    localArray[21] = (
+                            if (image.name === 'NIN') {
+                                localArray[11]  = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
+                                        V
+                                    </div>
+                                )
+                            }
+                            if (image.name === 'UTR') {
+                                localArray[12]  = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
+                                        V
+                                    </div>
+                                )
+                            }
+                            if (image.name === 'POA') {
+                                localArray[13]  = (
+                                    <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
+                                        V
+                                    </div>
+                                )
+                            }
+                        })
+                        if (driver.vehicleArray) {
+                            if (driver.vehicleArray.length > 0) {
+                                // 14
+                                if (!driver.vehicleArray[0]) {
+                                    localArray[14] = (
                                         <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
                                             V
                                         </div>
                                     )
-                                }
-                                if (vehicleImage.name === 'TAX') {
-                                    localArray[22] = (
-                                        <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
-                                            {new Date(vehicleImage.expiryDate).toDateString()}
+                                } else {
+                                    localArray[14] = (
+                                        <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_false'>
+                                            X
                                         </div>
                                     )
                                 }
-                            })
+                                if (driver.vehicleArray[0]) {
+                                    localArray[15] = (
+                                        <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                            {driver.vehicleArray[0].registration}
+                                        </div>
+                                    )
+                                }
+                                if (driver.vehicleArray[0]) {
+                                    localArray[16] = (
+                                        <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                            {driver.vehicleArray[0].vtype}
+                                        </div>
+                                    )
+                                }
+                            }
                         }
-                    }
-                    if (driver.status === 'Active') {
-                        localArray[23] = (
-                            <div 
+                        if (driver.vehicleArray) {
+                            if (driver.vehicleArray.length > 0) {
+                                driver.vehicleArray[0].imgArray.forEach( (vehicleImage, vehicleImageID) => {
+                                    if (vehicleImage.name === 'MOT') {
+                                        localArray[17] = (
+                                            <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                                {new Date(vehicleImage.expiryDate).toDateString()}
+                                            </div>
+                                        )
+                                    }
+                                    if (vehicleImage.name === 'Motor Insurance') {
+                                        localArray[18] = (
+                                            <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                                {new Date(vehicleImage.expiryDate).toDateString()}
+                                            </div>
+                                        )
+                                    }
+                                    if (vehicleImage.name === 'G.I.T. Insurance') {
+                                        localArray[19] = (
+                                            <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                                {new Date(vehicleImage.expiryDate).toDateString()}
+                                            </div>
+                                        )
+                                    }
+                                    if (vehicleImage.name === 'P.L. Insurance') {
+                                        localArray[20] = (
+                                            <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                                {new Date(vehicleImage.expiryDate).toDateString()}
+                                            </div>
+                                        )
+                                    }
+                                    if (vehicleImage.name === 'V5') {
+                                        localArray[21] = (
+                                            <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents_check'>
+                                                V
+                                            </div>
+                                        )
+                                    }
+                                    if (vehicleImage.name === 'TAX') {
+                                        localArray[22] = (
+                                            <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
+                                                {new Date(vehicleImage.expiryDate).toDateString()}
+                                            </div>
+                                        )
+                                    }
+                                })
+                            }
+                        }
+                        if (driver.status === 'Active') {
+                            localArray[23] = (
+                                <div 
+                                    key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} 
+                                    className='drivers_for_compliance_check_documents' 
+                                >
+                                    {driver.approvedBy}
+                                </div>
+                            )
+                            localArray[24] = (
+                                <div 
                                 key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} 
                                 className='drivers_for_compliance_check_documents' 
-                            >
-                                {driver.approvedBy}
-                            </div>
-                        )
-                        localArray[24] = (
-                            <div 
-                            key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} 
-                            className='drivers_for_compliance_check_documents' 
-                            >
-                                {driver.approvedDateAndTime}
-                            </div>
-                        )
+                                >
+                                    {driver.approvedDateAndTime}
+                                </div>
+                            )
+                        }
+                        localCheckArray.push(localArray)
                     }
-                    localCheckArray.push(localArray)
-                })
-                return localCheckArray
-            } else {
-                return []
-            }
+                    })
+                    return localCheckArray
+                } else {
+                    return []
+                }
         }
         let topArray = makeTopRow()
         let bottomArray = makeBottomRows()
@@ -378,7 +382,7 @@ const ComplianceCheck = (props) => {
         setTopRow(topArray) 
         setBottomRows(bottomArray)
         bottomArraysKeeper = bottomArray
-    }, [data])
+    }, [data, props.selectedCity])
 
     return (
         <div className='compliance_check_container'>

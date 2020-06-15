@@ -292,7 +292,7 @@ const DivSingleWeek = (props) => {
             middleRows = () => {
                 let mappedProps = []
                 data.data.drivers.forEach( (ele, id) => {
-                    if (ele.location === props.selectedCity) {
+                    if (ele.location === props.selectedCity && ele.status === 'Active') {
                         let localArray = []
                         localArray.push(
                             <div key={Math.random()} className='cal_divs_single_first'>

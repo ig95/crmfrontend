@@ -63,6 +63,7 @@ const DriverDocuments = (props) => {
         let localArray = []
         if (data) {
             console.log(data)
+            console.log(selectedCity)
             data.drivers.forEach( driver => {
                 if (driver.location === selectedCity) {
                     if (driver.status === 'Active') {
@@ -141,7 +142,7 @@ const DriverDocuments = (props) => {
             return localArray
         }
         setDriverList(mapTheDrivers())
-    }, [data, otherReload, listClassName])
+    }, [data, otherReload, listClassName, selectedCity])
 
     // handle deactivating
     const handleDeactivation = () => {
@@ -166,7 +167,7 @@ const DriverDocuments = (props) => {
             };
             
             putData(`https://pythonicbackend.herokuapp.com/drivers/${driverForOffboarding.driver_id}/`, {
-                status: 'Offboarded',
+                status: 'OffboardedForever',
                 approvedBy: props.user_name,
                 approvedDateAndTime: theDate.toDateString()
             }).then( response => {

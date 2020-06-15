@@ -5,6 +5,7 @@ import ComplianceCheck from '../components/ComplianceCheck'
 const DriverComplianceCheck = (props) => {
     const [ data, setData ] = useState(null)
     const [ reload, setReload ] = useState(0) 
+    const [ selectedCity, setSelectedCity ] = useState('DBS2')
 
     // grab the main data
     useEffect( () => {
@@ -35,13 +36,47 @@ const DriverComplianceCheck = (props) => {
         setReload(nextVar)
     }
 
+    // function for changing the city from dropdown
+    const handleSelectCity = (e, selectCity) => {
+        setSelectedCity(selectCity)
+    }
+
+    const myIffe = () => {
+        if (selectedCity === 'DBS2') {
+            return <h2 className='compliance_check_center_this'>Bristol</h2>
+        } else if (selectedCity === 'DSN1') {
+            return <h2 className='compliance_check_center_this'>Swansea</h2>
+        } else {
+            return <h2 className='compliance_check_center_this'>Exeter</h2>
+        }
+    }
+
     return (
         <div className='home_content'>
             <NavigationBar title='Driver Compliance Check'/>
             <div className='main_content_compliance_check'>
-                <ComplianceCheck 
-                    user_name={props.user_name}
-                />
+                <div className='complianceCheck_title'>
+                    <div className='drop_down_bar_container'>
+                        <nav class="menu">
+                            <ol>
+                                <li className="menu-item"><a href="#0">{selectedCity}</a>
+                                    <ol className="sub-menu">
+                                        <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DBS2')}><a href="#0">DBS2</a></li>
+                                        <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DSN1')}><a href="#0">DSN1</a></li>
+                                        <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DEX2')}><a href="#0">DEX2</a></li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div>
+                        <h2>{myIffe()}</h2>
+                    </div>
+                </div>
+            <ComplianceCheck 
+                user_name={props.user_name}
+                selectedCity={selectedCity}
+            />
             </div>
         </div>
     )

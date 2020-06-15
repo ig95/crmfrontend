@@ -152,14 +152,11 @@ const WeekSchedule = (props) => {
     makeTheDriver = (
         <>
         <MakeDriver user_name={props.user_name} user_email={props.user_email} user_id={props.user_id}/>
-        <div className='absolute_return_button'>
-            <div className="button-container-2" onClick={backToNormal}>
-                <span className="mas2">Return</span>
-                <button className='buttonFront2' id='work2' type="button" name="Hover">
-                Return
+            <div className='absolute_return_button'>
+                <button className='compliance_add_driver_button_submit' onClick={backToNormal}>
+                    <span className='span_in_complaince_button'>Return</span> 
                 </button>
-            </div> 
-        </div>
+            </div>
         </>
     )
 
@@ -192,18 +189,12 @@ const WeekSchedule = (props) => {
                             <span className='checkmark_no' id='no'></span>
                         </label>
                         <div className='deleteDriverButtons'>
-                            <div className="button-container-2">
-                                <span className="mas2">Submit</span>
-                                <button className='buttonFront2' id='work2' type="button" name="Hover">
-                                    Submit
-                                </button>
-                            </div>
-                            <div className="button-container-2" onClick={backToNormalDeletion}>
-                                <span className="mas2">Return</span>
-                                <button className='buttonFront2' id='work2' type="button" name="Hover">
-                                    Return
-                                </button>
-                            </div>
+                            <button className='compliance_add_driver_button_submit' onClick={backToNormalDeletion}>
+                                <span className='span_in_complaince_button'>Submit</span> 
+                            </button>
+                            <button className='compliance_add_driver_button_submit' onClick={backToNormalDeletion}>
+                                <span className='span_in_complaince_button'>Return</span> 
+                            </button>
                         </div>
                     </form>
                 </div>
