@@ -1,5 +1,6 @@
 import React, { useEffect, useState} from 'react'
 import NavigationBar from '../components/NavBar'
+import { CSVLink, CSVDownload } from "react-csv"
 
 const Summary = () => {
     const [ invoiceData, setInvoiceData ] = useState(null)
@@ -74,7 +75,7 @@ const Summary = () => {
         }
         let localArray = []
         let dateArray = [
-            new Date(sunday.setDate(sunday.getDate())).toLocaleDateString(),
+            new Date(sunday.setDate(sunday.getDate()+1)).toLocaleDateString(),
             new Date(sunday.setDate(sunday.getDate() + 1)).toLocaleDateString(),
             new Date(sunday.setDate(sunday.getDate() + 1)).toLocaleDateString(),
             new Date(sunday.setDate(sunday.getDate() + 1)).toLocaleDateString(),
@@ -212,6 +213,19 @@ const Summary = () => {
         setSummaryArray(localArray)
     }, [invoiceData, allDates])
 
+    // csv stuff
+    let headers = [
+        { label: "First Name", key: "firstname" },
+        { label: "Last Name", key: "lastname" },
+        { label: "Email", key: "email" }
+      ];
+       
+    let data = [
+        { firstname: "Ahmed", lastname: "Tomi", email: "ah@smthing.co.com" },
+        { firstname: "Raed", lastname: "Labes", email: "rl@smthing.co.com" },
+        { firstname: "Yezzi", lastname: "Min l3b", email: "ymin@cocococo.com" }
+      ];
+    
     return (
         <div className='home_content'>
             <NavigationBar title='Summary'/>
@@ -220,6 +234,9 @@ const Summary = () => {
                     {summaryArray}
                 </div>
             </div>
+            <CSVLink data={data} headers={headers}>
+                Download me
+            </CSVLink>;
         </div>
     )
 }
