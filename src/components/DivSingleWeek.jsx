@@ -345,7 +345,6 @@ const DivSingleWeek = (props) => {
                                             break; 
                                     }
                                     localSevenDayCheck.push(checkForDate.indexOf(dateEle.date)+1)
-                                    console.log(checkForDate.indexOf(dateEle.date)+1)
                                     localArray[checkForDate.indexOf(dateEle.date)+1] = (
                                         <nav className={colorChange}>
                                             <ol>
@@ -362,7 +361,6 @@ const DivSingleWeek = (props) => {
                             let warningVar = []
                             if (localSevenDayCheck.length > 5) {
                                 quicksort(localSevenDayCheck)
-                                console.log(localSevenDayCheck)
                                 let checkForConsecutive = 0
                                 let countInRow = 1
                                 localSevenDayCheck.forEach( (dateBooked, dateBookedID) => {
@@ -475,7 +473,6 @@ const DivSingleWeek = (props) => {
                             let warningVar = []
                             if (localSevenDayCheck.length > 5) {
                                 quicksort(localSevenDayCheck)
-                                console.log(localSevenDayCheck)
                                 let checkForConsecutive = 0
                                 let countInRow = 1
                                 localSevenDayCheck.forEach( (dateBooked, dateBookedID) => {
@@ -601,10 +598,8 @@ const DivSingleWeek = (props) => {
             data.data.drivers.forEach( ele => {
                 if (ele.driver_id === id) {
                     ele.datesArray.forEach( element => {
-                        console.log(element.date, myDate)
                         if (element.date === myDate) {
                             scheduleDateId = element.date_id
-                            console.log('found date')
                         }
                     })
                 }
@@ -629,7 +624,6 @@ const DivSingleWeek = (props) => {
     
                 return response ? response.json() : console.log('no reponse')
             };
-            console.log(scheduleDateId, `https://pythonicbackend.herokuapp.com/drivers/${id}/`)
             
             postData(`https://pythonicbackend.herokuapp.com/schedule/${scheduleDateId}/`, {
                 logIn_time: timeEntry,

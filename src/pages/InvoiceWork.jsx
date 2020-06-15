@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import NavigationBar from '../components/NavBar'
-import { PDFDownloadLink, PDFViewer, Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer"
+import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer"
 import waterDrop from '../images/waterDrop.png'
 
 const InvoiceWork = (props) => {
@@ -37,9 +37,6 @@ const InvoiceWork = (props) => {
     
         getDataNext('https://pythonicbackend.herokuapp.com/data/').then( (response) => {
             setDataset(response.data.drivers)
-            getDataNext('https://pythonicbackend.herokuapp.com/invoice/').then( response => {
-                console.log(response)
-            })
         })
     }, [])
 
@@ -79,7 +76,6 @@ const InvoiceWork = (props) => {
     // what is being displayed
     var invoiceContent
     const mapTheContent = (theInvoiceArray) => {
-        console.log('inside the if here')
         let topBar = []
         theInvoiceArray.forEach( (ele, id) => {
             topBar.push(
@@ -102,7 +98,6 @@ const InvoiceWork = (props) => {
     
     // map the dates to the invoice section
     const myMapFunc = () => {
-        console.log('map func firing')
         let localArray = []
         dataset.forEach( (ele, id) => {
             if (ele.name === nameValue) {
@@ -128,7 +123,6 @@ const InvoiceWork = (props) => {
     // handle selecting invoice from bar
     const handleInvoiceSelection = (e, date) => {
         let invoices = myMapFunc()
-        console.log(date)
         if (date !== 'overall') {
             invoices.forEach( (ele, id) => {
                 if (ele.date === date) {
@@ -371,7 +365,6 @@ const InvoiceWork = (props) => {
             invoices = myMapFunc()
         }
         if (invoices.length > 0) {
-            console.log(invoices)
             invoiceSelection = (
                 <div className='single_Invoice_overall'>
                     <div className='invoice_overall_title'>
@@ -408,7 +401,6 @@ const InvoiceWork = (props) => {
             )
         }
         if (selectedInvoice && invoices.length > 0) {
-            console.log(invoices)
             // pdf stuff
             const styles = StyleSheet.create({
                 single_Invoice_overall: {

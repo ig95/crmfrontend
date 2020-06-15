@@ -8,7 +8,6 @@ const CreateManager = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(e.target.email.value)
         // email bit
         async function getData(url = '', data={}) {
             const response = await fetch(url, {
@@ -30,7 +29,6 @@ const CreateManager = (props) => {
             email: e.target.email.value,
             station: e.target.station.value
         }).then( response => {
-            console.log(response)
             setSubmitPressed('Created')
         })
     }

@@ -33,7 +33,6 @@ const MakeEmployee = (props) => {
 
         getData('https://pythonicbackend.herokuapp.com/data/').then( (response) => {
             setDataSet(response.data.drivers)
-            console.log(response.data.drivers)
         })  
     }, [reloadGate])
 
@@ -41,7 +40,6 @@ const MakeEmployee = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setSubmitPressed('Created')
-        console.log('submitting')
         async function postData(url = '', data = {}) {
             const response = await fetch(url, {
                 method: 'POST', 
@@ -66,7 +64,6 @@ const MakeEmployee = (props) => {
             email: e.target.email.value ? e.target.email.value : 'null',
             UTRNumber: e.target.UTRNumber.value ? e.target.UTRNumber.valuee : 'null',
         }).then( (response) => {
-            console.log(response)
             reloadGate ? setReloadGate(false) : setReloadGate(true)
         })
     }
@@ -157,8 +154,6 @@ const MakeEmployee = (props) => {
             driver_id: `https://pythonicbackend.herokuapp.com/drivers/${selectedDriver.driver_id}/`,
             SigningUrlNumber: randoNumber
         }).then( response => {
-            console.log(response)
-            console.log(props.user_email)
             getData('https://intense-headland-70415.herokuapp.com/mail', {
                 password: process.env.REACT_APP_INTERCHANGE,
                 email: props.user_email,
@@ -195,7 +190,6 @@ const MakeEmployee = (props) => {
                     
                     `
                 }).then ( response => {
-                    console.log(response)
             })
         })
         setSelectedDriver(null)
@@ -407,7 +401,6 @@ const MakeEmployee = (props) => {
         if (dataSet) {
             setEmailValue(e.target.value)
             let localArray = []
-            console.log(dataSet)
             dataSet.forEach( (ele, id) => {
                 if (ele.email !== null) {
                     if (ele.email.includes(e.target.value) && e.target.value !== '' && e.target.value.length < 4) {

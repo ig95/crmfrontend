@@ -152,7 +152,6 @@ const ComplianceCheck = (props) => {
 
         // middle/bottom rows
         const makeBottomRows = () => {
-            console.log(data)
             if (data) {
                 let localCheckArray = []
                 data.drivers.forEach( (driver, driverID) => {
@@ -184,7 +183,6 @@ const ComplianceCheck = (props) => {
                         )
                         driver.imgArray.forEach( (image, imageId) => {
                             if (image.name === 'Passport' || image.name === 'ID') {
-                                console.log('found passport', driver)
                                 localArray[1] = (
                                     <div key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} className='drivers_for_compliance_check_documents'>
                                         {image.name}

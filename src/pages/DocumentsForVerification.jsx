@@ -12,7 +12,6 @@ const DocumentsForVerification = (props) => {
 
     // fetch call to the db for all data related to drivers and schedule
     useEffect(() => {
-        console.log('firing')
         async function getData(url = '') {
             const response = await fetch(url, {
                 method: 'GET', 
@@ -56,7 +55,6 @@ const DocumentsForVerification = (props) => {
         let localArray = []
         if (dataset) {
             dataset.forEach( (ele, id) => {
-                console.log(ele)
                 if (ele.status !== 'OffboardedForever') {
                     if (ele.location === selectedCity) {
                         localArray.push(

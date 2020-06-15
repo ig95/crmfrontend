@@ -59,7 +59,6 @@ const FormsDocuments = (props) => {
             expiryDate: dateSelected,
             driver_id: `https://pythonicbackend.herokuapp.com/drivers/${props.selectedDriver.driver_id}/`
         }).then( response => {
-            console.log(response)
             setSubmitted()
             setValueForSubmit('')
             setNameFromList('')
@@ -406,11 +405,9 @@ const FormsDocuments = (props) => {
     ]
 
     const handleChange = (e) => {
-        console.log(e.target.value)
         let localArray = []
         if (e.target.value) {
             countryList.forEach( (ele, id) => {
-                console.log(ele)
                 if (ele.includes(e.target.value)) {
                     localArray.push(
                         <div key={id} className='names_in_names_list_array_forms' onClick={(e, targetName) => handleCountryClick(e, ele)}>

@@ -150,7 +150,6 @@ const RentalVanTracker = (props) => {
             })
             
         }
-        console.log(localArray)
         setVanData(localArray)
     }, [data])
 

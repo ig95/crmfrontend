@@ -60,11 +60,9 @@ const Compliance = () => {
             return response ? response.json() : console.log('no reponse')
 
         };
-        console.log(`https://pythonicbackend.herokuapp.com/drivers/${selectedDriver.driver_id}/`)
         putData(`https://pythonicbackend.herokuapp.com/vehicles/${selectedVan.vehicle_id}/`, {
             driver_id: `https://pythonicbackend.herokuapp.com/drivers/${selectedDriver.driver_id}/`
         }).then( response => {
-            console.log(response)
             setSelectedDriver(null)
             setSelectedVan(null)
             let x = reload
@@ -82,7 +80,6 @@ const Compliance = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setSubmitPressed('Created')
-        console.log('submitting')
         async function postData(url = '', data = {}) {
             const response = await fetch(url, {
                 method: 'POST', 
@@ -107,7 +104,6 @@ const Compliance = () => {
             email: e.target.email.value ? e.target.email.value : 'null',
             UTRNumber: e.target.UTRNumber.value ? e.target.UTRNumber.valuee : 'null',
         }).then( (response) => {
-            console.log(response)
             reloadGate ? setReloadGate(false) : setReloadGate(true)
         })
     }
@@ -167,10 +163,8 @@ const Compliance = () => {
     // select a van to assign to a driver
     const handleSelectDriver = (e, driver) => {
         let localArray = driverLocalList
-        console.log(localArray)
         setSelectedDriver(driver)
         localArray.forEach( (driverEle, driverEleId) => {
-            console.log(parseInt(driverEle.key), driver.driver_id)
             if (parseInt(driverEle.key) === driver.driver_id) {
                 localArray[driverEleId] = (
                     <div key={driver.driver_id}>
@@ -217,7 +211,6 @@ const Compliance = () => {
                 }
             })
         }
-        console.log(localArray)
         setNonActiveDrivers(localArray)
         driverLocalList = localArray
     }, [data])
@@ -240,7 +233,6 @@ const Compliance = () => {
                 }
             })
         }
-        console.log(localArray)
         setNonVerifiedImages(localArray)
     }, [data])
 
@@ -271,7 +263,6 @@ const Compliance = () => {
         let localArrayIDeD = []
         if (vanList) {
             vanList.forEach( (van, vanID) => {
-                console.log(van)
                 if (van.driver_id === null) {
                     localArray.push(
                         <div key={van.registration}>
@@ -300,7 +291,6 @@ const Compliance = () => {
                 }
             })
         }
-        console.log(localArray)
         setIdVans(localArrayIDeD)
         setNonDriverVans(localArray)
         stupidAssList = localArray

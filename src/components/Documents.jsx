@@ -27,7 +27,6 @@ const Documents = (props) => {
     }
 
     useEffect( () => {
-        console.log('on the docs page', props.selectedDriver.imgArray)
         let ImageArray = []
         if (props.selectedDriver.imgArray) {
             props.selectedDriver.imgArray.forEach( (ele, id) => {
@@ -162,7 +161,6 @@ const Documents = (props) => {
 
     // make the big picture appear ------ defining content
     if (highlightedPicture) {
-        console.log(highlightedImageDetails)
         content = (
             <div className='big_picture_div'>
                 <div className='button_div_box_top'>

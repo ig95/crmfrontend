@@ -121,7 +121,6 @@ const HomeTwo = (props) => {
         if (data) {
             data.data.images.forEach( image => {
                 // docs for verification part
-                console.log(image)
                 if (image.verified !== ('True' || 'False')) {
                     pending++
                 } else if (image.verified === 'True'){
@@ -142,7 +141,6 @@ const HomeTwo = (props) => {
                 <div className='pending_div'><h3 className='remove_padding'>{pending} Pending</h3></div>
             </div>
         )
-        console.log(expirationDatesArray)
         setVerifiedDocumentsDivs(localArray)
         expirationDatesArray.forEach( (image, imageID) => {
             expirationDatesArrayDivs.push(

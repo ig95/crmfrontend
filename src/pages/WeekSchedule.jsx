@@ -101,7 +101,6 @@ const WeekSchedule = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setSubmitPressed('Created')
-        console.log('submitting')
         async function postData(url = '', data = {}) {
             const response = await fetch(url, {
                 method: 'POST', 
@@ -132,7 +131,6 @@ const WeekSchedule = (props) => {
             UTRNumber: e.target.UTRNumber.value ? e.target.UTRNumber.valuee : 'null',
             VatNumber: e.target.VATNumber.value ? e.target.VATNumber.value : 'null',
         }).then( (response) => {
-            console.log(response)
             reloadGate ? setReloadGate(false) : setReloadGate(true)
         })
     }
@@ -204,7 +202,6 @@ const WeekSchedule = (props) => {
 
     // grab child selection
     const deleteDriverFunction = (e, driverSelected) => {
-        console.log(driverSelected)
         setDeleteDriverSelection(driverSelected)
     }
 

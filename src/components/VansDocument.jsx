@@ -34,7 +34,6 @@ const VansDocument = (props) => {
             model: e.target.model.value,
             companyOwned : props.owned
         }).then( response => {
-            console.log(response)
             setSubmitted()
             props.reRender(props.content)
         })

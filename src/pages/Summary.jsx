@@ -254,10 +254,7 @@ const Summary = () => {
         setSummaryArray(localArray)
     }, [invoiceData, allDates])
 
-    // csv stuff
-    if (firstLine) {
-        console.log('firstLine: ', firstLine)
-    }   
+    // csv stuff  
     let data = [
         firstLine
     ];

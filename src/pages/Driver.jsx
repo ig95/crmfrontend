@@ -38,9 +38,7 @@ const Driver = (props) => {
         let finalDate = new Date(selectedDate.slice(0,3).concat(' ').concat(selectedDate.slice(3, 6)).concat(' ').concat(selectedDate.slice(6,8)).concat(' ').concat(selectedDate.slice(8,12)))
         setSelectedDate(finalDate)
         props.driver_data.forEach( (ele, id) => {
-            console.log(ele.employee_id, ' ', driverID)
             if (ele.employee_id === driverID) {
-                console.log(ele)
                 setSelectedDriver(ele)
                 setSelectedDate(finalDate)
             }

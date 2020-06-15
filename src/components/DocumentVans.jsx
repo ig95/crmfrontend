@@ -45,7 +45,6 @@ const DocumentVans = (props) => {
     useEffect( () => {
         let localArray = []
         props.vanDocs.forEach( (vanDoc, vanDocId) => {
-            console.log(props.selectedVan.vehicle_id, parseInt(vanDoc.vehicle_id.split('/')[4]))
             if (parseInt(vanDoc.vehicle_id.split('/')[4]) === props.selectedVan.vehicle_id) {
                 localArray.push(
                     <div className='spacer_div_vans_list'>
@@ -86,7 +85,6 @@ const DocumentVans = (props) => {
             expiryDate: dateSelected,
             vehicle_id: `https://pythonicbackend.herokuapp.com/vehicles/${props.selectedVan.vehicle_id}/`
         }).then( response => {
-            console.log(response)
             setSubmitted()
             setValueForSubmit('')
             setNameFromList('')
@@ -126,12 +124,10 @@ const DocumentVans = (props) => {
 
     // calendar function
     const handleMakingCalendar = () => {
-        console.log('clicked')
         setCalendarGate(true)
     }
 
     const handleMakingCalendarTwo = () => {
-        console.log('clicked')
         setCalendarGateTwo(true)
     }
 
@@ -335,7 +331,6 @@ const DocumentVans = (props) => {
     // verify button
     var verifyButton 
     if (highlightedPicture) {
-        console.log(highlightedPicture)
         if (!highlightedPicture.verified) {
             verifyButton = (
                 <div className="btn_picture" onClick={(e, targetImage) => getDivsBackAndVerify(e, highlightedPicture)}>
@@ -416,7 +411,6 @@ const DocumentVans = (props) => {
     // function for submitting files
     var submitFilesDiv
     if (highlightedPicture) {
-        console.log(highlightedImageDetails)
         submitFilesDiv = (
             <div className='big_picture_div'>
             <div className='button_div_box_top'>

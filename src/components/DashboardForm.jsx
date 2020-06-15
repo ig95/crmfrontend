@@ -64,7 +64,6 @@ const DashboardForm = (props) => {
     // submit
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('submit clicked')
         let localDriverId = 0
         let localID = 0
         let driverID = ''
@@ -77,14 +76,12 @@ const DashboardForm = (props) => {
         if (localDriverId > 0) {
             props.data.dates.forEach( (ele, id) => {
                 if (ele.driver_id === `https://pythonicbackend.herokuapp.com/drivers/${localDriverId}/` && ele.date === dateSelected) {
-                    console.log('inside tis if')
                     driverID = ele.driver_id
                     localID = ele.date_id
                 }
             })
         }
         async function postData(url = '', data = {}) {
-            console.log('posting data')
             const response = await fetch(url, {
                 method: 'PUT', 
                 mode: 'cors',
@@ -100,7 +97,6 @@ const DashboardForm = (props) => {
             return response ? response.json() : console.log('no reponse')
         };
         let myObjectToPut = () => {
-            console.log('object being made')
             let myObj = {}
                 nameValue ? myObj['name'] = {nameValue} : console.log(null)
                 selectedRouteType ? myObj['route'] = selectedRouteType : console.log(null)
@@ -120,7 +116,6 @@ const DashboardForm = (props) => {
                 let localArray = []
                 submittedArray.length > 0 ? localArray = [...submittedArray] : localArray = []
                 localArray.push(response)
-                console.log('submitted')
             })
         }
     }
@@ -128,7 +123,6 @@ const DashboardForm = (props) => {
     // submit for state form
     const handleSubmitState = (e) => {
         e.preventDefault()
-        console.log('submit clicked')
         let localDriverId = 0
         let localID = 0
         let driverID = ''
@@ -146,7 +140,6 @@ const DashboardForm = (props) => {
             })
         }
         async function postData(url = '', data = {}) {
-            console.log('posting data')
             const response = await fetch(url, {
                 method: 'PUT', 
                 mode: 'cors',
@@ -162,7 +155,6 @@ const DashboardForm = (props) => {
             return response ? response.json() : console.log('no reponse')
         };
         async function postDataPost(url = '', data = {}) {
-            console.log('posting data')
             const response = await fetch(url, {
                 method: 'POST', 
                 mode: 'cors',
@@ -195,7 +187,6 @@ const DashboardForm = (props) => {
                 driver_id: driverID,
                 routeNumber: routeNumber,
             }
-            console.log(myObj)
 
             return (
                 myObj
@@ -212,7 +203,6 @@ const DashboardForm = (props) => {
                     comment: deductionComment,
                 }
             } 
-            console.log(myObj)
 
             return (
                 myObj
@@ -229,21 +219,16 @@ const DashboardForm = (props) => {
                     comment: supportComment,
                 }
             }
-            console.log(myObj)
 
             return (
                 myObj
             )
         }
-        console.log(localID)
         if (localID.length > 0) {
-            postDataPost(`https://pythonicbackend.herokuapp.com/deductions/`, myDeductionsObj()) .then( response => {
-                console.log(response)
-                postDataPost(`https://pythonicbackend.herokuapp.com/support/`, mySupportsObj()) .then( response => {
-                    console.log(response)
+            postDataPost(`https://pythonicbackend.herokuapp.com/deductions/`, myDeductionsObj()).then( response => {
+                postDataPost(`https://pythonicbackend.herokuapp.com/support/`, mySupportsObj()).then( response => {
                     postData(`https://pythonicbackend.herokuapp.com/schedule/${localID}/`, myObjectToPut())
                     .then( response => {
-                        console.log(response)
                         props.updateParentFunction()
                     })
                 })
@@ -303,7 +288,6 @@ const DashboardForm = (props) => {
     // map props to state
     useEffect( () => {
         if (props.otherSelection) {
-            console.log(props.otherSelection)
             let deductionsValue = props.otherSelection.deductionSum.replace(/GB£/, '')
             let supportValue = props.otherSelection.supportSum.replace(/GB£/, '')
             if (props.otherSelection.route !== "0") {
@@ -370,7 +354,6 @@ const DashboardForm = (props) => {
     ]
 
     const handleDeductionComment = (e) => {
-        console.log(e.target.value)
         setDeductionComment(e.target.value)
     }
     
@@ -387,7 +370,6 @@ const DashboardForm = (props) => {
     }
     
     const handleSupportComment = (e) => {
-        console.log(e.target.value)
         setSupportComment(e.target.value)
     }
 

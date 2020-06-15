@@ -41,7 +41,6 @@ const CompanyVans = (props) => {
                     }
                 })
                 setVanDocs(localArray)
-                console.log(localArray)
             })
         })
     }, [])
@@ -72,7 +71,6 @@ const CompanyVans = (props) => {
                         localArray.push(image)
                     }
                 })
-                console.log(localArray)
                 setVanDocs(localArray)
             })
         })

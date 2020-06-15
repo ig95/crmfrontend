@@ -85,7 +85,6 @@ const Dashboard = (props) => {
         };
 
         getData('https://pythonicbackend.herokuapp.com/data/').then( (response) => {
-            console.log(response.data)
             setData(response.data)
             let localArray = []
             response.data.drivers.forEach( element => {
@@ -97,7 +96,6 @@ const Dashboard = (props) => {
                     })
                 }
             })
-            console.log(localArray)
             setTodaysRoutes(localArray)
            
             setListOfRoutes(listComponents(localArray))
@@ -106,9 +104,6 @@ const Dashboard = (props) => {
     }, [selectedCitySort, selectedDate, updateVariable])
 
     const listComponents = (theRoutes, sortingValue=null) => {
-        if (sortingValue) {
-            console.log(sortingValue)
-        }
 
         let quicksort = (arr, min, max) => {
             // set the quicksort pointer to the first element in the array
@@ -172,7 +167,6 @@ const Dashboard = (props) => {
             setSelectedModification(dateForChange)
         }
         
-        console.log('the routes: ', theRoutes, selectedDate)
         let localArrayTwo = []
         theRoutes.forEach( ele => {
             ele.datesArray.forEach( element => {
@@ -198,7 +192,6 @@ const Dashboard = (props) => {
             )
         } else (
             localArrayTwo.forEach( ele => {
-                console.log(ele)
                 localArrayThree.push(
                     <div className='list_overall_flex_dashboard'>
                         <div className='elements_in_list_dashboard_names'>
@@ -413,9 +406,3 @@ clockAndCalendar = (
 }
 
 export default Dashboard
-{/* <div className='dashboard_form_divs_comments'>    
-    <div>
-        <label className='dashboard_labels_dashboard'>Comments </label>
-    </div>
-        <textarea className='dashboard_text_field' type="text" name='Comment' />
-</div> */}

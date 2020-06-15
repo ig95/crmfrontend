@@ -37,7 +37,6 @@ const DriverDocuments = (props) => {
         };
         getData('https://pythonicbackend.herokuapp.com/data/').then( response => {
             setData(response.data)
-            console.log(reload)
         })
     }, [reload])
 
@@ -62,8 +61,6 @@ const DriverDocuments = (props) => {
         const mapTheDrivers = () => {
         let localArray = []
         if (data) {
-            console.log(data)
-            console.log(selectedCity)
             data.drivers.forEach( driver => {
                 if (driver.location === selectedCity) {
                     if (driver.status === 'Active') {
@@ -146,7 +143,6 @@ const DriverDocuments = (props) => {
 
     // handle deactivating
     const handleDeactivation = () => {
-        console.log(driverForOffboarding)
         let theDate = new Date()
         // handle submitting document to backend
         if (driverForOffboarding !== null) {
@@ -171,7 +167,6 @@ const DriverDocuments = (props) => {
                 approvedBy: props.user_name,
                 approvedDateAndTime: theDate.toDateString()
             }).then( response => {
-                console.log(response)
                 let myVar = reload
                 let myReloadVar = myVar + 1
                 setReload(myReloadVar)
@@ -214,7 +209,6 @@ const DriverDocuments = (props) => {
     // handle arrow keys
     const handleArrowKeys = (e) => {
         let mylocalArray = []
-        console.log(nameList.getBoundingClientRect().top)
         if (driverSearchArray) {
             let localVar = arrowSelect
             if (e.keyCode === 13) {

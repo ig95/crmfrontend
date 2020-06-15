@@ -9,7 +9,6 @@ const VansComponent = (props) => {
 
     // handle mapping owned vans
     useEffect( () => {
-        console.log(props)
         setContent(null)
         let localArray = []
         if (props.data) {
