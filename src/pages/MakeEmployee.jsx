@@ -242,9 +242,9 @@ const MakeEmployee = (props) => {
     var content
     // make the list of driver
     const makeListDrivers = () => {
-        const getRandomInt = (max) => {
-            return Math.floor(Math.random() * Math.floor(max));
-          }
+        // const getRandomInt = (max) => {
+        //     return Math.floor(Math.random() * Math.floor(max));
+        //   }
         let localArray = []
         if (dataSet) {
             localArray.push(

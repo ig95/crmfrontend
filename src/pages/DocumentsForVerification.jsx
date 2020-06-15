@@ -6,7 +6,6 @@ import folderPic from '../images/folder.png'
 
 const DocumentsForVerification = (props) => {
     const [ selectedDriver, setSelectedDriver ] = useState(null)
-    const [ drivers, setDrivers ] = useState(null)
     const [ dataset, setDataset ] = useState(null)
     const [ selectedCity, setSelectedCity ] = useState('DBS2')
 
@@ -28,11 +27,8 @@ const DocumentsForVerification = (props) => {
 
         };
 
-        getData('https://pythonicbackend.herokuapp.com/drivers/').then( (response) => {
-            setDrivers(response.results)
-            getData('https://pythonicbackend.herokuapp.com/data/').then( (response) => {
-                setDataset(response.data.drivers)
-            })
+        getData('https://pythonicbackend.herokuapp.com/data/').then( (response) => {
+            setDataset(response.data.drivers)
         })
     }, [selectedDriver])
     

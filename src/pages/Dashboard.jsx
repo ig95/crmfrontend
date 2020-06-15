@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect} from 'react'
 import NavigationBar from '../components/NavBar'
 import Dropdown from 'react-dropdown'
@@ -65,6 +66,7 @@ const Dashboard = (props) => {
               setSchedule(response.results)
             })
           })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect( () => {
@@ -101,6 +103,7 @@ const Dashboard = (props) => {
             setListOfRoutes(listComponents(localArray))
         })
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCitySort, selectedDate, updateVariable])
 
     const listComponents = (theRoutes, sortingValue=null) => {
