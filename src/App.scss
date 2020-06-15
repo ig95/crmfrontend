@@ -5577,6 +5577,20 @@
     justify-content: center;
   }
 
+  .main_content_driver_summary{
+    grid-area: main_content;
+    background-color: $offWhite;
+    animation-name: loadingStyle;
+    animation-duration: 1s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #summary_button {
+    margin-left: 2rem;
+    text-decoration: none;
+  }
+
   .label_boxes_summary_end {
     width: 120px;
     font-size: .8em;

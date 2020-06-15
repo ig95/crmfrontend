@@ -8,6 +8,8 @@ const Summary = () => {
     const [ summaryArray, setSummaryArray ] = useState([])
     const [ mathSunday, setMathSunday ] = useState('14')
     const [ sunday, setSunday ] = useState(new Date())
+    const [ firstLine, setFirstLine] = useState([])
+    const [ secondLine, setSecondLine] = useState([])
 
     // eslint-disable-next-line no-extend-native
     Date.prototype.getWeek = function () {
@@ -74,6 +76,7 @@ const Summary = () => {
             'Sweeper': 121.8
         }
         let localArray = []
+        let localCsvArray = []
         let dateArray = [
             new Date(sunday.setDate(sunday.getDate()+1)).toLocaleDateString(),
             new Date(sunday.setDate(sunday.getDate() + 1)).toLocaleDateString(),
@@ -84,7 +87,6 @@ const Summary = () => {
             new Date(sunday.setDate(sunday.getDate() + 1)).toLocaleDateString(),
         ]
         if (invoiceData && allDates) {
-            console.log(invoiceData, allDates)
             localArray.push(
                 <div className='top_labels_summary'>
                     <div className='label_boxes_summary_name_top'>
@@ -128,6 +130,23 @@ const Summary = () => {
                     </div>
                 </div>
             )
+            setFirstLine(
+                [
+                    'Name',
+                    dateArray[0],
+                    dateArray[1],
+                    dateArray[2],
+                    dateArray[3],
+                    dateArray[4],
+                    dateArray[5],
+                    dateArray[6],
+                    'Total',
+                    'Mileage (GB£0.17/mile)',
+                    'Deductions',
+                    'Support',
+                    'Overall',           
+                ]
+            )
             for (const key in invoiceData) {
                 let countArray = [
                     0,0,0,0,0,0,0,0
@@ -152,7 +171,6 @@ const Summary = () => {
                         )
                     } 
                 })
-                console.log(invoiceData[key]['deduction'].substr(3, invoiceData[key]['deduction'].length))
                 localArray.push(
                     <div className='top_labels_summary'>
                         <div className='label_boxes_summary_name'>
@@ -208,35 +226,58 @@ const Summary = () => {
                         </div>
                     </div>
                 )
+                localCsvArray.push(
+                    [
+                        key,
+                        countArray[0],
+                        countArray[1],
+                        countArray[2],
+                        countArray[3],
+                        countArray[4],
+                        countArray[5],
+                        countArray[6],
+                        `GB£${parseInt(invoiceData[key]['route'])}`,
+                        `GB£${parseInt(invoiceData[key]['mileage'])}`,
+                        invoiceData[key]['deduction'],
+                        invoiceData[key]['support'],
+                        `GB£${
+                            parseInt(invoiceData[key]['route']) - 
+                            parseInt(invoiceData[key]['deduction'].substr(3, invoiceData[key]['deduction'].length)) + 
+                            parseInt(invoiceData[key]['support'].substr(3, invoiceData[key]['support'].length)) +
+                            parseInt(invoiceData[key]['mileage'])
+                            }`
+                    ]
+                )
             }
         }
+        setSecondLine(localCsvArray)
         setSummaryArray(localArray)
     }, [invoiceData, allDates])
 
     // csv stuff
-    let headers = [
-        { label: "First Name", key: "firstname" },
-        { label: "Last Name", key: "lastname" },
-        { label: "Email", key: "email" }
-      ];
-       
+    if (firstLine) {
+        console.log('firstLine: ', firstLine)
+    }   
     let data = [
-        { firstname: "Ahmed", lastname: "Tomi", email: "ah@smthing.co.com" },
-        { firstname: "Raed", lastname: "Labes", email: "rl@smthing.co.com" },
-        { firstname: "Yezzi", lastname: "Min l3b", email: "ymin@cocococo.com" }
-      ];
+        firstLine
+    ];
+    if (secondLine) {
+        secondLine.forEach( element => {
+            data.push(element)
+        })
+    }
     
     return (
         <div className='home_content'>
             <NavigationBar title='Summary'/>
-            <div className='main_content_driver_documents'>
+            <div className='main_content_driver_summary'>
                 <div className='summary_data'>
                     {summaryArray}
                 </div>
+                <CSVLink data={data} className='compliance_add_driver_button' id='summary_button'>
+                    <span className='span_in_complaince_button'>Download me</span> 
+                </CSVLink>;      
             </div>
-            <CSVLink data={data} headers={headers}>
-                Download me
-            </CSVLink>;
         </div>
     )
 }
