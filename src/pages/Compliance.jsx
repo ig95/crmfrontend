@@ -212,6 +212,7 @@ const Compliance = () => {
             })
         }
         setNonActiveDrivers(localArray)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         driverLocalList = localArray
     }, [data])
 
@@ -293,6 +294,7 @@ const Compliance = () => {
         }
         setIdVans(localArrayIDeD)
         setNonDriverVans(localArray)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         stupidAssList = localArray
     }, [vanList])
 
@@ -328,7 +330,7 @@ const Compliance = () => {
                                 <span className='span_in_complaince_button'>Waiting for Verification</span> 
                             </button>
                         </Link>
-                        {/* {nonActiveDrivers} */}
+                        {nonActiveDrivers}
                     </div>
                     <div className='bottom_buttons_compliance_page'>
                         <Link to='/driverdocuments' className='links'>
@@ -336,7 +338,7 @@ const Compliance = () => {
                                 <span className='span_in_complaince_button'>Driver Documents</span> 
                             </button>
                         </Link>
-                        {/* {nonVerifiedImages} */}
+                        {nonVerifiedImages}
                     </div>
                     <div className='bottom_buttons_compliance_page'>
                         <Link to='drivercompliancecheck' className='links'>

@@ -1,4 +1,6 @@
 /* eslint-disable no-loop-func */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react'
 import spinner from '../images/spinner.svg'
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState} from 'react'
 import NavigationBar from '../components/NavBar'
 import { CSVLink, CSVDownload } from "react-csv"

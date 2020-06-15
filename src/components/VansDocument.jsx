@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css'
+import React, { useState} from 'react'
 
 const VansDocument = (props) => {
     const [ nameFromListArray, setNameFromListArray] = useState([])

@@ -3,6 +3,7 @@ import NavigationBar from '../components/NavBar'
 import ComplianceCheck from '../components/ComplianceCheck'
 
 const DriverComplianceCheck = (props) => {
+    // eslint-disable-next-line no-unused-vars
     const [ data, setData ] = useState(null)
     const [ reload, setReload ] = useState(0) 
     const [ selectedCity, setSelectedCity ] = useState('DBS2')
@@ -30,6 +31,7 @@ const DriverComplianceCheck = (props) => {
     }, [reload])
 
     // reload
+    // eslint-disable-next-line no-unused-vars
     const makeReload = () => {
         let myVar = reload
         let nextVar = myVar+1

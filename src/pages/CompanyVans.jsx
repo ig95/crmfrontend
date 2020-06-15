@@ -14,6 +14,7 @@ const CompanyVans = (props) => {
     const [ selectedVan, setSelectedVan ] = useState(null)
 
     useEffect(() => {
+        setDisplayDiv('display_none')
         async function getData(url = '') {
             const response = await fetch(url, {
                 method: 'GET', 

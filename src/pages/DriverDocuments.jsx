@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react'
 import NavigationBar from '../components/NavBar'
 import FormsDocuments from '../components/FormsDocuments'
@@ -139,6 +140,7 @@ const DriverDocuments = (props) => {
             return localArray
         }
         setDriverList(mapTheDrivers())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, otherReload, listClassName, selectedCity])
 
     // handle deactivating
