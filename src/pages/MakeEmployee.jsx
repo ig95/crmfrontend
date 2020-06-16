@@ -277,7 +277,7 @@ const MakeEmployee = (props) => {
                                 <div className='inner_new_document_divs'>
                                     <h3>{ele.email ? ele.email : `${ele.name}@gmail.com` }</h3>
                                 </div>
-                                <div className='inner_new_document_divs_phone'>
+                                <div className='inner_new_document_divs_phoney'>
                                     <h3>{ele.phone ? ele.phone : '--'}</h3>
                                 </div>
                                 <div className='inner_new_document_divs_phone'>
@@ -299,7 +299,7 @@ const MakeEmployee = (props) => {
                                 <div className='inner_new_document_divs'>
                                     <h3 className='get_rid_of_padding'>{ele.email ? ele.email : `${ele.name}@gmail.com` }</h3>
                                 </div>
-                                <div className='inner_new_document_divs_phone'>
+                                <div className='inner_new_document_divs_phoney'>
                                     <h3 className='get_rid_of_padding'>{ele.phone ? ele.phone : '--'}</h3>
                                 </div>
                                 <div className='inner_new_document_divs_phone'>
@@ -320,7 +320,7 @@ const MakeEmployee = (props) => {
                             <div className='inner_new_document_divs'>
                                 <h3 className='get_rid_of_padding'>{ele.email ? ele.email : `${ele.name}@gmail.com` }</h3>
                             </div>
-                            <div className='inner_new_document_divs_phone'>
+                            <div className='inner_new_document_divs_phoney'>
                                 <h3 className='get_rid_of_padding'>{ele.phone ? ele.phone : '--'}</h3>
                             </div>
                             <div className='inner_new_document_divs_phone'>
