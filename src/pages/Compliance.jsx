@@ -330,6 +330,7 @@ const Compliance = () => {
                                 <span className='span_in_complaince_button'>Waiting for Verification</span> 
                             </button>
                         </Link>
+                        <h2 className='h2Label'>Non-Verified</h2>
                         {nonActiveDrivers}
                     </div>
                     <div className='bottom_buttons_compliance_page'>
@@ -338,6 +339,7 @@ const Compliance = () => {
                                 <span className='span_in_complaince_button'>Driver Documents</span> 
                             </button>
                         </Link>
+                        <h2 className='h2Label'>Verified</h2>
                         {nonVerifiedImages}
                     </div>
                     <div className='bottom_buttons_compliance_page'>

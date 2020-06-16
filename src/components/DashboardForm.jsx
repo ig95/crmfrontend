@@ -28,13 +28,13 @@ const DashboardForm = (props) => {
     const [ logInTime, setLogInTime ] = useState('')
     const [ support, setSupport ] = useState('')
     const [ deductions, setDeductions ] = useState('')
-    const [ feulCardCharge, setFeulCardCharge ] = useState('')
     const [ deductionType, setDeductionType ] = useState('none')
     const [ supportType, setSupportType ] = useState('none')
     const [ deductionArea, setDeductionArea ] = useState(null)
     const [ deductionComment, setDeductionComment ] = useState('Required Comment')
     const [ supportArea, setSupportArea ] = useState(null)
     const [ supportComment, setSupportComment ] = useState('Required Comment')
+    const [ reRender, setReRender] = useState(0)
     
     // list for routes
     const onSelectTwo = (e) => {
@@ -257,11 +257,11 @@ const DashboardForm = (props) => {
         'Sweeper'
     ]
 
-    // select name
-    const handleNameClick = (e, theName) => {
-        makeSearchUnderBar('', 10)
-        setNameValue(theName)
-    }
+    // // select name
+    // const handleNameClick = (e, theName) => {
+    //     makeSearchUnderBar('', 10)
+    //     setNameValue(theName)
+    // }
 
     // make the div under the name search bar
     const makeSearchUnderBar = (theValue, theLength) => {
@@ -272,20 +272,20 @@ const DashboardForm = (props) => {
         }
     }
 
-    // search bar function
-    const handleChange = (e) => {
-        setNameValue(e.target.value)
-        makeSearchUnderBar(e.target.value, nameValue.length)
-        let localArray = []
-        props.data.drivers.forEach( (ele, id) => {
-            if (ele.name.includes(e.target.value) && e.target.value !== '' && e.target.value.length < 4) {
-                localArray.push(
-                    <h4 className='name_suggestions' onClick={(e, theName) => handleNameClick(e, `${ele.name}`)}>{ele.name}</h4>
-                )
-            }
-        })
-        setDriverSearchArray(localArray)
-    }
+    // // search bar function
+    // const handleChange = (e) => {
+    //     setNameValue(e.target.value)
+    //     makeSearchUnderBar(e.target.value, nameValue.length)
+    //     let localArray = []
+    //     props.data.drivers.forEach( (ele, id) => {
+    //         if (ele.name.includes(e.target.value) && e.target.value !== '' && e.target.value.length < 4) {
+    //             localArray.push(
+    //                 <h4 className='name_suggestions' onClick={(e, theName) => handleNameClick(e, `${ele.name}`)}>{ele.name}</h4>
+    //             )
+    //         }
+    //     })
+    //     setDriverSearchArray(localArray)
+    // }
     
     // map props to state
     useEffect( () => {
@@ -317,6 +317,8 @@ const DashboardForm = (props) => {
 
     // handle the input changes
     const handleChangeInputs = (e) => {
+        let myVar = reRender
+        let newVar = myVar + 1
         let x = 0
         e.target.name === 'Name' ? setNameState(e.target.value) : x = x + 1
         e.target.name === 'waveTime' ? setWaveTime(e.target.value) : x = x + 1
@@ -330,6 +332,7 @@ const DashboardForm = (props) => {
         e.target.name === 'LogInTime' ? setLogInTime(e.target.value) : x = x + 1
         e.target.name === 'deductions' ? setDeductions(e.target.value) : x = x + 1
         e.target.name === 'support' ? setSupport(e.target.value) : x = x + 1
+        setReRender(newVar)
     }
 
     let myDeductionList = [
@@ -509,7 +512,7 @@ const DashboardForm = (props) => {
                 </div>  
             </form>
         )
-    }, [otherSelection, deductionArea, supportArea])
+    }, [otherSelection, deductionArea, supportArea, reRender])
     
     return (
        <>

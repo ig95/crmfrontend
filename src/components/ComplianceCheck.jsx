@@ -30,7 +30,7 @@ const ComplianceCheck = (props) => {
     }, [])
 
     // verify the driver
-    const handleVerifyDriver = (e, driverProfile) => {
+    const handleVerifyDriver = (e, driverProfile, anId) => {
         let theDate = new Date()
 
         // handle submitting document to backend
@@ -58,7 +58,7 @@ const ComplianceCheck = (props) => {
         }).then( response => {
             setBottomRows(null)
             if (response.driver_id) {
-                bottomArraysKeeper[bottomArraysKeeper.length-1][23] = (
+                bottomArraysKeeper[anId][23] = (
                     <div 
                         key={12*(Math.floor(Math.random()*Math.floor(6000)))} 
                         className='drivers_for_compliance_check_documents' 
@@ -66,7 +66,7 @@ const ComplianceCheck = (props) => {
                         {props.user_name}
                     </div>
                 )
-                bottomArraysKeeper[bottomArraysKeeper.length-1][24] = (
+                bottomArraysKeeper[anId][24] = (
                     <div 
                         key={10*(Math.floor(Math.random()*Math.floor(23000)))} 
                         className='drivers_for_compliance_check_documents' 
@@ -172,7 +172,7 @@ const ComplianceCheck = (props) => {
                                 <div 
                                     key={driverID*(Math.floor(Math.random()*Math.floor(9000)))} 
                                     className='drivers_for_compliance_check_documents_missing_verify' 
-                                    onClick={(e, driverProfile) => handleVerifyDriver(e, driver)}
+                                    onClick={(e, driverProfile, anId) => handleVerifyDriver(e, driver, driverID)}
                                 >
                                     Not Verified
                                 </div>
