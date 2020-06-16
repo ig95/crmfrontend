@@ -179,8 +179,29 @@ const Compliance = () => {
         setNonActiveDrivers([localArray])
     }
 
+    // select a van to assign to a driver
+    const handleSelectDriverVerified = (e, driver) => {
+        let localArray = driverLocalListVerified
+        setSelectedDriver(driver)
+        localArray.forEach( (driverEle, driverEleId) => {
+            if (parseInt(driverEle.key) === driver.driver_id) {
+                localArray[driverEleId] = (
+                    <div key={driver.driver_id}>
+                        <h3 className='h3_for_compliance_Page_colored' onClick={handleSelectDriver}>
+                            {driver.name}
+                        </h3>
+                        <br />
+                    </div>
+                )
+            }
+        })
+        setNonVerifiedImages([localArray])
+    }
+
     // react you can actually suck a fat dick and then i hope you choke
     var driverLocalList
+    // eslint-disable-next-line no-unused-vars
+    var driverLocalListVerified
 
     // map the non active drivers to list
     useEffect( () => {
@@ -223,18 +244,21 @@ const Compliance = () => {
                 if (driver.status) {
                     if (driver.status === 'Active') {
                         localArray.push(
-                            <>
-                                <h3 key={driverID} className='h3_for_compliance_Page'>
+                            <div key={driver.driver_id}>
+                                <h3 key={driverID} className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectDriverVerified(e, driver)}>
                                     {driver.name}
                                 </h3>
                                 <br />
-                            </>
+                            </div>
                         )
                     }
                 }
             })
         }
         setNonVerifiedImages(localArray)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        driverLocalListVerified = localArray
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 
     // react you fucking suck
