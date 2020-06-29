@@ -1,5 +1,5 @@
 [build]
-    command = "npm run-script build"
+    command = "npm GENERATE_SOURCEMAP=false run-script build"
     publish = "build"
 
 [context.production.environment]
