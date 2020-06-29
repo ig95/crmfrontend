@@ -37,7 +37,7 @@ const App = () => {
   const [ superUser, setSuperUser ] = useState(false)
   // const [ user, setUser] = useState(null);
 
-  // dev mode
+  // dev mode is for the coooooools
   // useEffect( () => {
   //   setUserName('Nicholas Shankland')
   //   setUserEmail('nicholas.m.shankland@gmail.com')
