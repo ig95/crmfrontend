@@ -471,6 +471,7 @@ const MakeEmployee = (props) => {
                                                 <li className="menu-item" onClick={(e, city) => handleSelectStation(e, 'DBS2')}><a href="#0">DBS2</a></li>
                                                 <li className="menu-item" onClick={(e, city) => handleSelectStation(e, 'DSN1')}><a href="#0">DSN1</a></li>
                                                 <li className="menu-item" onClick={(e, city) => handleSelectStation(e, 'DEX2')}><a href="#0">DEX2</a></li>
+                                                <li className="menu-item" onClick={(e, city) => handleSelectStation(e, 'DXP1')}><a href="#0">DXP1</a></li>
                                             </ol>
                                         </li>
                                     </ol>

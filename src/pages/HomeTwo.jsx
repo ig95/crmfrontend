@@ -20,6 +20,7 @@ const HomeTwo = (props) => {
     const [ expirationList, setExpirationList ] = useState(null)
     const [ quoteOfDay, setQuoteOfDay ] = useState(null)
     const [ quoteOfDayArray, setQuoteOfDayArray ] = useState(null)
+    const [ todaysDrivers, setTodaysDrivers ] = useState(null)
 
     // grab the data
     useEffect(() => {
@@ -62,32 +63,21 @@ const HomeTwo = (props) => {
 
     // map todays booked drivers
     var chart
-    var todaysDrivers
-    if (schedule) {
-        var randomDate 
-        randomDate = theDateRandom.toDateString()
-        let localNum = 0
-        let dbs2Drivers = 0
-        let dex2Drivers = 0
-        let dsn1Drivers = 0
-        schedule.forEach( (ele, id) => {
-            if (ele.date === randomDate.toString()) {
-                if (ele.location === 'DBS2') {
-                    dbs2Drivers++
-                } else if (ele.loaction === 'DEX2') {
-                    dex2Drivers++
-                } else {
-                    dsn1Drivers++
+    useEffect( () => {
+        if (schedule) {
+            var randomDate 
+            randomDate = theDateRandom.toDateString()
+            let localNum = 0
+            schedule.forEach( (ele, id) => {
+                if (ele.date === randomDate.toString() && ele.location === selectedCity) {
+                    localNum++
                 }
-            }
-            if (ele.date === randomDate.toString() && ele.location === selectedCity) {
-                localNum++
-            }
-        })
-        todaysDrivers = (
-            <h3>Drivers Today at {selectedCity}: {localNum}</h3>
-        )
-    }
+            })
+            setTodaysDrivers(
+                <h3>Drivers Today at {selectedCity}: {localNum}</h3>
+            )
+        }
+    }, [schedule, selectedCity])
 
     // set city
     const handleSelectCity = (e, city) => {
@@ -193,7 +183,8 @@ const HomeTwo = (props) => {
                                             <ol className="sub-menu">
                                                 <li className="menu-item" id='item_white_one' onClick={(e, city) => handleSelectCity(e, 'DBS2')}><a href="#0" id='menu_text_white'>Bristol</a></li>
                                                 <li className="menu-item" id='item_white_two' onClick={(e, city) => handleSelectCity(e, 'DSN1')}><a href="#0" id='menu_text_white'>Swansea</a></li>
-                                                <li className="menu-item" id='item_white_three' onClick={(e, city) => handleSelectCity(e, 'DEX2 ')}><a href="#0" id='menu_text_white'>Exeter</a></li>
+                                                <li className="menu-item" id='item_white_three' onClick={(e, city) => handleSelectCity(e, 'DEX2')}><a href="#0" id='menu_text_white'>Exeter</a></li>
+                                                <li className="menu-item" id='item_white_three' onClick={(e, city) => handleSelectCity(e, 'DXP1')}><a href="#0" id='menu_text_white'>Plymouth</a></li>
                                             </ol>
                                         </li>
                                     </ol>

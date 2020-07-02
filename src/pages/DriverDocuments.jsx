@@ -153,6 +153,8 @@ const DriverDocuments = (props) => {
         // handle submitting document to backend
         if (driverForOffboarding !== null) {
             async function putData(url = '', data = {}) {
+                let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+                let originalText = bytes.toString(CryptoJS.enc.Utf8);
                 const response = await fetch(url, {
                     method: 'PUT', 
                     mode: 'cors',
@@ -160,7 +162,7 @@ const DriverDocuments = (props) => {
                     credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Token ${localStorage.getItem('token')}`
+                        'Authorization': `Token ${originalText}`
                     },
                     body: JSON.stringify(data)
                     });
@@ -272,6 +274,7 @@ const DriverDocuments = (props) => {
                                         <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DBS2')}><a href="#0">DBS2</a></li>
                                         <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DSN1')}><a href="#0">DSN1</a></li>
                                         <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DEX2')}><a href="#0">DEX2</a></li>
+                                        <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DXP1')}><a href="#0">DXP1</a></li>
                                     </ol>
                                 </li>
                             </ol>

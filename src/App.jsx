@@ -42,13 +42,13 @@ const App = () => {
   // const [ user, setUser] = useState(null);
 
   // dev mode is for the coooooools
-  useEffect( () => {
-    setUserName('Nicholas Shankland')
-    setUserEmail('nicholas.m.shankland@gmail.com')
-    setUserId('1923874-98y')
-    setStation('DBS2')
-    setSuperUser(true)
-  },[])
+  // useEffect( () => {
+  //   setUserName('Nicholas Shankland')
+  //   setUserEmail('nicholas.m.shankland@gmail.com')
+  //   setUserId('1923874-98y')
+  //   setStation('DBS2')
+  //   setSuperUser(true)
+  // },[])
 
   useEffect( () => {
     async function getData(url = '', data={}) {
@@ -115,33 +115,33 @@ const App = () => {
       return response ? response.json() : console.log('no reponse')
     };
 
-    // getDataNext('https://pythonicbackend.herokuapp.com/managers/').then( response => {
-    //   let localVar = 0
-    //   if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
-    //     setUserName(responseGoog.profileObj.givenName)
-    //     setUserId(responseGoog.profileObj.googleId)
-    //     setUserEmail(responseGoog.profileObj.email)
-    //     setSuperUser(true)
-    //   }
-    //   if (responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
-    //     setUserName(responseGoog.profileObj.givenName)
-    //     setUserId(responseGoog.profileObj.googleId)
-    //     setUserEmail(responseGoog.profileObj.email)
-    //     setSuperUser(true)
-    //   }
-    //   response.results.forEach( ele => {
-    //     if (responseGoog.profileObj.email === ele.email) {
-    //       setUserName(responseGoog.profileObj.givenName)
-    //       setUserId(responseGoog.profileObj.googleId)
-    //       setUserEmail(responseGoog.profileObj.email)
-    //       setStation(ele.station)
-    //       localVar = 1
-    //     }
-    //   })
-    //   if (localVar === 0) {
-    //     setUserFound('Login not found. Please contact site administrator')
-    //   }
-    // })
+    getDataNext('https://pythonicbackend.herokuapp.com/managers/').then( response => {
+      let localVar = 0
+      if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
+        setUserName(responseGoog.profileObj.givenName)
+        setUserId(responseGoog.profileObj.googleId)
+        setUserEmail(responseGoog.profileObj.email)
+        setSuperUser(true)
+      }
+      if (responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
+        setUserName(responseGoog.profileObj.givenName)
+        setUserId(responseGoog.profileObj.googleId)
+        setUserEmail(responseGoog.profileObj.email)
+        setSuperUser(true)
+      }
+      response.results.forEach( ele => {
+        if (responseGoog.profileObj.email === ele.email) {
+          setUserName(responseGoog.profileObj.givenName)
+          setUserId(responseGoog.profileObj.googleId)
+          setUserEmail(responseGoog.profileObj.email)
+          setStation(ele.station)
+          localVar = 1
+        }
+      })
+      if (localVar === 0) {
+        setUserFound('Login not found. Please contact site administrator')
+      }
+    })
   }
 
   var content

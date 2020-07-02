@@ -25,6 +25,7 @@ const Dashboard = (props) => {
     const [ listOfRoutes, setListOfRoutes ] = useState([])
     const [ triangleToggle, setTriangleToggle ] = useState('triangle_dashboard_page')
     const [ updateVariable, setUpdateVariable ] = useState(0)
+    const [ overallDay, setOverallDay ] = useState([])
 
 
     var dayArray = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
@@ -74,6 +75,8 @@ const Dashboard = (props) => {
 
     useEffect( () => {
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -81,7 +84,7 @@ const Dashboard = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 
@@ -92,19 +95,21 @@ const Dashboard = (props) => {
         getData('https://pythonicbackend.herokuapp.com/data/').then( (response) => {
             setData(response.data)
             let localArray = []
+            let overallArray = []
             if (response.data) {
                 response.data.drivers.forEach( element => {
-                    if (element.location === selectedCitySort) {
                         element.datesArray.forEach( ele => {
-                            if (new Date(ele.date).toDateString() === selectedDate.toDateString()) {
+                            if (new Date(ele.date).toDateString() === selectedDate.toDateString() && ele.location === selectedCitySort) {
                                 localArray.push(element)
                             }
+                            if (new Date(ele.date).toDateString() === selectedDate.toDateString()) {
+                                overallArray.push(ele)
+                            }
                         })
-                    }
                 })
             }
             setTodaysRoutes(localArray)
-           
+            setOverallDay(overallArray)
             setListOfRoutes(listComponents(localArray))
         })
 
@@ -204,7 +209,7 @@ const Dashboard = (props) => {
                     <div className='list_overall_flex_dashboard'>
                         <div className='elements_in_list_dashboard_names'>
                             <div className='list_spacer_content'>
-                                <h4 className='remove_h3_padding'>{ele.driver.location}</h4>
+                                <h4 className='remove_h3_padding'>{selectedCitySort}</h4>
                             </div>
                             <div className='list_spacer_content'>
                                 <h4 className='remove_h3_padding'>{ele.driver.name}</h4>
@@ -283,8 +288,10 @@ const Dashboard = (props) => {
             setSelectedCitySort('DBS2')
         } else if (city === 'Swindon - DSN1') {
             setSelectedCitySort('DSN1')
-        } else {
+        } else if (city === 'Exeter - DEX2'){
             setSelectedCitySort('DEX2')
+        } else {
+            setSelectedCitySort('DXP1')
         }
         let x = logicalGate
         x = x+1
@@ -293,17 +300,32 @@ const Dashboard = (props) => {
 
     // map data into the top box
     var routesBox
-    if (todaysRoutes.length > 0) {
-        let routesTotal = todaysRoutes.length
+    if (overallDay.length > 0) {
+        let routesTotal = overallDay.length
         let DBS2Num = 0
-        let CTNum = 0
-        let MFNNum = 0
+        let DSN1Num = 0
+        let DEX2Num = 0
+        let DXP1Num = 0
+        overallDay.forEach( ele => {
+            if (ele.location === 'DBS2') {
+                DBS2Num++
+            }
+            if (ele.location === 'DEX2') {
+                DEX2Num++
+            }
+            if (ele.location === 'DSN1') {
+                DSN1Num++
+            }
+            if (ele.location === 'DXP1') {
+                DXP1Num++
+            }
+        })
         routesBox = (
             <div className='dashboard_route_type_list'>
                 <h4>{routesTotal} Full Routes</h4>
                 <h4>{DBS2Num} DBS2</h4>
-                <h4>{CTNum} CT</h4>
-                <h4>{MFNNum} MFN</h4>
+                <h4>{DSN1Num} DSN1</h4>
+                <h4>{DEX2Num} DEX2</h4>
             </div>
         )
     } else {
@@ -387,6 +409,7 @@ clockAndCalendar = (
                                 <li className="menu-item" id='item_white_one' onClick={(e, city) => handleSelectCity(e, 'Bristol - DBS2')}><a href="#0" id='menu_text_white'>Bristol - DBS2</a></li>
                                 <li className="menu-item" id='item_white_two' onClick={(e, city) => handleSelectCity(e, 'Swindon - DSN1')}><a href="#0" id='menu_text_white'>Swindon - DSN1</a></li>
                                 <li className="menu-item" id='item_white_three' onClick={(e, city) => handleSelectCity(e, 'Exeter - DEX2')}><a href="#0" id='menu_text_white'>Exeter - DEX2</a></li>
+                                <li className="menu-item" id='item_white_three' onClick={(e, city) => handleSelectCity(e, 'Plymouth - DXP1')}><a href="#0" id='menu_text_white'>Plymouth - DXP1</a></li>
                             </ol>
                         </li>
                     </ol>

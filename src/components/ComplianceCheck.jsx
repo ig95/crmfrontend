@@ -160,9 +160,15 @@ const ComplianceCheck = (props) => {
         // middle/bottom rows
         const makeBottomRows = () => {
             if (data) {
+                let localArray = []
+                data.drivers.forEach( (driver, driverID) => { 
+                    if (driver.status !== 'OffboardedForever' && driver.location === props.selectedCity) { 
+                        localArray.push(driver)
+                    }
+                })
                 let localCheckArray = []
-                data.drivers.forEach( (driver, driverID) => {
-                    if (driver.status !== 'OffboardedForever' && driver.location === props.selectedCity) {
+                localArray.forEach( (driver, driverID) => {
+                    
                         let localArray = []
                         
                         for (let i = 0; i < 22 ; i++) {
@@ -374,7 +380,6 @@ const ComplianceCheck = (props) => {
                             )
                         }
                         localCheckArray.push(localArray)
-                    }
                     })
                     return localCheckArray
                 } else {

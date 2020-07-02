@@ -245,7 +245,8 @@ const DashboardForm = (props) => {
     const options = [
         'DBS2',
         'DSN1',
-        'DEX2'
+        'DEX2',
+        'DXP1'
     ]
 
     // dropdown for route menu

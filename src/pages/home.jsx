@@ -209,6 +209,7 @@ const Home = (props) => {
                                                     <li className="menu-item" id='item_white_one' onClick={(e, city) => handleSelectCity(e, 'DBS2')}><a href="#0" id='menu_text_white'>Bristol</a></li>
                                                     <li className="menu-item" id='item_white_two' onClick={(e, city) => handleSelectCity(e, 'DSN1')}><a href="#0" id='menu_text_white'>Swindon</a></li>
                                                     <li className="menu-item" id='item_white_three' onClick={(e, city) => handleSelectCity(e, 'DEX2 ')}><a href="#0" id='menu_text_white'>Exeter</a></li>
+                                                    <li className="menu-item" id='item_white_three' onClick={(e, city) => handleSelectCity(e, 'DXP1')}><a href="#0" id='menu_text_white'>Plymouth</a></li>
                                                 </ol>
                                             </li>
                                         </ol>

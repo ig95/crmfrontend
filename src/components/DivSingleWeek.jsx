@@ -227,19 +227,24 @@ const DivSingleWeek = (props) => {
                         <ol>
                             <li className="menu-item"><a href="#0" id='menu_rota_zed' >Station</a>
                                 <ol className="sub-menu" >
-                                    <li className="menu-item" id='sub_menu_options'>
+                                    <li className="menu-item" id='sub_menu_options_two'>
                                         <a href="#0" id='dropdown_text_rota'>
                                             DSN1
                                         </a>
                                     </li>
-                                    <li className="menu-item" id='sub_menu_options'>
+                                    <li className="menu-item" id='sub_menu_options_two'>
                                         <a href="#0" id='dropdown_text_rota'>
                                             DBS2
                                         </a>
                                     </li>
-                                    <li className="menu-item" id='sub_menu_options'>
+                                    <li className="menu-item" id='sub_menu_options_two'>
                                         <a href="#0" id='dropdown_text_rota'>
                                             DEX2
+                                        </a>
+                                    </li>
+                                    <li className="menu-item" id='sub_menu_options_two'>
+                                        <a href="#0" id='dropdown_text_rota'>
+                                            DXP1
                                         </a>
                                     </li>
                                 </ol>
@@ -327,26 +332,14 @@ const DivSingleWeek = (props) => {
                                     let colorChange
                                     // eslint-disable-next-line default-case
                                     switch (dateEle.location) {
-                                        case 'DEX2':
-                                            colorChange = 'menu_rota_blue' 
+                                        case `${props.selectedCity}`:
+                                            colorChange = 'menu_rota_in' 
                                             break;
-                                        case 'DSN1':
-                                            colorChange = 'menu_rota_yellow' 
-                                            break;
-                                        case `DBS2`:
-                                            colorChange = 'menu_rota_in'
-                                            break;
-                                        case 'MFN':
-                                            colorChange = 'menu_rota_purple'  
-                                            break; 
-                                        case 'CT':
-                                            colorChange = 'menu_rota_purple'  
-                                            break; 
-                                        case 'RT':
-                                            colorChange = 'menu_rota_purple'  
-                                            break; 
                                         case 'Holiday':
                                             colorChange = 'menu_rota_holiday'  
+                                            break; 
+                                        default:
+                                            colorChange = 'menu_rota_yellow';    
                                             break; 
                                     }
                                     localSevenDayCheck.push(checkForDate.indexOf(dateEle.date)+1)
@@ -439,26 +432,14 @@ const DivSingleWeek = (props) => {
                                     let colorChange
                                     // eslint-disable-next-line default-case
                                     switch (dateEle.location) {
-                                        case 'DEX2':
+                                        case `${props.selectedCity}`:
                                             colorChange = 'menu_rota_in_seven' 
                                             break;
-                                        case 'DSN1':
-                                            colorChange = 'menu_rota_in_seven' 
-                                            break;
-                                        case `DBS2`:
-                                            colorChange = 'menu_rota_in_seven'
-                                            break;
-                                        case 'MFN':
-                                            colorChange = 'menu_rota_purple_seven'  
-                                            break; 
-                                        case 'CT':
-                                            colorChange = 'menu_rota_purple_seven'  
-                                            break; 
-                                        case 'RT':
-                                            colorChange = 'menu_rota_purple_seven'  
-                                            break; 
                                         case 'Holiday':
                                             colorChange = 'menu_rota_holiday_seven'  
+                                            break; 
+                                        default:
+                                            colorChange = 'menu_rota_yellow_seven';    
                                             break; 
                                     }
                                     localSevenDayCheck.push(checkForDate.indexOf(dateEle.date)+1)
@@ -564,6 +545,8 @@ const DivSingleWeek = (props) => {
 
             let timeEntry = `${hours}:${minutes}`
             async function postData(url = '', data = {}) {
+                let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+                let originalText = bytes.toString(CryptoJS.enc.Utf8);
                 const response = await fetch(url, {
                     method: 'POST', 
                     mode: 'cors',
@@ -571,7 +554,7 @@ const DivSingleWeek = (props) => {
                     credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Token ${localStorage.getItem('token')}`
+                        'Authorization': `Token ${originalText}`
                     },
                     body: JSON.stringify(data)
                     });
@@ -599,6 +582,7 @@ const DivSingleWeek = (props) => {
         }
 
         const handleSubmitButtonPut = (myDate, id, location) => {
+            console.log(location)
             let scheduleDateId = -1
             data.data.drivers.forEach( ele => {
                 if (ele.driver_id === id) {
@@ -615,6 +599,8 @@ const DivSingleWeek = (props) => {
 
             let timeEntry = `${hours}:${minutes}`
             async function postData(url = '', data = {}) {
+                let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+                let originalText = bytes.toString(CryptoJS.enc.Utf8);
                 const response = await fetch(url, {
                     method: 'PUT', 
                     mode: 'cors',
@@ -622,7 +608,7 @@ const DivSingleWeek = (props) => {
                     credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Token ${localStorage.getItem('token')}`
+                        'Authorization': `Token ${originalText}`
                     },
                     body: JSON.stringify(data)
                     });
@@ -671,6 +657,7 @@ const DivSingleWeek = (props) => {
             } else {
                 locationvar = e.target.text
             }
+            console.log(locationvar)
             handleSubmitButtonPut(weekDaySelected, id, locationvar)
             // setMiddleRow(makeForm(null, weekDaySelected, theName, datesList, id, location))
         }
