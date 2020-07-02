@@ -6,6 +6,7 @@ import DivSingleWeek from '../components/DivSingleWeek'
 import MakeDriver from './MakeEmployee'
 
 const WeekSchedule = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ drivers, setDrivers ] = useState(null)
     const [ schedule, setSchedule ] = useState(null)
     const [ selectedCity, setSelectedCity ] = useState('DBS2')
@@ -29,6 +30,8 @@ const WeekSchedule = (props) => {
     // call this location rota, make it color coded by deopt, and trianing different color - 14 days
     useEffect(() => {
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -36,7 +39,7 @@ const WeekSchedule = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

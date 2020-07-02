@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react'
 import spinner from '../images/spinner.svg'
 
 const DivSingleWeek = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ topRow, setTopRow ] = useState([])
     const [ middleRow, setMiddleRow ] = useState([])
     const [ bottomRow, setBottomRow ] = useState([])
@@ -20,6 +21,8 @@ const DivSingleWeek = (props) => {
 
     useEffect( () => {
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -27,7 +30,7 @@ const DivSingleWeek = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
             return response ? response.json() : console.log('no reponse')

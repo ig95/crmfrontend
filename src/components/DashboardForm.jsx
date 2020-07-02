@@ -5,6 +5,7 @@ import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 
 const DashboardForm = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ myForm, setMyForm ] = useState(null)
     const [ selectedCity, setSelectedCity ] = useState('Bristol - DBS2')
     const [ selectedCityAbbrev, setSelectedCityAbbrev ] = useState('DBS2')
@@ -84,6 +85,8 @@ const DashboardForm = (props) => {
             })
         }
         async function postData(url = '', data = {}) {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'PUT', 
                 mode: 'cors',
@@ -91,7 +94,7 @@ const DashboardForm = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 },
                 body: JSON.stringify(data)
                 });

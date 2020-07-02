@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import SingleDay from './pages/SingleDay'
@@ -26,6 +28,8 @@ import {
 } from 'react-router-dom';
 
 const App = () => {
+
+  var CryptoJS = require("crypto-js");
   // Setting state with the user details retrieved using googles Oauth
   const [ userName, setUserName] = useState('')
   const [ userId, setUserId] = useState('')
@@ -38,13 +42,13 @@ const App = () => {
   // const [ user, setUser] = useState(null);
 
   // dev mode is for the coooooools
-  // useEffect( () => {
-  //   setUserName('Nicholas Shankland')
-  //   setUserEmail('nicholas.m.shankland@gmail.com')
-  //   setUserId('1923874-98y')
-  //   setStation('DBS2')
-  //   setSuperUser(true)
-  // },[])
+  useEffect( () => {
+    setUserName('Nicholas Shankland')
+    setUserEmail('nicholas.m.shankland@gmail.com')
+    setUserId('1923874-98y')
+    setStation('DBS2')
+    setSuperUser(true)
+  },[])
 
   useEffect( () => {
     async function getData(url = '', data={}) {
@@ -65,9 +69,12 @@ const App = () => {
       username: process.env.REACT_APP_DB_USERNAME,
       password: process.env.REACT_APP_DB_PASSWORD
     }).then( (response) => {
-      localStorage.setItem('token', response.token)
+      let encryptedToken = CryptoJS.AES.encrypt(response.token.toString(), process.env.REACT_APP_ENCRYPTION_TYPE).toString()
+      localStorage.setItem('token', encryptedToken)
     }).then( (response) => {
       async function getDataNext(url = process.env.REACT_APP_AUTH) {
+        let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+        let originalText = bytes.toString(CryptoJS.enc.Utf8);
         const response = await fetch(url, {
             method: 'GET', 
             mode: 'cors',
@@ -75,7 +82,7 @@ const App = () => {
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Token ${localStorage.getItem('token')}`
+                'Authorization': `Token ${originalText}`
             }
         });
         return response ? response.json() : console.log('no reponse')
@@ -88,10 +95,12 @@ const App = () => {
         })
       })
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // handles writting data to database and recieving google data
   const responseGoogle = (responseGoog) => {
+    // eslint-disable-next-line no-unused-vars
     async function getDataNext(url = '') {
       const response = await fetch(url, {
           method: 'GET', 
@@ -106,33 +115,33 @@ const App = () => {
       return response ? response.json() : console.log('no reponse')
     };
 
-    getDataNext('https://pythonicbackend.herokuapp.com/managers/').then( response => {
-      let localVar = 0
-      if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
-        setUserName(responseGoog.profileObj.givenName)
-        setUserId(responseGoog.profileObj.googleId)
-        setUserEmail(responseGoog.profileObj.email)
-        setSuperUser(true)
-      }
-      if (responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
-        setUserName(responseGoog.profileObj.givenName)
-        setUserId(responseGoog.profileObj.googleId)
-        setUserEmail(responseGoog.profileObj.email)
-        setSuperUser(true)
-      }
-      response.results.forEach( ele => {
-        if (responseGoog.profileObj.email === ele.email) {
-          setUserName(responseGoog.profileObj.givenName)
-          setUserId(responseGoog.profileObj.googleId)
-          setUserEmail(responseGoog.profileObj.email)
-          setStation(ele.station)
-          localVar = 1
-        }
-      })
-      if (localVar === 0) {
-        setUserFound('Login not found. Please contact site administrator')
-      }
-    })
+    // getDataNext('https://pythonicbackend.herokuapp.com/managers/').then( response => {
+    //   let localVar = 0
+    //   if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
+    //     setUserName(responseGoog.profileObj.givenName)
+    //     setUserId(responseGoog.profileObj.googleId)
+    //     setUserEmail(responseGoog.profileObj.email)
+    //     setSuperUser(true)
+    //   }
+    //   if (responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
+    //     setUserName(responseGoog.profileObj.givenName)
+    //     setUserId(responseGoog.profileObj.googleId)
+    //     setUserEmail(responseGoog.profileObj.email)
+    //     setSuperUser(true)
+    //   }
+    //   response.results.forEach( ele => {
+    //     if (responseGoog.profileObj.email === ele.email) {
+    //       setUserName(responseGoog.profileObj.givenName)
+    //       setUserId(responseGoog.profileObj.googleId)
+    //       setUserEmail(responseGoog.profileObj.email)
+    //       setStation(ele.station)
+    //       localVar = 1
+    //     }
+    //   })
+    //   if (localVar === 0) {
+    //     setUserFound('Login not found. Please contact site administrator')
+    //   }
+    // })
   }
 
   var content

@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect} from 'react'
 import NavigationBar from '../components/NavBar'
 import ComplianceCheck from '../components/ComplianceCheck'
 
 const DriverComplianceCheck = (props) => {
+    var CryptoJS = require("crypto-js");
     // eslint-disable-next-line no-unused-vars
     const [ data, setData ] = useState(null)
     const [ reload, setReload ] = useState(0) 
@@ -11,6 +14,8 @@ const DriverComplianceCheck = (props) => {
     // grab the main data
     useEffect( () => {
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -18,7 +23,7 @@ const DriverComplianceCheck = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

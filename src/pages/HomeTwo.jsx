@@ -8,6 +8,7 @@ import axios from 'axios'
 
 var myInterval
 const HomeTwo = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ currentDate, setCurrentDate ] = useState(new Date())
     const [ selectedDate, setSelectedDate ] = useState(new Date())
     const [ selectedCity, setSelectedCity ] = useState('DBS2')
@@ -22,6 +23,7 @@ const HomeTwo = (props) => {
 
     // grab the data
     useEffect(() => {
+        var CryptoJS = require("crypto-js");
         let myDate = new Date()
         while (myDate.getDay() > 0) {
             myDate.setDate(myDate.getDate() - 1)
@@ -29,6 +31,8 @@ const HomeTwo = (props) => {
         setSelectedDate(myDate)
 
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -36,7 +40,7 @@ const HomeTwo = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

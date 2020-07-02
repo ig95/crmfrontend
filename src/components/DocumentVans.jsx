@@ -6,6 +6,7 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 
 const DocumentVans = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ valueForSubmit, setValueForSubmit ] = useState('')
     const [ dateSelected, setDateSelected ] = useState(new Date())
     const [ dateSelectedTwo, setDateSelectedTwo ] = useState(new Date())
@@ -66,6 +67,8 @@ const DocumentVans = (props) => {
         e.preventDefault()
 
         async function postData(url = '', data = {}) {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'POST', 
                 mode: 'cors',
@@ -73,7 +76,7 @@ const DocumentVans = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 },
                 body: JSON.stringify(data)
                 });

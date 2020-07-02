@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect} from 'react'
 import NavigationBar from '../components/NavBar'
-import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
@@ -10,6 +10,7 @@ import triangle from '../images/triangledark.png'
 
 var myInterval
 const Dashboard = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ drivers, setDrivers ] = useState(null)
     const [ selectedDate, setSelectedDate ] = useState(new Date())
     const [ schedule, setSchedule ] = useState(null)
@@ -47,6 +48,8 @@ const Dashboard = (props) => {
             setSelectedCitySort(props.station)
         }
         async function getDataNext(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -54,7 +57,7 @@ const Dashboard = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
             return response ? response.json() : console.log('no reponse')
@@ -89,15 +92,17 @@ const Dashboard = (props) => {
         getData('https://pythonicbackend.herokuapp.com/data/').then( (response) => {
             setData(response.data)
             let localArray = []
-            response.data.drivers.forEach( element => {
-                if (element.location === selectedCitySort) {
-                    element.datesArray.forEach( ele => {
-                        if (new Date(ele.date).toDateString() === selectedDate.toDateString()) {
-                            localArray.push(element)
-                        }
-                    })
-                }
-            })
+            if (response.data) {
+                response.data.drivers.forEach( element => {
+                    if (element.location === selectedCitySort) {
+                        element.datesArray.forEach( ele => {
+                            if (new Date(ele.date).toDateString() === selectedDate.toDateString()) {
+                                localArray.push(element)
+                            }
+                        })
+                    }
+                })
+            }
             setTodaysRoutes(localArray)
            
             setListOfRoutes(listComponents(localArray))

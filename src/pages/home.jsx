@@ -7,6 +7,7 @@ import 'react-dropdown/style.css';
 
 var myInterval
 const Home = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ selectedDate, setSelectedDate ] = useState(new Date())
     const [ currentDate, setCurrentDate ] = useState(new Date())
     const [ selectedCity, setSelectedCity ] = useState('DBS2')
@@ -28,6 +29,8 @@ const Home = (props) => {
         }
         setSelectedDate(myDate)
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -35,7 +38,7 @@ const Home = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

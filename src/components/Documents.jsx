@@ -1,12 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState} from 'react'
-import axios from 'axios'
-import ReCAPTCHA from "react-google-recaptcha"
-import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 
 const Documents = (props) => {
+    var CryptoJS = require("crypto-js");
     const [  valueForSubmit, setValueForSubmit ] = useState('')
     const [ imageArray, setImageArray ] = useState([])
     const [ submitFilesDivSelection, setSubmitFilesDivSelection ] = useState(false)
@@ -57,6 +55,8 @@ const Documents = (props) => {
     // verification process
     const getDivsBackAndVerify = (e) => {
         async function postData(url = '', data = {}) {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'PUT', 
                 mode: 'cors',
@@ -64,7 +64,7 @@ const Documents = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 },
                 body: JSON.stringify(data)
                 });
@@ -91,6 +91,8 @@ const Documents = (props) => {
 
     const getDivsBackAndVerifyFalse = (e) => {
         async function postData(url = '', data = {}) {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'PUT', 
                 mode: 'cors',
@@ -98,7 +100,7 @@ const Documents = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 },
                 body: JSON.stringify(data)
                 });

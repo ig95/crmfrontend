@@ -3,6 +3,7 @@
 import React, { useState, useEffect} from 'react'
 
 const DivWeek = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ overAllDivs, setOverAllDivs ] = useState([])
     const [ theDate, setTheDate ] = useState(new Date())
 

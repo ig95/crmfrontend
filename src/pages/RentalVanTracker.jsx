@@ -4,6 +4,7 @@ import React, { useEffect, useState} from 'react'
 import NavigationBar from '../components/NavBar'
 
 const RentalVanTracker = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ data, setData ] = useState(null)
     const [ vanData, setVanData ] = useState([])
     const [ mathSunday, setMathSunday ] = useState('14')
@@ -35,6 +36,8 @@ const RentalVanTracker = (props) => {
 
     useEffect(() => {
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -42,7 +45,7 @@ const RentalVanTracker = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

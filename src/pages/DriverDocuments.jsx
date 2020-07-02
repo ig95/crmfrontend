@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from 'react'
 import NavigationBar from '../components/NavBar'
 import FormsDocuments from '../components/FormsDocuments'
 
 const DriverDocuments = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ data, setData ] = useState(null)
     const [ selectedCity, setSelectedCity ] = useState(props.station ? props.station : 'DBS2')
     const [ driverList, setDriverList ] = useState(null)
@@ -22,6 +24,8 @@ const DriverDocuments = (props) => {
     // grab the main data
     useEffect( () => {
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -29,7 +33,7 @@ const DriverDocuments = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

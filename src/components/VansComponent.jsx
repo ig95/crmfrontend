@@ -6,6 +6,7 @@ import folderPic from '../images/folder.png'
 import DocumentVans from './DocumentVans'
 
 const VansComponent = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ vanList, setVanList ] = useState([])
     const [ content, setContent ] = useState(null)
 

@@ -3,6 +3,7 @@
 import React, { useEffect, useState} from 'react'
 
 const ComplianceCheck = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ topRow, setTopRow ] = useState([])
     const [ bottomRows, setBottomRows ] = useState([])
     const [ data, setData ] = useState(null)
@@ -10,6 +11,8 @@ const ComplianceCheck = (props) => {
     // grab the main data
     useEffect( () => {
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -17,7 +20,7 @@ const ComplianceCheck = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 
@@ -35,6 +38,8 @@ const ComplianceCheck = (props) => {
 
         // handle submitting document to backend
         async function putData(url = '', data = {}) {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'PUT', 
                 mode: 'cors',
@@ -42,7 +47,7 @@ const ComplianceCheck = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 },
                 body: JSON.stringify(data)
                 });

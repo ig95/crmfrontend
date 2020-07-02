@@ -1,10 +1,12 @@
 /* eslint-disable no-use-before-define */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect} from 'react'
 import NavigationBar from '../components/NavBar'
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer"
 import waterDrop from '../images/waterDrop.png'
 
 const InvoiceWork = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ dataset, setDataset ] = useState(null)
     const [ driverSearchArray, setDriverSearchArray ] = useState([])
     const [ makeSearchBarVisible, setMakeSearchBarVisible ] = useState('dashboard_form_divs_name_bar_none')
@@ -20,7 +22,10 @@ const InvoiceWork = (props) => {
         }
         setSundayDate(myDate.toDateString())
         setSundayTwoWeeks(new Date(myDate.getTime() + 12096e5).toDateString())
+        
         async function getDataNext(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -28,7 +33,7 @@ const InvoiceWork = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

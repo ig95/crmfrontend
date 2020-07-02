@@ -5,6 +5,7 @@ import NavigationBar from '../components/NavBar'
 import { CSVLink, CSVDownload } from "react-csv"
 
 const Summary = () => {
+    var CryptoJS = require("crypto-js");
     const [ invoiceData, setInvoiceData ] = useState(null)
     const [ allDates, setAllDates ] = useState(null)
     const [ summaryArray, setSummaryArray ] = useState([])
@@ -44,6 +45,8 @@ const Summary = () => {
         }
         setMathSunday(myDate.toDateString())
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -51,7 +54,7 @@ const Summary = () => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

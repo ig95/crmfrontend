@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState} from 'react'
 import axios from 'axios'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 
 const FormsDocuments = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ valueForSubmit, setValueForSubmit ] = useState('')
     const [ dateSelected, setDateSelected ] = useState(new Date())
     const [ calendarGate, setCalendarGate] = useState(false)
@@ -37,6 +40,8 @@ const FormsDocuments = (props) => {
         e.preventDefault()
 
         async function postData(url = '', data = {}) {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'POST', 
                 mode: 'cors',
@@ -44,7 +49,7 @@ const FormsDocuments = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 },
                 body: JSON.stringify(data)
                 });

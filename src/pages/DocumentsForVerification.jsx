@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react'
 import Documents from '../components/Documents'
 import NavigationBar from '../components/NavBar'
@@ -5,6 +7,7 @@ import 'react-dropdown/style.css'
 import folderPic from '../images/folder.png'
 
 const DocumentsForVerification = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ selectedDriver, setSelectedDriver ] = useState(null)
     const [ dataset, setDataset ] = useState(null)
     const [ selectedCity, setSelectedCity ] = useState('DBS2')
@@ -12,6 +15,8 @@ const DocumentsForVerification = (props) => {
     // fetch call to the db for all data related to drivers and schedule
     useEffect(() => {
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -19,7 +24,7 @@ const DocumentsForVerification = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState }  from 'react'
 import NavigationBar from '../components/NavBar'
 
 const MakeEmployee = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ logicalGate, setLogicalGate ] = useState(false)
     const [ dataSet, setDataSet ] = useState(null)
     const [ status, setStatus ] = useState('Offboarded')
@@ -16,6 +19,8 @@ const MakeEmployee = (props) => {
 
     useEffect(() => {
         async function getData(url = '') {
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
                 method: 'GET', 
                 mode: 'cors',
@@ -23,7 +28,7 @@ const MakeEmployee = (props) => {
                 credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
+                    'Authorization': `Token ${originalText}`
                 }
             });
 

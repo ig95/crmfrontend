@@ -9,6 +9,7 @@ import logo from '../images/coloration.png'
 
 var myInterval
 const NavigationBar = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ currentDate, setCurrentDate ] = useState(new Date())
     const [ subMenuText, setSubMenuText ] = useState('Compliance Menu')
     const [ makeVisible, setMakeVisible ] = useState('menu_rota_sub_none')

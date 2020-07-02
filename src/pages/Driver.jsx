@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect} from 'react'
 import NavigationBar from '../components/NavBar'
 import Documents from '../components/Documents'
@@ -7,6 +9,7 @@ import Invoices from '../components/Invoices'
 import Training from '../components/Training'
 
 const Driver = (props) => {
+    var CryptoJS = require("crypto-js");
     const [ selectedDriver, setSelectedDriver ] = useState(null)
     const [ selectedDate, setSelectedDate ] = useState(new Date())
 
