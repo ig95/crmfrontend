@@ -3,23 +3,24 @@
 import React, { useState, useEffect } from 'react'
 import NavigationBar from '../components/NavBar'
 import { Link } from 'react-router-dom';
+import Dropdown from 'react-dropdown'
 
 const Compliance = () => {
     var CryptoJS = require("crypto-js");
     const [ selectedCity, setSelectedCity ] = useState('DBS2')
+    const [ selectedCitySubmit, setSelectedCitySubmit ] = useState('DBS2')
     const [ logicalGate, setLogicalGate ] = useState(false)
-    const [ submitPressed, setSubmitPressed ] = useState('Create Driver')
-    const [ reloadGate, setReloadGate ] = useState(false)
+    const [ submitPressed, setSubmitPressed ] = useState('Submit')
+    const [ submitPressedEdit, setSubmitPressedEdit ] = useState('Submit')
     const [ data, setData ] = useState(null)
     const [ nonActiveDrivers, setNonActiveDrivers ] = useState([])
     const [ nonVerifiedImages, setNonVerifiedImages ] = useState([])
-    const [ nonDriverVans, setNonDriverVans ] = useState([])
     const [ vanList, setVanList ] = useState([])
-    const [ selectedVan, setSelectedVan ] = useState(null)
     const [ selectedDriver, setSelectedDriver ] = useState(null)
     const [ reload, setReload ] = useState(0)
-    const [ idVans, setIdVans ] = useState([])
     const [ editGate, setEditGate ] = useState(false)
+    const [ offboardGate, setOffboardGate ] = useState(false)
+    const [ offboardDriver, setOffboardDriver ] = useState(null)
 
     var editTheDriver;
 
@@ -49,41 +50,53 @@ const Compliance = () => {
             })
         })
     }, [reload])
-    
-    // make a vehicle belong to a driver
-    // if (selectedDriver && selectedVan) {
-    //     async function putData(url = '', data = {}) {
-    //         let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
-    //         let originalText = bytes.toString(CryptoJS.enc.Utf8);
-    //         const response = await fetch(url, {
-    //             method: 'PUT', 
-    //             mode: 'cors',
-    //             cache: 'no-cache',
-    //             credentials: 'same-origin',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Token ${originalText}`
-    //             },
-    //             body: JSON.stringify(data)
-    //         });
 
-    //         return response ? response.json() : console.log('no reponse')
-
-    //     };
-    //     putData(`https://pythonicbackend.herokuapp.com/vehicles/${selectedVan.vehicle_id}/`, {
-    //         driver_id: `https://pythonicbackend.herokuapp.com/drivers/${selectedDriver.driver_id}/`
-    //     }).then( response => {
-    //         setSelectedDriver(null)
-    //         setSelectedVan(null)
-    //         let x = reload
-    //         let y = x + 1
-    //         setReload(y)
-    //     })
-    // }
-
-    if (selectedDriver) {
-
-    }
+    // map the non active drivers to list
+    useEffect( () => {
+        let localArray = []
+        let localVerifiedArray = []
+        if (data) {
+            data.drivers.forEach( (driver, driverID) => {
+                if (driver.status !== 'OffboardedForever') {
+                    if (driver.status) {
+                        if (driver.status !== 'Active' && driver.location === selectedCity) {
+                            localArray.push(
+                                <div key={driver.driver_id}>
+                                    <h3 key={driverID} className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectDriver(e, driver)}>
+                                        {driver.name}
+                                    </h3>
+                                    <br />
+                                </div>
+                            )
+                        } else if (driver.status === 'Active' && driver.location === selectedCity) {
+                            localVerifiedArray.push(
+                                <div key={driver.driver_id}>
+                                    <h3 key={driverID} className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectDriver(e, driver)}>
+                                        {driver.name}
+                                    </h3>
+                                    <br />
+                                </div>
+                            )
+                        }
+                    }
+                    if (!driver.status && driver.location === selectedCity) {
+                        localArray.push(
+                            <div key={driver.driver_id}>
+                                <h3 key={driverID} className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectDriver(e, driver)}>
+                                    {driver.name}
+                                </h3>
+                                <br />
+                            </div>
+                        )
+                    }
+                }
+            })
+        }
+        setNonVerifiedImages(localVerifiedArray)
+        setNonActiveDrivers(localArray)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        driverLocalList = localArray
+    }, [data, selectedCity])
 
     // function for changing the city from dropdown
     const handleSelectCity = (e, selectCity) => {
@@ -115,7 +128,7 @@ const Compliance = () => {
 
         postData('https://pythonicbackend.herokuapp.com/drivers/', {
             name: e.target.name.value ? e.target.name.value : 'null',
-            location: e.target.location.value ? e.target.location.value : 'null',
+            location: selectedCitySubmit ? selectedCitySubmit : 'null',
             phone: e.target.mobile.value ? e.target.mobile.value : 'null',
             email: e.target.email.value ? e.target.email.value : 'null',
             UTRNumber: e.target.UTRNumber.value ? e.target.UTRNumber.valuee : 'null',
@@ -124,14 +137,16 @@ const Compliance = () => {
             let x = reload
             let y = x + 1
             setReload(y)
+            setSubmitPressed('Submit')
         })
     }
 
     // send form to backend editing
     const handleSubmitEdit = (e) => {
         e.preventDefault();
-        setSubmitPressed('Edited')
+        setSubmitPressedEdit('Edited')
         async function postData(url = '', data = {}) {
+            console.log(selectedCitySubmit)
             let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
             let originalText = bytes.toString(CryptoJS.enc.Utf8);
             const response = await fetch(url, {
@@ -152,16 +167,16 @@ const Compliance = () => {
 
         postData(`https://pythonicbackend.herokuapp.com/drivers/${selectedDriver.driver_id}/`, {
             name: e.target.name.value ? e.target.name.value : 'null',
-            location: e.target.location.value ? e.target.location.value : 'null',
+            location: selectedCitySubmit ? selectedCitySubmit : 'null',
             phone: e.target.mobile.value ? e.target.mobile.value : 'null',
             email: e.target.email.value ? e.target.email.value : 'null',
             UTRNumber: e.target.UTRNumber.value ? e.target.UTRNumber.valuee : 'null',
         }).then( (response) => {
-            console.log(response)
             backToNormal()
             let x = reload
             let y = x + 1
             setReload(y)
+            setSubmitPressedEdit('Submit')
         })
     }
 
@@ -169,23 +184,44 @@ const Compliance = () => {
     const backToNormal = () => {
         setLogicalGate(false)
         setEditGate(false)
+        setOffboardGate(false)
         setSelectedDriver(null)
+    }
+
+    // dropdown menu options
+    const options = [
+        'DBS2',
+        'DSN1',
+        'DEX2',
+        'DXP1'
+    ]
+
+    // function for setting the station
+    const onSelect = (e) => {
+        setSelectedCitySubmit(e.value)
     }
 
     // make the driver page
     var makeTheDriver
     if (logicalGate) {
-        makeTheDriver = (
+        content = (
             <div className='new_driver_form_container'>
                 <h1>Add Driver</h1>
                 <form onSubmit={handleSubmit} className='new_employee_form'>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Name</label>
-                            <input className='inputs' type="text" name='name'/>
+                            <input className='inputs' type="text" name='name' id='makeThisMore'/>
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Depot</label>
-                            <input className='inputs' type="text" name='location' defaultValue={selectedCity}/>
+                        <Dropdown 
+                            options={options} 
+                            onChange={onSelect} 
+                            value={selectedCitySubmit} 
+                            placeholder="Select an option" 
+                            className='drop_down_bar_dashboard'
+                            id='drop_down_style'
+                        />
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Address</label>
@@ -193,7 +229,7 @@ const Compliance = () => {
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Mobile</label>
-                            <input className='inputs' type="tel" name='mobile' placeholder='required format: 425-314-9311' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" />
+                            <input className='inputs' type="tel" name='mobile' placeholder='Format: 01234567890' pattern="[0-9]{11}" required/>
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Email</label>
@@ -201,7 +237,7 @@ const Compliance = () => {
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>UTR Number</label>
-                            <input className='inputs' type="text" name='UTRNumber'/>
+                            <input className='inputs' type="text" name='UTRNumber' placeholder='Format: 0123456789' pattern="[0-9]{10}"/>
                     </div>
                     <div className='buttons_new_driverPage'>
                         <input type="submit" value={submitPressed} className='compliance_add_driver_button_submit' />
@@ -216,8 +252,7 @@ const Compliance = () => {
 
     // edit Gate
     if (editGate) {
-        console.log(selectedDriver)
-        editTheDriver = (
+        content = (
             <div className='new_driver_form_container'>
                 <h1>Edit Driver</h1>
                 <form onSubmit={handleSubmitEdit} className='new_employee_form'>
@@ -227,7 +262,14 @@ const Compliance = () => {
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Depot</label>
-                            <input className='inputs' type="text" name='location' defaultValue={selectedDriver.location}/>
+                        <Dropdown 
+                            options={options} 
+                            onChange={onSelect} 
+                            value={selectedCitySubmit} 
+                            placeholder="Select an option" 
+                            className='drop_down_bar_dashboard'
+                            id='drop_down_style'
+                        />
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Address</label>
@@ -235,7 +277,7 @@ const Compliance = () => {
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Mobile</label>
-                            <input className='inputs' type="tel" name='mobile' placeholder='required format: 425-314-9311' pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" defaultValue={selectedDriver.phone}/>
+                            <input className='inputs' type="tel" name='mobile' placeholder='Format: 01234567890' pattern="[0-9]{11}" defaultValue={selectedDriver.phone} required/>
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>Email</label>
@@ -243,10 +285,10 @@ const Compliance = () => {
                     </div>
                     <div className='dashboard_form_divs_name'>
                         <label className='labels'>UTR Number</label>
-                            <input className='inputs' type="text" name='UTRNumber' defaultValue={selectedDriver.DriverUniqueId}/>
+                            <input className='inputs' type="text" name='UTRNumber' defaultValue={selectedDriver.DriverUniqueId} placeholder='Format: 0123456789' pattern="[0-9]{10}"/>
                     </div>
                     <div className='buttons_new_driverPage'>
-                        <input type="submit" value='Submit' className='compliance_add_driver_button_submit' />
+                        <input type="submit" value={submitPressedEdit} className='compliance_add_driver_button_submit' />
                         <button className='compliance_add_driver_button_submit' onClick={backToNormal}>
                             <span className='span_in_complaince_button'>Return</span> 
                         </button>
@@ -254,6 +296,75 @@ const Compliance = () => {
                 </form>
             </div>
         )
+    }
+
+    const backToOffboard = () => {
+        setOffboardDriver(null)
+    }
+
+    // if Offboard Gate
+    var OffboardContent
+    if (offboardGate) {
+        let localArray = []
+        if (data) {
+            data.drivers.forEach( (driver, driverId) => {
+                if (driver.status === 'OffboardedForever') {
+                    localArray.push(
+                        <div key={driverId}>
+                            <h3 className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectOffboardedDriver(e, driver)}>
+                                {driver.name}
+                            </h3>
+                        </div>
+                    )
+                }
+            })
+        }
+        if (offboardDriver) {
+            console.log(offboardDriver)
+            let localArray = []
+            offboardDriver.imgArray.forEach( (image, imageId) => {
+                localArray.push(
+                    <div className='imageIconBox'>
+                        <p>{image.name}</p>
+                        <img src={image.imagesLink} className='imageThumbs'/>
+                    </div>
+                )
+            })
+            OffboardContent = (
+                <div className='selectedOffboardedDriver'> 
+                    <h2>Name: {offboardDriver.name}</h2>
+                    <h2>Email: {offboardDriver.email}</h2>
+                    <h2>Phone: {offboardDriver.phone}</h2>
+                    <h2>Approved Date: {offboardDriver.approvedDateAndTime}</h2>
+                    <h2>Documents</h2>
+                    <div className='imageArrayLocal'>
+                        {localArray}
+                    </div>
+                </div>
+                
+            )
+        } 
+        content = (
+            <div className='new_driver_form_container'>
+                <h1>Offboarded Drivers</h1>
+                <div className='offboarded_drivers_style'>
+                    <div className='listOfOffboardedDrivers'> 
+                        {localArray}
+                    </div>
+                    <div>
+                        {OffboardContent}
+                    </div>
+                </div>
+                <button className='compliance_add_driver_button_submit' onClick={backToNormal} id='returnButtonStyle'>
+                    <span className='span_in_complaince_button'>Return</span> 
+                </button>
+            </div>
+        )
+    }
+
+    // select offboarded driver for view
+    const handleSelectOffboardedDriver = (e, driver) => {
+        setOffboardDriver(driver)
     }
 
     // set the gate for make driver page
@@ -266,50 +377,9 @@ const Compliance = () => {
         setEditGate(true)
     }
 
-    // map the non active drivers to list
-    useEffect( () => {
-        let localArray = []
-        let localVerifiedArray = []
-        if (data) {
-            data.drivers.forEach( (driver, driverID) => {
-                if (driver.status) {
-                    if (driver.status !== 'Active') {
-                        localArray.push(
-                            <div key={driver.driver_id}>
-                                <h3 key={driverID} className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectDriver(e, driver)}>
-                                    {driver.name}
-                                </h3>
-                                <br />
-                            </div>
-                        )
-                    } else if (driver.status === 'Active') {
-                        localVerifiedArray.push(
-                            <div key={driver.driver_id}>
-                                <h3 key={driverID} className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectDriver(e, driver)}>
-                                    {driver.name}
-                                </h3>
-                                <br />
-                            </div>
-                        )
-                    }
-                }
-                if (!driver.status) {
-                    localArray.push(
-                        <div key={driver.driver_id}>
-                            <h3 key={driverID} className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectDriver(e, driver)}>
-                                {driver.name}
-                            </h3>
-                            <br />
-                        </div>
-                    )
-                }
-            })
-        }
-        setNonVerifiedImages(localVerifiedArray)
-        setNonActiveDrivers(localArray)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        driverLocalList = localArray
-    }, [data])
+    const handleMakeOffboardSort = () => {
+        setOffboardGate(true)
+    }
 
     // select a Driver for editing
     const handleSelectDriver = (e, driverMain) => {
@@ -317,9 +387,10 @@ const Compliance = () => {
         let localVerifiedArray = []
         setSelectedDriver(driverMain)
         console.log(driverMain)
+        setSelectedCitySubmit(driverMain.location)
         data.drivers.forEach( (driver, driverID) => {
             if (driver.name === driverMain.name) {
-                if (driver.status === 'Active') {
+                if (driver.status === 'Active' && driver.location === selectedCity) {
                     localVerifiedArray.push(
                         <div key={driver.driver_id}>
                             <h3 className='h3_for_compliance_Page_colored' onClick={(e, theDriver) => handleSelectDriver(e, driver)}>
@@ -343,7 +414,7 @@ const Compliance = () => {
                     )
                 }
             } else {
-                if (driver.status) {
+                if (driver.status && driver.location === selectedCity) {
                     if (driver.status !== 'Active') {
                         localArray.push(
                             <div key={driver.driver_id}>
@@ -353,7 +424,7 @@ const Compliance = () => {
                                 <br />
                             </div>
                         )
-                    } else if (driver.status === 'Active') {
+                    } else if (driver.status === 'Active' && driver.location === selectedCity) {
                         localVerifiedArray.push(
                             <div key={driver.driver_id}>
                                 <h3 className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectDriver(e, driver)}>
@@ -364,7 +435,7 @@ const Compliance = () => {
                         )
                     }
                 }
-                if (!driver.status) {
+                if (!driver.status && driver.location === selectedCity) {
                     localArray.push(
                         <div key={driver.driver_id}>
                             <h3 className='h3_for_compliance_Page' onClick={(e, theDriver) => handleSelectDriver(e, driver)}>
@@ -381,74 +452,118 @@ const Compliance = () => {
     }
 
     var driverLocalList
+
+    var content 
+    if (!logicalGate && !editGate && !offboardGate) {
+        content = (
+            <>
+                <NavigationBar title='Compliance'/>
+                <div className='main_content_compliance'>
+                    <div className='top_container_compliance_page'>
+                        <div>
+                            <button className='compliance_add_driver_button' onClick={handleMakeOffboardSort} id='offboarded_drivers_style'>
+                                <span className='span_in_complaince_button'>OFFBOARDED DRIVERS</span> 
+                            </button>
+                        </div>
+                        <div className='drop_down_bar_container' id='Make_this_less'>
+                            <nav class="menu">
+                                <ol>
+                                    <li className="menu-item"><a href="#0">{selectedCity}</a>
+                                        <ol className="sub-menu">
+                                            <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DBS2')}><a href="#0">DBS2</a></li>
+                                            <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DSN1')}><a href="#0">DSN1</a></li>
+                                            <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DEX2')}><a href="#0">DEX2</a></li>
+                                            <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DXP1')}><a href="#0">DXP1</a></li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div>
+                            <button className='compliance_add_driver_button' onClick={handleMakeDriverPage} id='spaceMeLeftPlease'>
+                                <span className='span_in_complaince_button'>ADD DRIVER</span> 
+                            </button>
+                        </div>
+                    </div>
+                    <div className='bottom_container_compliance_page'>
+                        <div className='bottom_buttons_compliance_page'>
+                            <Link to='/documentsforverification' className='links'>
+                                <button className='compliance_add_driver_button' >
+                                    <span className='span_in_complaince_button'>Waiting for Verification</span> 
+                                </button>
+                            </Link>
+                            <h2 className='h2Label'>Non-Verified</h2>
+                            {nonActiveDrivers}
+                        </div>
+                        <div className='bottom_buttons_compliance_page'>
+                            <Link to='/driverdocuments' className='links'>
+                                <button className='compliance_add_driver_button' >
+                                    <span className='span_in_complaince_button'>Driver Documents</span> 
+                                </button>
+                            </Link>
+                            <h2 className='h2Label'>Verified</h2>
+                            {nonVerifiedImages}
+                        </div>
+                        <div className='bottom_buttons_compliance_page'>
+                            <Link to='drivercompliancecheck' className='links'>
+                                <button className='compliance_add_driver_button' >
+                                    <span className='span_in_complaince_button'>Driver Compliance Check</span> 
+                                </button>
+                            </Link>
+                        </div>
+                        <div className='bottom_buttons_compliance_page' id='last_div_compliance_page'>
+                            <Link to='/companyvans' className='links'>
+                                <button className='compliance_add_driver_button' >
+                                    <span className='span_in_complaince_button'>Company Vans</span> 
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
     return (
         <div className='home_content'>
-            <NavigationBar title='Compliance'/>
-            {makeTheDriver}
-            {editTheDriver}
-            <div className='main_content_compliance'>
-                <div className='top_container_compliance_page'>
-                    <div className='drop_down_bar_container'>
-                        <nav class="menu">
-                            <ol>
-                                <li className="menu-item"><a href="#0">{selectedCity}</a>
-                                    <ol className="sub-menu">
-                                        <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DBS2')}><a href="#0">DBS2</a></li>
-                                        <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DSN1')}><a href="#0">DSN1</a></li>
-                                        <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DEX2')}><a href="#0">DEX2</a></li>
-                                        <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DXP1')}><a href="#0">DXP1</a></li>
-                                    </ol>
-                                </li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <div>
-                        <button className='compliance_add_driver_button' onClick={handleMakeDriverPage}>
-                            <span className='span_in_complaince_button'>ADD DRIVER</span> 
-                        </button>
-                    </div>
-                </div>
-                <div className='bottom_container_compliance_page'>
-                    <div className='bottom_buttons_compliance_page'>
-                        <Link to='/documentsforverification' className='links'>
-                            <button className='compliance_add_driver_button' >
-                                <span className='span_in_complaince_button'>Waiting for Verification</span> 
-                            </button>
-                        </Link>
-                        <h2 className='h2Label'>Non-Verified</h2>
-                        {nonActiveDrivers}
-                    </div>
-                    <div className='bottom_buttons_compliance_page'>
-                        <Link to='/driverdocuments' className='links'>
-                            <button className='compliance_add_driver_button' >
-                                <span className='span_in_complaince_button'>Driver Documents</span> 
-                            </button>
-                        </Link>
-                        <h2 className='h2Label'>Verified</h2>
-                        {nonVerifiedImages}
-                    </div>
-                    <div className='bottom_buttons_compliance_page'>
-                        <Link to='drivercompliancecheck' className='links'>
-                            <button className='compliance_add_driver_button' >
-                                <span className='span_in_complaince_button'>Driver Compliance Check</span> 
-                            </button>
-                        </Link>
-                    </div>
-                    <div className='bottom_buttons_compliance_page' id='last_div_compliance_page'>
-                        <Link to='/companyvans' className='links'>
-                            <button className='compliance_add_driver_button' >
-                                <span className='span_in_complaince_button'>Company Vans</span> 
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            </div>
+            {content}
         </div>
     )
 }
 
 export default Compliance
 
+
+    
+    // make a vehicle belong to a driver
+    // if (selectedDriver && selectedVan) {
+    //     async function putData(url = '', data = {}) {
+    //         let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+    //         let originalText = bytes.toString(CryptoJS.enc.Utf8);
+    //         const response = await fetch(url, {
+    //             method: 'PUT', 
+    //             mode: 'cors',
+    //             cache: 'no-cache',
+    //             credentials: 'same-origin',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Token ${originalText}`
+    //             },
+    //             body: JSON.stringify(data)
+    //         });
+
+    //         return response ? response.json() : console.log('no reponse')
+
+    //     };
+    //     putData(`https://pythonicbackend.herokuapp.com/vehicles/${selectedVan.vehicle_id}/`, {
+    //         driver_id: `https://pythonicbackend.herokuapp.com/drivers/${selectedDriver.driver_id}/`
+    //     }).then( response => {
+    //         setSelectedDriver(null)
+    //         setSelectedVan(null)
+    //         let x = reload
+    //         let y = x + 1
+    //         setReload(y)
+    //     })
+    // }
 
     // // select a van to assign to a driver
     // const handleSelectDriverVerified = (e, driverMain) => {

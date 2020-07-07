@@ -793,7 +793,6 @@
 
 #sub_menu_options_two {
   background-color: white;
-  height: 3.8vh;
 }
 
 #sub_menu_options:hover {
@@ -3869,6 +3868,10 @@
     padding: 0;
   }
 
+  #Make_this_less {
+    z-index: .1;
+  }
+
   .new_driver_form_container {
     animation-name: fadeToExist;
     -webkit-animation-name: fadeToExist;
@@ -3886,7 +3889,6 @@
     z-index: 1;
     overflow: clip;
     opacity: 0;
-
   }
 
   @keyframes fadeToExist {
@@ -5192,12 +5194,57 @@
       width: 5vw;
     }
     
-  /****************************************  FORMS/DOCUMENTS PAGE ************************************************************/
+  /****************************************  COMPLAINCE PAGE ************************************************************/
   .top_container_compliance_page {
     width: 100%;
     padding: 2rem;
     display: flex;
-    justify-content: space-around;
+  }
+
+  .imageThumbs {
+    max-height: 24vh;
+    max-width: 24vw;
+    margin: 1vh;
+    box-shadow: 2px 2px 4px;
+  }
+
+  .imageArrayLocal {
+    height: 50vh;
+    overflow: scroll;
+    display: flex;
+  }
+
+  .imageIconBox {
+    text-align: center;
+  }
+
+  .offboarded_drivers_style {
+    display: flex;
+  }
+
+  .listOfOffboardedDrivers {
+    width: 15vw;
+    height: 75vh;
+    margin-bottom: 3vh;
+    overflow-y: scroll;
+    border-right: 2px solid $amazon_blue;
+  }
+  
+  .selectedOffboardedDriver {
+    width: 75vw;
+    height: 75vh;
+    overflow-y: scroll;
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+
+  #spaceMeLeftPlease {
+    margin-left: 40vw;
+    margin-right: 3vw;
+  }
+
+  #offboarded_drivers_style {
+    height: 5.2vh;
   }
   
   .main_content_compliance {

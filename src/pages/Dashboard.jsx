@@ -98,14 +98,18 @@ const Dashboard = (props) => {
             let overallArray = []
             if (response.data) {
                 response.data.drivers.forEach( element => {
+                    if (element.status !== 'Offboardedforever') {
                         element.datesArray.forEach( ele => {
-                            if (new Date(ele.date).toDateString() === selectedDate.toDateString() && ele.location === selectedCitySort) {
-                                localArray.push(element)
-                            }
-                            if (new Date(ele.date).toDateString() === selectedDate.toDateString()) {
-                                overallArray.push(ele)
+                            if (ele.location !== 'OFF') {
+                                if (new Date(ele.date).toDateString() === selectedDate.toDateString() && ele.location === selectedCitySort) {
+                                    localArray.push(element)
+                                }
+                                if (new Date(ele.date).toDateString() === selectedDate.toDateString()) {
+                                    overallArray.push(ele)
+                                }
                             }
                         })
+                    }
                 })
             }
             setTodaysRoutes(localArray)

@@ -204,10 +204,12 @@ const DriverDocuments = (props) => {
             makeSearchUnderBar(e.target.value, nameValue.length)
             let localArray = []
             data.drivers.forEach( (ele, id) => {
-                if (ele.name.includes(e.target.value) && e.target.value !== '' && e.target.value.length < 4) {
-                    localArray.push(
-                        <h4 className='name_suggestions' id={id} onClick={(e, theName) => handleNameClick(e, `${ele.name}`)} >{ele.name}</h4>
-                    )
+                if (ele.status !== 'OffboardedForever') {
+                    if (ele.name.includes(e.target.value) && e.target.value !== '' && e.target.value.length < 4) {
+                        localArray.push(
+                            <h4 className='name_suggestions' id={id} onClick={(e, theName) => handleNameClick(e, `${ele.name}`)} >{ele.name}</h4>
+                        )
+                    }
                 }
             })
             setDriverSearchArray(localArray)
