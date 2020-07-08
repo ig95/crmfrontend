@@ -102,6 +102,8 @@ const App = () => {
   const responseGoogle = (responseGoog) => {
     // eslint-disable-next-line no-unused-vars
     async function getDataNext(url = '') {
+      let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+      let originalText = bytes.toString(CryptoJS.enc.Utf8);
       const response = await fetch(url, {
           method: 'GET', 
           mode: 'cors',
@@ -109,7 +111,7 @@ const App = () => {
           credentials: 'same-origin',
           headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Token ${localStorage.getItem('token')}`
+              'Authorization': `Token ${originalText}`
           }
       });
       return response ? response.json() : console.log('no reponse')
