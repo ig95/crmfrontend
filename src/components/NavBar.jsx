@@ -163,7 +163,7 @@ const NavigationBar = (props) => {
                 </Link>
                 <Link to="/summary" className='links'>
                     <div className='link_style'>
-                        Summary
+                        Payroll
                     </div>
                 </Link>
             </div>

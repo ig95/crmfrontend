@@ -271,7 +271,7 @@ const Summary = () => {
     
     return (
         <div className='home_content'>
-            <NavigationBar title='Summary'/>
+            <NavigationBar title='Payroll'/>
             <div className='main_content_driver_summary'>
                 <div className='summary_data'>
                     {summaryArray}

@@ -42,16 +42,30 @@ const App = () => {
   // const [ user, setUser] = useState(null);
 
   // dev mode is for the coooooools
-  // useEffect( () => {
-  //   setUserName('Nicholas Shankland')
-  //   setUserEmail('nicholas.m.shankland@gmail.com')
-  //   setUserId('1923874-98y')
-  //   setStation('DBS2')
-  //   setSuperUser(true)
-  // },[])
+  useEffect( () => {
+    setUserName('Nicholas Shankland')
+    setUserEmail('nicholas.m.shankland@gmail.com')
+    setUserId('1923874-98y')
+    setStation('DBS2')
+    setSuperUser(true)
+  },[])
 
   useEffect( () => {
+    // Encryption
+    // function encryptMe(msgString, key) {
+    //   let iv = CryptoJS.lib.WordArray.random(16);
+    //   let encrypted = CryptoJS.AES.encrypt(msgString, key, {
+    //     iv: iv
+    //   })
+    //   CryptoJS.enc.Utf8.parse(process.env.REACT_APP_ENCRYPTION_TYPE)
+    //   console.log(iv.concat(encrypted.ciphertext).toString(CryptoJS.enc.Base64))
+    //   return iv.concat(encrypted.ciphertext).toString(CryptoJS.enc.Base64)
+    // }
+    // encryptMe(process.env.REACT_APP_DB_USERNAME, process.env.REACT_APP_ENCRYPTION_TYPE)
+    // encryptMe(process.env.REACT_APP_DB_USERNAME, CryptoJS.enc.Utf8.parse(process.env.REACT_APP_ENCRYPTION_TYPE))
+    // console.log(CryptoJS.enc.Utf8.parse(process.env.REACT_APP_ENCRYPTION_TYPE))
     async function getData(url = '', data={}) {
+      let myBody = JSON.stringify(data)
       const response = await fetch(url, {
           method: 'POST', 
           mode: 'cors',
@@ -60,15 +74,18 @@ const App = () => {
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify(data)
+          body: myBody
       });
       return response ? response.json() : console.log('no reponse')
     };
 
+    // let myUser = CryptoJS.AES.encrypt(process.env.REACT_APP_DB_USERNAME, process.env.REACT_APP_ENCRYPTION_TYPE).toString()
+    // let myPassword = CryptoJS.AES.encrypt(process.env.REACT_APP_DB_PASSWORD, process.env.REACT_APP_ENCRYPTION_TYPE).toString()
     getData(process.env.REACT_APP_AUTH, {
       username: process.env.REACT_APP_DB_USERNAME,
       password: process.env.REACT_APP_DB_PASSWORD
     }).then( (response) => {
+      console.log(response)
       let encryptedToken = CryptoJS.AES.encrypt(response.token.toString(), process.env.REACT_APP_ENCRYPTION_TYPE).toString()
       localStorage.setItem('token', encryptedToken)
     }).then( (response) => {
@@ -117,33 +134,33 @@ const App = () => {
       return response ? response.json() : console.log('no reponse')
     };
 
-    getDataNext('https://pythonicbackend.herokuapp.com/managers/').then( response => {
-      let localVar = 0
-      if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
-        setUserName(responseGoog.profileObj.givenName)
-        setUserId(responseGoog.profileObj.googleId)
-        setUserEmail(responseGoog.profileObj.email)
-        setSuperUser(true)
-      }
-      if (responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
-        setUserName(responseGoog.profileObj.givenName)
-        setUserId(responseGoog.profileObj.googleId)
-        setUserEmail(responseGoog.profileObj.email)
-        setSuperUser(true)
-      }
-      response.results.forEach( ele => {
-        if (responseGoog.profileObj.email === ele.email) {
-          setUserName(responseGoog.profileObj.givenName)
-          setUserId(responseGoog.profileObj.googleId)
-          setUserEmail(responseGoog.profileObj.email)
-          setStation(ele.station)
-          localVar = 1
-        }
-      })
-      if (localVar === 0) {
-        setUserFound('Login not found. Please contact site administrator')
-      }
-    })
+    // getDataNext('https://pythonicbackend.herokuapp.com/managers/').then( response => {
+    //   let localVar = 0
+    //   if (responseGoog.profileObj.email === process.env.REACT_APP_EMAIL_VERIFICATION) {
+    //     setUserName(responseGoog.profileObj.givenName)
+    //     setUserId(responseGoog.profileObj.googleId)
+    //     setUserEmail(responseGoog.profileObj.email)
+    //     setSuperUser(true)
+    //   }
+    //   if (responseGoog.profileObj.email === process.env.REACT_APP_SUPER_USER) {
+    //     setUserName(responseGoog.profileObj.givenName)
+    //     setUserId(responseGoog.profileObj.googleId)
+    //     setUserEmail(responseGoog.profileObj.email)
+    //     setSuperUser(true)
+    //   }
+    //   response.results.forEach( ele => {
+    //     if (responseGoog.profileObj.email === ele.email) {
+    //       setUserName(responseGoog.profileObj.givenName)
+    //       setUserId(responseGoog.profileObj.googleId)
+    //       setUserEmail(responseGoog.profileObj.email)
+    //       setStation(ele.station)
+    //       localVar = 1
+    //     }
+    //   })
+    //   if (localVar === 0) {
+    //     setUserFound('Login not found. Please contact site administrator')
+    //   }
+    // })
   }
 
   var content

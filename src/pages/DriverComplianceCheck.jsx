@@ -52,7 +52,9 @@ const DriverComplianceCheck = (props) => {
         if (selectedCity === 'DBS2') {
             return <h2 className='compliance_check_center_this'>Bristol</h2>
         } else if (selectedCity === 'DSN1') {
-            return <h2 className='compliance_check_center_this'>Swansea</h2>
+            return <h2 className='compliance_check_center_this'>Swindon</h2>
+        } else if (selectedCity === 'DXP1') {
+            return <h2 className='compliance_check_center_this'>Plymouth</h2>
         } else {
             return <h2 className='compliance_check_center_this'>Exeter</h2>
         }
@@ -71,6 +73,7 @@ const DriverComplianceCheck = (props) => {
                                         <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DBS2')}><a href="#0">DBS2</a></li>
                                         <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DSN1')}><a href="#0">DSN1</a></li>
                                         <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DEX2')}><a href="#0">DEX2</a></li>
+                                        <li className="menu-item" onClick={(e, city) => handleSelectCity(e, 'DXP1')}><a href="#0">DXP1</a></li>
                                     </ol>
                                 </li>
                             </ol>

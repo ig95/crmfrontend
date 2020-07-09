@@ -5700,7 +5700,7 @@
     color: $logoColor;
   } 
   
-  /****************************************  VANS PAGES ************************************************************/
+  /****************************************  Rental Van Tracker VANS PAGES ************************************************************/
   .van_Horizontal {
     display: flex;
     padding-left: 1rem;
@@ -5718,6 +5718,10 @@
     padding: 10px;
     border: 1px solid black;
   }
+
+  .van_vertical_weekday_registration {
+    
+  }
   
   .van_vertical_weekday_total {
     width: 100px;
@@ -5728,6 +5732,23 @@
   
   .van_rental_tracker_overall {
     overflow: scroll;
+  }
+
+  .registrationListRentalVanTracker {
+    display: none;
+    overflow-y: scroll;
+    height: 3vh;
+  }
+
+  .inputRentalVanTracker {
+    width: 82px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 0;
+  }
+
+  .inputRentalVanTracker:hover {
+    background-color: rgb(243, 242, 242);
   }
   /****************************************  SUMMARY PAGES ************************************************************/
 
