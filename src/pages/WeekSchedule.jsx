@@ -102,44 +102,6 @@ const WeekSchedule = (props) => {
         setLogicalGate(true)
     }
 
-    // send form to backend
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setSubmitPressed('Created')
-        async function postData(url = '', data = {}) {
-            const response = await fetch(url, {
-                method: 'POST', 
-                mode: 'cors',
-                cache: 'no-cache',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Token ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify(data)
-                });
-
-            return response ? response.json() : console.log('no reponse')
-
-        };
-
-        postData('https://pythonicbackend.herokuapp.com/drivers/', {
-            name: e.target.name.value ? e.target.name.value : 'null',
-            location: e.target.location.value ? e.target.location.value : 'null',
-            status: e.target.status.value ? e.target.status.value : 'null',
-            onboarding: e.target.Onboarding.value ? e.target.Onboarding.value : 0,
-            phone: e.target.mobile.value ? e.target.mobile.value : 'null',
-            email: e.target.email.value ? e.target.email.value : 'null',
-            BadgeNumber: e.target.BadgeNumber.value ? e.target.BadgeNumber.value : 'null',
-            DriverUniqueId: e.target.DriverID.value ? e.target.DriverID.value : 'null',
-            NINNumber: e.target.NINNumber.value ? e.target.NINNumber.value : 'null',
-            UTRNumber: e.target.UTRNumber.value ? e.target.UTRNumber.valuee : 'null',
-            VatNumber: e.target.VATNumber.value ? e.target.VATNumber.value : 'null',
-        }).then( (response) => {
-            reloadGate ? setReloadGate(false) : setReloadGate(true)
-        })
-    }
-
     // get rid of the driver page
     const backToNormal = () => {
         setLogicalGate(false)

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Dropdown from 'react-dropdown'
 
 const Compliance = () => {
+    var content 
     var CryptoJS = require("crypto-js");
     const [ selectedCity, setSelectedCity ] = useState('DBS2')
     const [ selectedCitySubmit, setSelectedCitySubmit ] = useState('DBS2')
@@ -326,7 +327,7 @@ const Compliance = () => {
                 localArray.push(
                     <div className='imageIconBox'>
                         <p>{image.name}</p>
-                        <img src={image.imagesLink} className='imageThumbs'/>
+                        <img src={image.imagesLink} className='imageThumbs' alt='the best ever'/>
                     </div>
                 )
             })
@@ -453,7 +454,6 @@ const Compliance = () => {
 
     var driverLocalList
 
-    var content 
     if (!logicalGate && !editGate && !offboardGate) {
         content = (
             <>

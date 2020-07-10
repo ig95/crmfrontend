@@ -245,9 +245,6 @@ const Dashboard = (props) => {
                             <div className='list_spacer_content'>
                                 <h4 className='remove_h3_padding'>{ele.date.deductionSum ? ele.date.deductionSum : '--'}</h4>
                             </div>
-                            <div className='list_spacer_content'>
-                                <h4 className='remove_h3_padding'>{ele.date.total ? `GB£${ele.date.total}` : '--'}</h4>
-                            </div>
                         </div>
                         <button className='modify_button' onClick={(e, elements) => onClick(e, ele.date)}>
                             <h4>Modify</h4>
@@ -273,8 +270,8 @@ const Dashboard = (props) => {
 
     useEffect( () => {
         let localArray = []
-        let labelArray =[`${selectedCity}`, 'Da Name', 'Route No', 'Route Type', 'Log In', 'Log Out', 'TORH', 'Start Mileage', 'Finish Mileage', 'support', 'deductions', 'total']
-        for (let i = 0; i < 12; i++) {
+        let labelArray =[`${selectedCity}`, 'Da Name', 'Route No', 'Route Type', 'Log In', 'Log Out', 'TORH', 'Start Mileage', 'Finish Mileage', 'support', 'deductions']
+        for (let i = 0; i < 11; i++) {
             localArray.push(
                 <div className='dashboard_top_rectangles' onClick={(e, targetValue) => handleSorting(e, labelArray[i])}>
                     <h4 className='remove_h3_padding' >{labelArray[i]}</h4>   

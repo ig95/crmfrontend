@@ -262,7 +262,8 @@ const DashboardForm = (props) => {
         'Missort Route',
         'Classroom Training',
         'Ride Along',
-        'Sweeper'
+        'Sweeper',
+        'None'
     ]
 
     // // select name
@@ -501,19 +502,6 @@ const DashboardForm = (props) => {
                         </div>
                             <input className='input_dashboard_page' type="text" name='FinishMileage' value={finishMileage} onChange={handleChangeInputs}/>
                     </div>        
-
-                    <div className='dashboard_form_divs'>    
-                        <div>
-                            <label className='dashboard_labels'>No. Parcels Delivered </label>
-                        </div>
-                            <input className='input_dashboard_page' type="text" name='ParcelsDelivered' value={parcelsDelivered} onChange={handleChangeInputs}/>
-                    </div>
-                    <div className='dashboard_form_divs'>    
-                        <div>
-                            <label className='dashboard_labels'>Parcels not Delivered </label>
-                        </div>
-                            <input className='input_dashboard_page' type="text" name='ParcelsNotDelivered' value={parcelsNotDelivered} onChange={handleChangeInputs}/>
-                    </div>
                 </div>
                 <div className="button_daily_service" onClick={handleSubmitState}>
                     <h3 className='remove_h3_padding'>Submit</h3>  

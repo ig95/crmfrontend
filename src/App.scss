@@ -4105,7 +4105,7 @@
 
   .list_spacer_content {
     @extend %centerThings;
-    width: 5vw;
+    width: 4.45vw;
     margin-left: 1.5vw;
     margin-right: 1.5vw;
     padding: 0;
@@ -5712,20 +5712,181 @@
     padding: 10px;
     border: 1px solid black;
   }
+
+  .van_vertical_name {
+    width: 322px;
+    height: 42px;
+    border-radius: 0;
+    padding: 10px;
+    border: 1px solid black;
+    position: relative;
+    display: flex;
+    background: linear-gradient(to right, rgb(243, 242, 242) 50%, White 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    font-weight: 400;
+    font-family: $ubuntu_font;
+    font-size: 1em;
+    box-shadow: 0px 3px 8px $transparent-gray;
+    transition: all .3s ease-in-out;
+    overflow-x: hidden;
+  }
+
+  .van_vertical_name::after {
+    content: 'Submit';
+  }
+
+  .van_vertical_name:hover {
+    background-position: left bottom;
+  }
+
+    /* Customize the label (the container) */
+.container_checkbox_two {
+  position: relative;
+  cursor: pointer;
+  width: 100px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container_checkbox_two input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark_yes_two {
+  position: absolute;
+  height: 40px;
+  width: 97px;
+  border: 1px solid black;
+  background-color: white;
+}
+
+@keyframes makeBorderYesTwo {
+  0% {
+    background-color: white;
+  }
+  100% {
+    background-color: rgb(214, 250, 214);
+  }
+}
+
+/* On mouse-over, add a grey background color */
+.container_checkbox_two:hover input ~ .checkmark_yes_two {
+  animation: makeBorderYesTwo .3s forwards linear;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container_checkbox_two input:checked ~ .checkmark_yes_two {
+  background-color: $inRotaColor;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark_yes_two:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container_checkbox_two input:checked ~ .checkmark_yes:after {
+  display: block;
+}
+
+.submitHiddenRentalVanTracker {
+  display: none;
+  margin: 0;
+  margin-left: 10px;
+  padding: 0; 
+}
+
+.submitHiddenRentalVanTracker {
+  display: flex;
+  animation-name: delayThisPlease;
+  animation-duration: .3s;
+}
+
+  @keyframes delayThisPlease {
+    0% {
+      color: white;
+    }
+    100% {
+      color: rgb(243, 242, 242);
+    }
+  }
   
   .van_vertical_weekday {
     width: 100px;
-    padding: 10px;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .van_vertical_weekday_two {
+    width: 100px;
+    height: 40px;
     border: 1px solid black;
   }
 
   .van_vertical_weekday_registration {
-    
+    position: relative;
+    width: 100px;
+    height: 40px;
+  }
+
+  .van_vertical_weekday_registration:hover .listRentalVanCheck {
+    position: absolute;
+    display: block;
+    text-align: left;
+    background-color: white;
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    top: 40px;
+    left: 0;
+    width: 94px;
+    min-height: 60px;
+    max-height: 150px;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    padding-left: 2px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .registrationSearchList {
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+  }
+
+  .rentalVanChildName {
+    width: 50px;
+    font-size: 1em;
+  }
+
+  .registrationSearchList:hover {
+    background-color: rgb(243, 242, 242);
+  }
+
+  .listRentalVanCheck {
+    display: none;
+    list-style: none;
   }
   
   .van_vertical_weekday_total {
     width: 100px;
-    padding: 10px;
     background-color: rgb(238, 116, 116);
     border: 1px solid black;
   }
@@ -5733,18 +5894,19 @@
   .van_rental_tracker_overall {
     overflow: scroll;
   }
-
+  
   .registrationListRentalVanTracker {
     display: none;
     overflow-y: scroll;
     height: 3vh;
   }
-
+  
   .inputRentalVanTracker {
-    width: 82px;
-    padding: 10px;
-    border: 1px solid black;
+    height: 40px;
+    width: 96px;
+    padding: 0;
     border-radius: 0;
+    text-align: center;
   }
 
   .inputRentalVanTracker:hover {
