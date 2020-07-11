@@ -3,6 +3,7 @@
 import React, { useEffect, useState} from 'react'
 import NavigationBar from '../components/NavBar'
 var myDriver = null
+var myCheckerFuckReactArray = []
 const RentalVanTracker = (props) => {
     var CryptoJS = require("crypto-js");
     const [ data, setData ] = useState(null)
@@ -28,6 +29,12 @@ const RentalVanTracker = (props) => {
     useEffect( () => {
         myDriver = selectedDriver
     }, [selectedDriver])
+
+    // sets the variable outside for use in posting
+    useEffect( () => {
+        console.log('checker')
+        myCheckerFuckReactArray = arrayChecked
+    }, [arrayChecked])
 
     useEffect(() => {
         let myDate = new Date()
@@ -55,12 +62,9 @@ const RentalVanTracker = (props) => {
 
         getData('https://pythonicbackend.herokuapp.com/vandata/').then( (response) => {
             setData(response.data)
-            console.log(response)
-            getData('https://pythonicbackend.herokuapp.com/drivers/').then( response => {
-                setDriverData(response.results)
-                getData('https://pythonicbackend.herokuapp.com/vehicles/').then( response => {
-                    setVehicleData(response.results)
-                })
+            console.log(response.data)
+            getData('https://pythonicbackend.herokuapp.com/vehicles/').then( response => {
+                setVehicleData(response.results)
             })
         })  
     }, [dataGate])
@@ -194,8 +198,8 @@ const RentalVanTracker = (props) => {
     // hand esubmitting the main form
     const handleSubmitMainForm = (e, driverSelectedSubmit, theVanId) => {
         e.preventDefault()
+        console.log(myCheckerFuckReactArray)
         let vehicleId = -1
-        console.log(driverSelectedSubmit)
         vehicleData.forEach ( element => {
             if (element.registration === driverSelectedSubmit.vehicle_name) {
                 vehicleId = element.vehicle_id
@@ -232,13 +236,11 @@ const RentalVanTracker = (props) => {
             })
         }
         let arrayOfDates = []
-        console.log(driverSelectedSubmit, theVanId, arrayChecked)
-        arrayChecked[theVanId].forEach( (element, elementId) => {
-            if (element !== 0) {
-                arrayOfDates.push(dateCheckArray[elementId])
+        myCheckerFuckReactArray[theVanId].forEach( (ele, eleId) => {
+            if (ele !== 0) {
+                arrayOfDates.push(dateCheckArray[eleId])
             }
         })
-        console.log(arrayOfDates)
         arrayOfDates.forEach( ele => {
             handleSubmit(driverSelectedSubmit, ele)
         })
@@ -250,84 +252,131 @@ const RentalVanTracker = (props) => {
     // add the date to the array to send to back end
     const handleSelectDate = (e, vanId, theNumber) => {
         console.log(e.target, vanId, theNumber)
-        console.log(arrayChecked)
-        arrayChecked[vanId][theNumber] = 1
+        console.log(myCheckerFuckReactArray)
+        let myArray = myCheckerFuckReactArray
+        myArray[vanId][theNumber] = 1
+        setArrayChecked(myArray)
     }
 
     useEffect( () => {
         let localArray = []
         let arrayOfBoxes = []
-        if (data && vehicleData && driverData) {
-            driverData.forEach( (driver, vanID) => {
-                arrayOfBoxes.push([0,0,0,0,0,0,0])
-                localArray.push (
-                    <form key={vanID} onSubmit={(e, driverG, vanIDG) => handleSubmitMainForm(e, driver, vanID)}>
-                        <div className='van_Horizontal' >
-                            <input type='submit' value={driver.name} className='van_vertical_name' />
-
-                            <div className='van_vertical_weekday_registration'>
-                                <input type="text" className='inputRentalVanTracker' defaultValue={driver.vehicle_name} onChange={handleChange} onClick={(e, driverteo) => handleSelectDriver(e, driver)}/>
-                                <ol className='listRentalVanCheck'>
-                                    {registrationSearch}
-                                </ol>
-                            </div>
+        if (data && vehicleData) {
+            data.drivers.forEach( (driver, vanID) => {
+                if (driver.vanDatesArray.length > 0) {
+                    let checkerArray = [0,0,0,0,0,0,0]
+                    let myLocalArray = []
+                    for (let i=0; i < 7; i++) {
+                        myLocalArray.push(
                             <div key={vanID} className='van_vertical_weekday_two'>
                                 <label className='container_checkbox_two'>
-                                    <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 0)}/>
+                                    <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, i)}/>
                                     <span className='checkmark_yes_two' id='yes'></span>
                                 </label>
                             </div>
-                            <div key={vanID} className='van_vertical_weekday_two'>
-                                <label className='container_checkbox_two'>
-                                    <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 1)}/>
-                                    <span className='checkmark_yes_two' id='yes'></span>
-                                </label>
+                        )
+                    }
+                    driver.vanDatesArray.forEach( element => {
+                        if (dateCheckArray.includes(element.date)) {
+                            myLocalArray[dateCheckArray.indexOf(element.date)] = (
+                                <div key={vanID} className='van_vertical_weekday_three'>
+                                    <h3>1</h3>
+                                </div>
+                            )
+                            checkerArray[dateCheckArray.indexOf(element.date)] = 1
+                        }
+                    })
+                    localArray.push(
+                        <form key={vanID} onSubmit={(e, driverG, vanIDG) => handleSubmitMainForm(e, driver, vanID)}>
+                            <div className='van_Horizontal' >
+                                <input type='submit' value={driver.name} className='van_vertical_name' />
+                                <div className='van_vertical_weekday_registration'>
+                                    <input type="text" className='inputRentalVanTracker' defaultValue={driver.vehicle_name} onChange={handleChange} onClick={(e, driverteo) => handleSelectDriver(e, driver)}/>
+                                    <ol className='listRentalVanCheck'>
+                                        {registrationSearch}
+                                    </ol>
+                                </div>
+                                {myLocalArray}
+                                <div className='van_vertical_weekday_two'>
+                                    <label className='container_checkbox_two'>
+                                        <input type="checkbox" />
+                                        <span className='checkmark_yes_two' id='yes'></span>
+                                    </label>
+                                </div>
                             </div>
-                            <div key={vanID} className='van_vertical_weekday_two'>
-                                <label className='container_checkbox_two'>
-                                    <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 2)}/>
-                                    <span className='checkmark_yes_two' id='yes'></span>
-                                </label>
+                        </form>
+                    )
+                    arrayOfBoxes.push(checkerArray)
+                } else {
+                    arrayOfBoxes.push([0,0,0,0,0,0,0])
+                    localArray.push (
+                        <form key={vanID} onSubmit={(e, driverG, vanIDG) => handleSubmitMainForm(e, driver, vanID)}>
+                            <div className='van_Horizontal' >
+                                <input type='submit' value={driver.name} className='van_vertical_name' />
+    
+                                <div className='van_vertical_weekday_registration'>
+                                    <input type="text" className='inputRentalVanTracker' defaultValue={driver.vehicle_name} onChange={handleChange} onClick={(e, driverteo) => handleSelectDriver(e, driver)}/>
+                                    <ol className='listRentalVanCheck'>
+                                        {registrationSearch}
+                                    </ol>
+                                </div>
+                                <div key={vanID} className='van_vertical_weekday_two'>
+                                    <label className='container_checkbox_two'>
+                                        <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 0)}/>
+                                        <span className='checkmark_yes_two' id='yes'></span>
+                                    </label>
+                                </div>
+                                <div key={vanID} className='van_vertical_weekday_two'>
+                                    <label className='container_checkbox_two'>
+                                        <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 1)}/>
+                                        <span className='checkmark_yes_two' id='yes'></span>
+                                    </label>
+                                </div>
+                                <div key={vanID} className='van_vertical_weekday_two'>
+                                    <label className='container_checkbox_two'>
+                                        <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 2)}/>
+                                        <span className='checkmark_yes_two' id='yes'></span>
+                                    </label>
+                                </div>
+                                <div key={vanID} className='van_vertical_weekday_two'>
+                                    <label className='container_checkbox_two'>
+                                        <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 3)}/>
+                                        <span className='checkmark_yes_two' id='yes'></span>
+                                    </label>
+                                </div>
+                                <div key={vanID} className='van_vertical_weekday_two'>
+                                    <label className='container_checkbox_two'>
+                                        <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 4)}/>
+                                        <span className='checkmark_yes_two' id='yes'></span>
+                                    </label>
+                                </div>
+                                <div key={vanID} className='van_vertical_weekday_two'>
+                                    <label className='container_checkbox_two'>
+                                        <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 5)}/>
+                                        <span className='checkmark_yes_two' id='yes'></span>
+                                    </label>
+                                </div>
+                                <div key={vanID} className='van_vertical_weekday_two'>
+                                    <label className='container_checkbox_two'>
+                                        <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 6)}/>
+                                        <span className='checkmark_yes_two' id='yes'></span>
+                                    </label>
+                                </div>
+                                <div className='van_vertical_weekday_two'>
+                                    <label className='container_checkbox_two'>
+                                        <input type="checkbox" />
+                                        <span className='checkmark_yes_two' id='yes'></span>
+                                    </label>
+                                </div>
                             </div>
-                            <div key={vanID} className='van_vertical_weekday_two'>
-                                <label className='container_checkbox_two'>
-                                    <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 3)}/>
-                                    <span className='checkmark_yes_two' id='yes'></span>
-                                </label>
-                            </div>
-                            <div key={vanID} className='van_vertical_weekday_two'>
-                                <label className='container_checkbox_two'>
-                                    <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 4)}/>
-                                    <span className='checkmark_yes_two' id='yes'></span>
-                                </label>
-                            </div>
-                            <div key={vanID} className='van_vertical_weekday_two'>
-                                <label className='container_checkbox_two'>
-                                    <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 5)}/>
-                                    <span className='checkmark_yes_two' id='yes'></span>
-                                </label>
-                            </div>
-                            <div key={vanID} className='van_vertical_weekday_two'>
-                                <label className='container_checkbox_two'>
-                                    <input type="checkbox" onClick={(e, element, elementTwo) => handleSelectDate(e, vanID, 6)}/>
-                                    <span className='checkmark_yes_two' id='yes'></span>
-                                </label>
-                            </div>
-                            <div className='van_vertical_weekday_two'>
-                                <label className='container_checkbox_two'>
-                                    <input type="checkbox" />
-                                    <span className='checkmark_yes_two' id='yes'></span>
-                                </label>
-                            </div>
-                        </div>
-                    </form>
-                )
+                        </form>
+                    )
+                }
             })
-            
         }
         setVanData(localArray)
         setArrayChecked(arrayOfBoxes)
-    }, [driverData, vehicleData, registrationSearch])
+    }, [data, vehicleData, registrationSearch])
 
     return (
         <div className='home_content' >

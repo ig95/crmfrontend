@@ -5838,6 +5838,14 @@
     border: 1px solid black;
   }
 
+  .van_vertical_weekday_three {
+    width: 100px;
+    height: 40px;
+    border: 1px solid black;
+    @extend %centerThings;
+    background-color: rgb(243, 242, 242);
+  }
+
   .van_vertical_weekday_registration {
     position: relative;
     width: 100px;
