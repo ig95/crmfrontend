@@ -5732,12 +5732,43 @@
     overflow-x: hidden;
   }
 
-  .van_vertical_name::after {
-    content: 'Submit';
+  .overallNameInputDivRental {
+    display: flex;
+    width: 312px;
+  }
+
+  .overallNameInputDivRental:hover .pTagRentalVehicle {
+    animation-name: makeVisibleSlowly;
+    animation-duration: .5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+  }
+
+  .pTagRentalVehicle {
+    position: absolute;
+    opacity: 0;
+    margin-left: 260px;
+  }
+
+  @keyframes makeVisibleSlowly {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: .5;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
   .van_vertical_name:hover {
     background-position: left bottom;
+    opacity: .5;
+  }
+
+  .van_vertical_weekday_three:hover {
+    background-color: rgb(250, 146, 146);
   }
 
     /* Customize the label (the container) */

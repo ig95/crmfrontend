@@ -108,7 +108,6 @@ const RentalVanTracker = (props) => {
         postData(`https://pythonicbackend.herokuapp.com/drivers/${myDriver.driver_id}/`, {
             vehicle_name: registrationName
         }).then( (response) => {
-            console.log(response)
             let myGate = dataGate
             let theGate = myGate += 1
             setDataGate(theGate)
@@ -258,6 +257,41 @@ const RentalVanTracker = (props) => {
         setArrayChecked(myArray)
     }
 
+    // delete van rental day
+    const handleDeleteDay = (e, targetDate) => {
+        console.log(e.target, targetDate)
+            // send form to backend
+        const handleSubmit = (theDate) => {
+            console.log(myDriver)
+            let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
+            let originalText = bytes.toString(CryptoJS.enc.Utf8);
+            async function DeleteData(url = '') {
+                const response = await fetch(url, {
+                    method: 'DELETE', 
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${originalText}`
+                    },
+                    });
+
+                return response ? response : console.log('no reponse')
+
+            };
+
+            DeleteData(`https://pythonicbackend.herokuapp.com/vanDates/${theDate.vehicleDate_id}/`).then( (response) => {
+                console.log(response)
+                let myGate = dataGate
+                let theGate = myGate += 1
+                setDataGate(theGate)
+            })
+        }
+        handleSubmit(targetDate)
+
+    }
+
     useEffect( () => {
         let localArray = []
         let arrayOfBoxes = []
@@ -279,7 +313,7 @@ const RentalVanTracker = (props) => {
                     driver.vanDatesArray.forEach( element => {
                         if (dateCheckArray.includes(element.date)) {
                             myLocalArray[dateCheckArray.indexOf(element.date)] = (
-                                <div key={vanID} className='van_vertical_weekday_three'>
+                                <div key={vanID} className='van_vertical_weekday_three' onClick={(e, theDate) => handleDeleteDay(e, element)}>
                                     <h3>1</h3>
                                 </div>
                             )
@@ -289,7 +323,10 @@ const RentalVanTracker = (props) => {
                     localArray.push(
                         <form key={vanID} onSubmit={(e, driverG, vanIDG) => handleSubmitMainForm(e, driver, vanID)}>
                             <div className='van_Horizontal' >
+                            <div className='overallNameInputDivRental'>
                                 <input type='submit' value={driver.name} className='van_vertical_name' />
+                                <p className='pTagRentalVehicle'>Submit</p>
+                            </div>    
                                 <div className='van_vertical_weekday_registration'>
                                     <input type="text" className='inputRentalVanTracker' defaultValue={driver.vehicle_name} onChange={handleChange} onClick={(e, driverteo) => handleSelectDriver(e, driver)}/>
                                     <ol className='listRentalVanCheck'>
@@ -312,7 +349,10 @@ const RentalVanTracker = (props) => {
                     localArray.push (
                         <form key={vanID} onSubmit={(e, driverG, vanIDG) => handleSubmitMainForm(e, driver, vanID)}>
                             <div className='van_Horizontal' >
-                                <input type='submit' value={driver.name} className='van_vertical_name' />
+                                <div className='overallNameInputDivRental'>
+                                    <input type='submit' value={driver.name} className='van_vertical_name' />  
+                                    <p className='pTagRentalVehicle'>Submit</p> 
+                                </div>
     
                                 <div className='van_vertical_weekday_registration'>
                                     <input type="text" className='inputRentalVanTracker' defaultValue={driver.vehicle_name} onChange={handleChange} onClick={(e, driverteo) => handleSelectDriver(e, driver)}/>
