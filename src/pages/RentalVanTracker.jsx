@@ -18,6 +18,7 @@ const RentalVanTracker = (props) => {
     const [ topPart, setTopPart ] = useState([])
     const [ arrayChecked, setArrayChecked ] = useState([])
     const [ dateCheckArray, setDateCheckArray ] = useState([])
+    const [awesomeArrayArray, setAwesomeArrayArray ] = useState([])
 
     // eslint-disable-next-line no-extend-native
     Date.prototype.getWeek = function () {
@@ -32,9 +33,8 @@ const RentalVanTracker = (props) => {
 
     // sets the variable outside for use in posting
     useEffect( () => {
-        console.log('checker')
-        myCheckerFuckReactArray = arrayChecked
-    }, [arrayChecked])
+        myCheckerFuckReactArray = awesomeArrayArray
+    }, [awesomeArrayArray])
 
     useEffect(() => {
         let myDate = new Date()
@@ -127,7 +127,6 @@ const RentalVanTracker = (props) => {
                 </p>
             )
         })
-        console.log(localArray)
         return localArray
     }
 
@@ -232,6 +231,9 @@ const RentalVanTracker = (props) => {
                 date: theDate,
             }).then( (response) => {
                 console.log(response)
+                let myGate = dataGate
+                let theGate = myGate += 1
+                setDataGate(theGate)
             })
         }
         let arrayOfDates = []
@@ -240,29 +242,22 @@ const RentalVanTracker = (props) => {
                 arrayOfDates.push(dateCheckArray[eleId])
             }
         })
-        arrayOfDates.forEach( ele => {
+        arrayOfDates.forEach( (ele, eleId) => {
             handleSubmit(driverSelectedSubmit, ele)
         })
-        let myGate = dataGate
-        let theGate = myGate += 1
-        setDataGate(theGate)
     }
 
     // add the date to the array to send to back end
     const handleSelectDate = (e, vanId, theNumber) => {
-        console.log(e.target, vanId, theNumber)
-        console.log(myCheckerFuckReactArray)
         let myArray = myCheckerFuckReactArray
         myArray[vanId][theNumber] = 1
-        setArrayChecked(myArray)
+        setAwesomeArrayArray(myArray)
     }
 
     // delete van rental day
     const handleDeleteDay = (e, targetDate) => {
-        console.log(e.target, targetDate)
             // send form to backend
         const handleSubmit = (theDate) => {
-            console.log(myDriver)
             let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('token'), process.env.REACT_APP_ENCRYPTION_TYPE);
             let originalText = bytes.toString(CryptoJS.enc.Utf8);
             async function DeleteData(url = '') {
@@ -295,10 +290,13 @@ const RentalVanTracker = (props) => {
     useEffect( () => {
         let localArray = []
         let arrayOfBoxes = []
+        let awesomeArrayMaker = []
         if (data && vehicleData) {
             data.drivers.forEach( (driver, vanID) => {
+                awesomeArrayMaker.push([0,0,0,0,0,0,0])
                 if (driver.vanDatesArray.length > 0) {
                     let checkerArray = [0,0,0,0,0,0,0]
+                    let localSum = 0
                     let myLocalArray = []
                     for (let i=0; i < 7; i++) {
                         myLocalArray.push(
@@ -312,6 +310,7 @@ const RentalVanTracker = (props) => {
                     }
                     driver.vanDatesArray.forEach( element => {
                         if (dateCheckArray.includes(element.date)) {
+                            localSum++
                             myLocalArray[dateCheckArray.indexOf(element.date)] = (
                                 <div key={vanID} className='van_vertical_weekday_three' onClick={(e, theDate) => handleDeleteDay(e, element)}>
                                     <h3>1</h3>
@@ -334,11 +333,8 @@ const RentalVanTracker = (props) => {
                                     </ol>
                                 </div>
                                 {myLocalArray}
-                                <div className='van_vertical_weekday_two'>
-                                    <label className='container_checkbox_two'>
-                                        <input type="checkbox" />
-                                        <span className='checkmark_yes_two' id='yes'></span>
-                                    </label>
+                                <div className='van_vertical_weekday'>
+                                    {localSum}
                                 </div>
                             </div>
                         </form>
@@ -402,11 +398,8 @@ const RentalVanTracker = (props) => {
                                         <span className='checkmark_yes_two' id='yes'></span>
                                     </label>
                                 </div>
-                                <div className='van_vertical_weekday_two'>
-                                    <label className='container_checkbox_two'>
-                                        <input type="checkbox" />
-                                        <span className='checkmark_yes_two' id='yes'></span>
-                                    </label>
+                                <div className='van_vertical_weekday'>
+                                    0
                                 </div>
                             </div>
                         </form>
@@ -416,6 +409,7 @@ const RentalVanTracker = (props) => {
         }
         setVanData(localArray)
         setArrayChecked(arrayOfBoxes)
+        setAwesomeArrayArray(awesomeArrayMaker)
     }, [data, vehicleData, registrationSearch])
 
     return (
